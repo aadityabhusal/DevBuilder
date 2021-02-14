@@ -1,0 +1,11 @@
+Folders:
+hocs
+services
+store
+tests
+routes
+
+
+pages: This folder contains domain-specific/pages-based stateful components
+
+components: This folder contains stateless, reusable and shared components.
