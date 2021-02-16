@@ -1,0 +1,109 @@
+{
+  "site":{
+    "head":{
+      "meta":{
+        "name1":{
+          "prop1": "val", 
+          "prop2": "val",
+          "value": "val"
+        },
+        "name":{
+          "prop1": "val", 
+          "prop2": "val",
+          "value": "val"
+        }
+      },
+      "styles":[
+        {
+          "url": "url",
+          "page": "*"
+        },
+        {
+          "url": "url",
+          "page": "about"
+
+        }
+      ],
+      "scripts":[
+        {
+          "url": "url",
+          "page": "*"
+        },
+        {
+          "NOTE": "MAY NOT BE",
+          "url": "url",
+          "page": "about"
+        }
+      ]
+    },
+    "body":{
+      "id": "id",
+      "classes": ["class1", "class2"],
+      "children": [
+        {
+          "element": "header",
+          "id": "id",
+          "classes": ["class1", "class2"],
+          "children":[ 
+            {
+              "element": "div",
+              "id": "id",
+              "classes": ["class1", "class2"],
+              "children":[ 
+                {
+                  "element": "div",
+                  "id": "id",
+                  "classes": ["class1", "class2"],
+                  "text": "This is the inner div.",
+                  "style": "display:inline;color:blue",
+                  "children": [
+                    {
+                      "element": "a",
+                      "href": "https://github.com",
+                      "alt": "GitHub",
+                      "text": "Go to Github"
+                    }
+                  ]
+                },
+                {
+                  "element": "div",
+                  "id": "id",
+                  "classes": ["class1", "class2"],
+                  "style": "display:inline;color:blue",
+                  "children": [
+                    {
+                      "element": "div",
+                      "id": "id",
+                      "classes":["class1", "class2"],
+                      "style": "display:inline;color:blue",
+                      "alt": "GitHub",
+                      "text": "Go to Github"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "element": "main",
+          "id": "id",
+          "classes": ["class1", "class2"],
+          "children":[]
+        },
+        {
+          "element": "footer",
+          "id": "id",
+          "classes": ["class1", "class2"],
+          "children":[]
+        }
+      ]
+    },
+    "scripts":[
+      {
+        "url": "url",
+        "page": "*"
+      }
+    ]
+  }
+}
