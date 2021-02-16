@@ -1,24 +1,33 @@
 import React from "react";
-import { Panel, PanelTitle } from "../Panel";
+import {
+  Panel,
+  PanelButton,
+  PanelTitle,
+  PanelInputText,
+  PanelTextArea,
+} from "../Panel";
 
 export function PropertiesPanel({ isActive }) {
   return (
     <Panel className={isActive}>
       <PanelTitle>Properties</PanelTitle>
-      <input
+      <PanelInputText
         type="text"
         id="elementId"
         data-elem-prop="id"
         placeholder="Enter the id"
       />
-      <input
+      <PanelInputText
         type="text"
         id="elementClass"
         data-elem-prop="class"
         placeholder="Enter the classes"
       />
-      <textarea id="text" placeholder="Enter the text content"></textarea>
-      <button id="saveProps">Save</button>
+      <PanelTextArea
+        id="text"
+        placeholder="Enter the text content"
+      ></PanelTextArea>
+      <PanelButton id="saveProps">Save</PanelButton>
     </Panel>
   );
 }

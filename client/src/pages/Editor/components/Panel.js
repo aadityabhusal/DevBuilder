@@ -44,3 +44,37 @@ export const PanelTitle = styled.div`
   font-weight: 500;
   border-bottom: 1px solid #bdc3c7;
 `;
+
+export const PanelItems = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  & > * {
+    flex: 0 0 ${(props) => (props.cols === 2 ? 45 : 100)}%;
+  }
+`;
+
+export const PanelItem = styled.div`
+  border: 1px solid #bdc3c7;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+  padding: 10px 0;
+  cursor: pointer;
+`;
+
+export const PanelButton = styled(PanelItem).attrs({ as: "button" })`
+  outline: 0;
+`;
+
+export const PanelInputText = styled(PanelItem).attrs({ as: "input" })`
+  outline: 0;
+  cursor: text;
+  text-align: left;
+  padding-left: 10px;
+`;
+
+export const PanelTextArea = styled(PanelInputText).attrs({ as: "textarea" })`
+  resize: vertical;
+`;
