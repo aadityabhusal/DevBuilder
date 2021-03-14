@@ -18,4 +18,8 @@ app.get("/page/:pageId", (request, response) => {
   }
 });
 
+app.post("/addSite", (req, res) => {});
+
+app.put("/page/:pageId/:elementId", (req, res) => {});
+
 app.listen(port, () => console.log(`Listening on port ${port}`));

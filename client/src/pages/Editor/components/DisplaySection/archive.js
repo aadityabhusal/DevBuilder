@@ -63,3 +63,14 @@ function renderView(element) {
   };
   return createElement(element);
 }
+
+const RenderElements2 = ({ children, classes, level, ...props }) => {
+  return (
+    <IframeElement className={classes ? classes.join(" ") : ""} {...props}>
+      {children.children &&
+        children.map((item, i) => (
+          <RenderElements key={i} {...item} level={level + 1} />
+        ))}
+    </IframeElement>
+  );
+};

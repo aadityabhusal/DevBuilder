@@ -1,9 +1,10 @@
-.frame-element {
-  border: 1px solid transparent;
-  padding: 5px;
-  cursor: pointer;
+body{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.frame-element:hover {
-  border: 1px solid lightblue;
+.frame-element {
+  border: 1px solid #bdc3c7;
+  padding: 2px;
+  margin: 2px;
+  cursor: pointer;
 }

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import Frame from "react-frame-component";
+import React, { useEffect, useRef, useState } from "react";
+import Frame, { FrameContextConsumer } from "react-frame-component";
 import { useParams } from "react-router-dom";
-import { IframeElement } from "../IFrameElement";
-import { renderHTML } from "../../scripts/renderHTML";
-
+import { StyleSheetManager } from "styled-components";
+import { ContextMenuFR } from "../ContextMenu";
+import { RenderElements } from "./RenderElements";
 /* 
   You can use React.createElement
   Using recursion, you can add more elements in side element in the children parameter of React.createElement
@@ -13,49 +13,38 @@ import { renderHTML } from "../../scripts/renderHTML";
 export function ViewSection({ children, ...props }) {
   const { pageId } = useParams();
   const [site, setSite] = useState();
-
+  const contextRef = useRef();
+  const [contextMenu, setContextMenu] = useState();
   useEffect(() => {
     (async (pageId) => {
       const { site } = await (await fetch(`/page/${pageId}`)).json();
       setSite(site);
+      setContextMenu(contextRef);
     })(pageId);
   }, [pageId]);
 
   return site ? (
     <Frame
       style={{ flex: 1, border: "none" }}
-      initialContent='<!DOCTYPE html><html><head><link href="/core.css" rel="stylesheet"></head><body id="body"><script src="/core.js"></script></body></html>'
+      initialContent='<!DOCTYPE html><html><head><base target="_blank"><link href="/core.css" rel="stylesheet"></head><body id="body"><script src="/core.js"></script></body></html>'
       mountTarget="#body"
     >
-      {/* <IframeElement tagName="div" text="This is a div" /> */}
-      <RenderElements children={site.body.children} level={1} />
+      <FrameContextConsumer>
+        {(frameContext) => (
+          <StyleSheetManager target={frameContext.document.head}>
+            <>
+              <ContextMenuFR ref={contextRef} />
+              <RenderElements
+                children={site.body.children}
+                level={1}
+                contextMenu={contextMenu}
+              />
+            </>
+          </StyleSheetManager>
+        )}
+      </FrameContextConsumer>
     </Frame>
   ) : (
     ""
   );
 }
-
-const RenderElements = ({ children, level }) => {
-  return children.map(({ children, classes, ...item }, i) => {
-    return (
-      <IframeElement
-        key={i}
-        className={classes ? "frame-element " + classes.join(" ") : ""}
-        {...item}
-      >
-        {children && <RenderElements children={children} level={level + 1} />}
-      </IframeElement>
-    );
-  });
-};
-
-const RenderElements2 = ({ children, classes, level, ...props }) => {
-  return (
-    <IframeElement className={classes ? classes.join(" ") : ""} {...props}>
-      {children.children &&
-        children.map((item, i) => (
-          <RenderElements key={i} {...item} level={level + 1} />
-        ))}
-    </IframeElement>
-  );
-};
