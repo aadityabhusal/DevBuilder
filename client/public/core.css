@@ -1,0 +1,9 @@
+.frame-element {
+  border: 1px solid transparent;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.frame-element:hover {
+  border: 1px solid lightblue;
+}

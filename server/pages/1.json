@@ -1,19 +1,19 @@
 {
-  "site":{
-    "head":{
-      "meta":{
-        "name1":{
-          "prop1": "val", 
+  "site": {
+    "head": {
+      "meta": {
+        "name1": {
+          "prop1": "val",
           "prop2": "val",
           "value": "val"
         },
-        "name":{
-          "prop1": "val", 
+        "name": {
+          "prop1": "val",
           "prop2": "val",
           "value": "val"
         }
       },
-      "styles":[
+      "styles": [
         {
           "url": "url",
           "page": "*"
@@ -21,10 +21,9 @@
         {
           "url": "url",
           "page": "about"
-
         }
       ],
-      "scripts":[
+      "scripts": [
         {
           "url": "url",
           "page": "*"
@@ -36,20 +35,21 @@
         }
       ]
     },
-    "body":{
+    "body": {
       "id": "id",
+      "element": "div",
       "classes": ["class1", "class2"],
       "children": [
         {
           "element": "header",
           "id": "id",
           "classes": ["class1", "class2"],
-          "children":[ 
+          "children": [
             {
               "element": "div",
               "id": "id",
               "classes": ["class1", "class2"],
-              "children":[ 
+              "children": [
                 {
                   "element": "div",
                   "id": "id",
@@ -74,7 +74,7 @@
                     {
                       "element": "div",
                       "id": "id",
-                      "classes":["class1", "class2"],
+                      "classes": ["class1", "class2"],
                       "style": "display:inline;color:blue",
                       "alt": "GitHub",
                       "text": "Go to Github"
@@ -89,17 +89,17 @@
           "element": "main",
           "id": "id",
           "classes": ["class1", "class2"],
-          "children":[]
+          "children": []
         },
         {
           "element": "footer",
           "id": "id",
           "classes": ["class1", "class2"],
-          "children":[]
+          "children": []
         }
       ]
     },
-    "scripts":[
+    "scripts": [
       {
         "url": "url",
         "page": "*"
