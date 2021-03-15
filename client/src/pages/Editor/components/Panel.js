@@ -79,3 +79,9 @@ export const PanelInputText = styled(PanelItem).attrs({ as: "input" })`
 export const PanelTextArea = styled(PanelInputText).attrs({ as: "textarea" })`
   resize: vertical;
 `;
+
+export const PanelLabel = styled.div`
+  font-size: 12px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+`;

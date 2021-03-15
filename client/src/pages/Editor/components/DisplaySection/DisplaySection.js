@@ -10,11 +10,11 @@ const DisplayContainer = styled.div`
   flex: 1;
 `;
 
-export function DisplaySection({ selectTarget }) {
+export function DisplaySection({ selectTarget, site }) {
   return (
     <DisplayContainer>
       <TopSection />
-      <ViewSection selectTarget={selectTarget} />
+      <ViewSection selectTarget={selectTarget} site={site} />
       <BottomSection />
     </DisplayContainer>
   );

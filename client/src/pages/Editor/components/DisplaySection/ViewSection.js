@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import Frame, { FrameContextConsumer } from "react-frame-component";
-import { useParams } from "react-router-dom";
 import { StyleSheetManager } from "styled-components";
 import { ContextMenuFR } from "../ContextMenu";
 import { RenderElements } from "./RenderElements";
@@ -10,23 +9,19 @@ import { RenderElements } from "./RenderElements";
   https://stackoverflow.com/questions/31234500/create-react-component-dynamically
 */
 
-export function ViewSection({ selectTarget, ...props }) {
-  const { pageId } = useParams();
-  const [site, setSite] = useState();
+export function ViewSection({ selectTarget, site }) {
   const contextRef = useRef();
   const [contextMenu, setContextMenu] = useState();
   const [target, setTarget] = useState();
 
   useEffect(() => {
-    (async (pageId) => {
-      const { site } = await (await fetch(`/page/${pageId}`)).json();
-      setSite(site);
+    if (site) {
       setContextMenu(contextRef);
       if (target) {
         selectTarget(target);
       }
-    })(pageId);
-  }, [pageId, selectTarget, target]);
+    }
+  }, [site, selectTarget, target]);
 
   return site ? (
     <Frame

@@ -36,26 +36,26 @@
       ]
     },
     "body": {
-      "element": "body",
+      "tagName": "body",
       "id": "body",
       "classes": ["body"],
       "children": [
         {
-          "element": "div",
+          "tagName": "div",
           "id": "first",
           "classes": ["item"],
           "data-id": "0",
           "text": "First Level Div",
           "children": [
             {
-              "element": "div",
+              "tagName": "div",
               "id": "second",
               "classes": [""],
               "data-id": "0,0",
               "text": "Second Level Div",
               "children": [
                 {
-                  "element": "div",
+                  "tagName": "div",
                   "id": "third",
                   "classes": [""],
                   "data-id": "0,0,0",

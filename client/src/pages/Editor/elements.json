@@ -1,0 +1,36 @@
+{
+  "div": {
+    "element": "div",
+    "id": "",
+    "class": "",
+    "text": "Block",
+    "children": []
+  },
+  "a": {
+    "element": "a",
+    "id": "",
+    "class": "",
+    "href": "",
+    "text": "Link",
+    "children": []
+  },
+  "img": {
+    "element": "a",
+    "id": "",
+    "class": "",
+    "src": "",
+    "alt": ""
+  },
+  "button": {
+    "element": "button",
+    "id": "",
+    "class": "",
+    "text": "Button"
+  },
+  "text": {
+    "element": "p",
+    "id": "",
+    "class": "",
+    "text": "Text"
+  }
+}
