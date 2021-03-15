@@ -56,6 +56,7 @@ export const PanelItems = styled.div`
 `;
 
 export const PanelItem = styled.div`
+  font-size: 12px;
   border: 1px solid #bdc3c7;
   border-radius: 5px;
   margin-bottom: 10px;

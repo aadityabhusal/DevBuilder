@@ -6,9 +6,12 @@ export function ElementsPanel({ isActive }) {
     <Panel className={isActive}>
       <PanelTitle>Elements</PanelTitle>
       <PanelItems cols={2}>
-        <PanelItem data-element="PanelItem">Div</PanelItem>
+        <PanelItem data-element="div">Block</PanelItem>
         <PanelItem data-element="a">Link</PanelItem>
         <PanelItem data-element="button">Button</PanelItem>
+        <PanelItem data-element="p">Text</PanelItem>
+        <PanelItem data-element="ol">Ordered List</PanelItem>
+        <PanelItem data-element="ul">Unordered List</PanelItem>
       </PanelItems>
     </Panel>
   );

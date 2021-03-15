@@ -1,20 +1,21 @@
 import React from "react";
 import { IframeElement } from "../IFrameElement";
 
-export const RenderElements = ({ children, level, contextMenu }) => {
-  return children.map(({ children, classes, ...item }, i) => {
+export const RenderElements = ({ element, level, contextMenu, setTarget }) => {
+  return element.children.map((element, i) => {
     return (
       <IframeElement
         key={i}
         contextMenu={contextMenu}
-        className={classes ? "frame-element " + classes.join(" ") : ""}
-        {...item}
+        setTarget={setTarget}
+        element={element}
       >
-        {children && (
+        {element.children && (
           <RenderElements
-            children={children}
+            element={element}
             level={level + 1}
             contextMenu={contextMenu}
+            setTarget={setTarget}
           />
         )}
       </IframeElement>
@@ -22,4 +23,4 @@ export const RenderElements = ({ children, level, contextMenu }) => {
   });
 };
 
-const addElement = () => {};
+// const addElement = () => {};

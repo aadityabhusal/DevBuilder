@@ -23,19 +23,7 @@ const StyledContextMenu = styled.ul`
   position: absolute;
 `;
 
-function ContextMenu(props, ref) {
-  // const contextRef = useRef();
-  // useEffect(() => {
-  //   let menu = contextRef.current;
-  //   window.addEventListener("contextmenu", function (e) {
-  //     e.preventDefault();
-  //     menu.style.display = "flex";
-  //     menu.style.top = e.clientY;
-  //     menu.style.left = e.clientX;
-  //     console.log(e.clientY, e.clientY);
-  //     return false;
-  //   });
-  // }, [contextRef]);
+function ContextMenu({ targetElement }, ref) {
   return (
     <StyledContextMenu ref={ref}>
       {contextMenuList.map((item, i) => {

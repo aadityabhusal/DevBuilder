@@ -17,7 +17,7 @@ const RightContainer = styled.div`
   border-left: 1px solid #bdc3c7;
   width: 250px;
 `;
-export function RightSection() {
+export function RightSection({ target, editTarget }) {
   const [activePanel, setActivePanel] = useState(1);
 
   const checkActive = (index) => (activePanel === index ? "active" : "");
@@ -39,10 +39,14 @@ export function RightSection() {
         </div>
       </PanelList>
       <Panels>
-        <PropertiesPanel isActive={checkActive(1)} />
-        <StylesPanel isActive={checkActive(2)} />
-        <ScriptsPanel isActive={checkActive(3)} />
-        <SettingsPanel isActive={checkActive(4)} />
+        <PropertiesPanel
+          target={target}
+          editTarget={editTarget}
+          isActive={checkActive(1)}
+        />
+        <StylesPanel target={target} isActive={checkActive(2)} />
+        <ScriptsPanel target={target} isActive={checkActive(3)} />
+        <SettingsPanel target={target} isActive={checkActive(4)} />
       </Panels>
     </RightContainer>
   );
