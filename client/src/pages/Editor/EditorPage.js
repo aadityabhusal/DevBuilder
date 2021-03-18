@@ -13,6 +13,7 @@ export function EditorPage() {
   const { pageId } = useParams();
   const [site, setSite] = useState();
   const [targetElement, setTargetElement] = useState();
+  const [selectedElement, setSelectedElement] = useState();
 
   useEffect(() => {
     (async (pageId) => {
@@ -31,13 +32,20 @@ export function EditorPage() {
 
   const updateTarget = () => {};
 
+  const selectElement = (element) => {
+    if (element) {
+      setSelectedElement(element);
+    }
+  };
+
   return site ? (
     <EditorContainer>
-      <LeftSection />
+      <LeftSection selectElement={selectElement} />
       <DisplaySection
         site={site}
         selectTarget={selectTarget}
         updateTarget={updateTarget}
+        selectedElement={selectedElement}
       />
       <RightSection target={targetElement} editTarget={editTarget} />
     </EditorContainer>

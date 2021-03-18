@@ -8,12 +8,14 @@ import { LayoutsPanel } from "./Layouts";
 import { NavigatorPanel } from "./Navigator";
 import { PagesPanel } from "./Pages";
 
+import elementList from "./elements.json";
+
 const LeftContainer = styled.div`
   border-right: 1px solid #bdc3c7;
   width: 250px;
 `;
 
-export function LeftSection() {
+export function LeftSection({ selectElement }) {
   const [activePanel, setActivePanel] = useState(1);
 
   const checkActive = (index) => (activePanel === index ? "active" : "");
@@ -35,7 +37,11 @@ export function LeftSection() {
         </div>
       </PanelList>
       <Panels>
-        <ElementsPanel isActive={checkActive(1)} />
+        <ElementsPanel
+          elementList={elementList}
+          isActive={checkActive(1)}
+          selectElement={selectElement}
+        />
         <LayoutsPanel isActive={checkActive(2)} />
         <PagesPanel isActive={checkActive(3)} />
         <NavigatorPanel isActive={checkActive(4)} />

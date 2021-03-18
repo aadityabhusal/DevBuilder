@@ -1,7 +1,13 @@
 import React from "react";
 import { IframeElement } from "../IFrameElement";
 
-export const RenderElements = ({ element, level, contextMenu, setTarget }) => {
+export const renderElements = (
+  element,
+  level,
+  contextMenu,
+  setTarget,
+  selectedElement
+) => {
   return element.children.map((element, i) => {
     return (
       <IframeElement
@@ -9,15 +15,16 @@ export const RenderElements = ({ element, level, contextMenu, setTarget }) => {
         contextMenu={contextMenu}
         setTarget={setTarget}
         element={element}
+        selectedElement={selectedElement}
       >
-        {element.children && (
-          <RenderElements
-            element={element}
-            level={level + 1}
-            contextMenu={contextMenu}
-            setTarget={setTarget}
-          />
-        )}
+        {element.children &&
+          renderElements(
+            element,
+            level + 1,
+            contextMenu,
+            setTarget,
+            selectedElement
+          )}
       </IframeElement>
     );
   });

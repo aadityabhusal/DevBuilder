@@ -1,0 +1,76 @@
+{
+  "div": {
+    "tagName": "div",
+    "id": "",
+    "classes": [],
+    "text": "Block",
+    "children": []
+  },
+  "a": {
+    "tagName": "a",
+    "id": "",
+    "classes": [],
+    "href": "",
+    "text": "Link",
+    "children": []
+  },
+  "img": {
+    "tagName": "img",
+    "id": "",
+    "classes": [],
+    "src": "",
+    "alt": "",
+    "text": "Image"
+  },
+  "button": {
+    "tagName": "button",
+    "id": "",
+    "classes": [],
+    "text": "Button",
+    "children": []
+  },
+  "text": {
+    "tagName": "p",
+    "id": "",
+    "classes": [],
+    "text": "Text",
+    "children": []
+  },
+  "ol": {
+    "tagName": "ol",
+    "id": "",
+    "classes": [],
+    "text": "Ordered List",
+    "children": [
+      {
+        "tagName": "li",
+        "id": "",
+        "classes": [],
+        "text": "List Item",
+        "children": []
+      }
+    ]
+  },
+  "ul": {
+    "tagName": "ul",
+    "id": "",
+    "classes": [],
+    "text": "Unordered List",
+    "children": [
+      {
+        "tagName": "li",
+        "id": "",
+        "classes": [],
+        "text": "List Item",
+        "children": []
+      }
+    ]
+  },
+  "li": {
+    "tagName": "li",
+    "id": "",
+    "classes": [],
+    "text": "List Item",
+    "children": []
+  }
+}
