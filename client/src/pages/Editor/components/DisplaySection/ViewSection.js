@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Frame, { FrameContextConsumer } from "react-frame-component";
 import { StyleSheetManager } from "styled-components";
 import { ContextMenuFR } from "../ContextMenu";
+import { IframeElement } from "../IFrameElement";
 import { renderElements } from "./renderElements";
 
 export function ViewSection({ site }) {
@@ -25,7 +26,9 @@ export function ViewSection({ site }) {
           <StyleSheetManager target={frameContext.document.head}>
             <>
               <ContextMenuFR ref={contextRef} />
-              {renderElements(site.body, 1, contextMenu)}
+              <IframeElement contextMenu={contextMenu} element={site.body}>
+                {renderElements(site.body, 1, contextMenu)}
+              </IframeElement>
             </>
           </StyleSheetManager>
         )}

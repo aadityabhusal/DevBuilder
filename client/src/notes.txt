@@ -9,3 +9,10 @@ routes
 pages: This folder contains domain-specific/pages-based stateful components
 
 components: This folder contains stateless, reusable and shared components.
+
+
+ISSUES
+
+1. React Iframe Component doesn't get removed form its parent after being dragged into another element
+   Currently Searching: "unmount component in react hooks" and "remove a component from react virtual dom"
+2. Dragging an Iframe Component and dropping in the same parent div makes the Iframe Component disappear
