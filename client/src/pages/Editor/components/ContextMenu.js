@@ -23,7 +23,7 @@ const StyledContextMenu = styled.ul`
   position: absolute;
 `;
 
-function ContextMenu({ targetElement }, ref) {
+function ContextMenu({}, ref) {
   return (
     <StyledContextMenu ref={ref}>
       {contextMenuList.map((item, i) => {

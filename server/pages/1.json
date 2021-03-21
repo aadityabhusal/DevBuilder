@@ -63,7 +63,8 @@
                       "classes": [],
                       "href": "https://github.com",
                       "alt": "GitHub",
-                      "text": "Go to Github"
+                      "text": "Go to Github",
+                      "children": []
                     }
                   ]
                 },
@@ -79,7 +80,8 @@
                       "classes": ["class1", "class2"],
                       "style": "display:inline;color:blue",
                       "alt": "GitHub",
-                      "text": "Go to Github"
+                      "text": "Go to Github",
+                      "children": []
                     }
                   ]
                 }

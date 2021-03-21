@@ -3,25 +3,16 @@ import Frame, { FrameContextConsumer } from "react-frame-component";
 import { StyleSheetManager } from "styled-components";
 import { ContextMenuFR } from "../ContextMenu";
 import { renderElements } from "./renderElements";
-/* 
-  You can use React.createElement
-  Using recursion, you can add more elements in side element in the children parameter of React.createElement
-  https://stackoverflow.com/questions/31234500/create-react-component-dynamically
-*/
 
-export function ViewSection({ site, selectTarget, selectedElement }) {
+export function ViewSection({ site }) {
   const contextRef = useRef();
   const [contextMenu, setContextMenu] = useState();
-  const [target, setTarget] = useState();
 
   useEffect(() => {
     if (site) {
       setContextMenu(contextRef);
-      if (target) {
-        selectTarget(target);
-      }
     }
-  }, [site, selectTarget, target]);
+  }, [site]);
 
   return site ? (
     <Frame
@@ -33,14 +24,8 @@ export function ViewSection({ site, selectTarget, selectedElement }) {
         {(frameContext) => (
           <StyleSheetManager target={frameContext.document.head}>
             <>
-              <ContextMenuFR ref={contextRef} target={target} />
-              {renderElements(
-                site.body,
-                1,
-                contextMenu,
-                setTarget,
-                selectedElement
-              )}
+              <ContextMenuFR ref={contextRef} />
+              {renderElements(site.body, 1, contextMenu)}
             </>
           </StyleSheetManager>
         )}

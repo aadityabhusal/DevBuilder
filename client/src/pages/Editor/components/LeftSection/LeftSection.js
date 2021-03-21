@@ -15,7 +15,7 @@ const LeftContainer = styled.div`
   width: 250px;
 `;
 
-export function LeftSection({ selectElement }) {
+export function LeftSection() {
   const [activePanel, setActivePanel] = useState(1);
 
   const checkActive = (index) => (activePanel === index ? "active" : "");
@@ -37,11 +37,7 @@ export function LeftSection({ selectElement }) {
         </div>
       </PanelList>
       <Panels>
-        <ElementsPanel
-          elementList={elementList}
-          isActive={checkActive(1)}
-          selectElement={selectElement}
-        />
+        <ElementsPanel elementList={elementList} isActive={checkActive(1)} />
         <LayoutsPanel isActive={checkActive(2)} />
         <PagesPanel isActive={checkActive(3)} />
         <NavigatorPanel isActive={checkActive(4)} />

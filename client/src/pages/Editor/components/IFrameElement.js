@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
-export function IframeElement({
-  element,
-  children,
-  contextMenu,
-  setTarget,
-  selectedElement,
-}) {
+import { SelectedElementContext } from "../../../contexts/SelectedElementContext";
+
+export function IframeElement({ element, children, contextMenu }) {
   const { tagName, text, style, classes, ...attributes } = element;
   element.classlist = classes ? classes.join(" ") : "";
   const [elementChildren, setElementChildren] = useState([]);
+  const [selectedElement, setSelectedElement] = useContext(
+    SelectedElementContext
+  );
 
   useEffect(() => {
     if (children) {
@@ -19,10 +18,7 @@ export function IframeElement({
 
   const changeChildren = (newChild) => {
     setElementChildren((prev, prop) => {
-      // console.log(prev);
-      // prev.push(newChild);
       let temp = [...prev, newChild];
-      console.log(temp);
       return temp;
     });
   };
@@ -30,10 +26,22 @@ export function IframeElement({
   const HTMLTag = `${tagName}`;
   return (
     <HTMLTag
-      onClick={(e) => {
-        selectElement(e, element, contextMenu, setTarget);
-        insertElement(changeChildren, selectedElement, contextMenu, setTarget);
-        selectedElement = null;
+      onClick={(e) =>
+        selectElement(e, element, contextMenu, setSelectedElement)
+      }
+      onDrop={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        insertElement(
+          changeChildren,
+          e.dataTransfer.getData("draggedElement"),
+          contextMenu,
+          selectedElement
+        );
+      }}
+      onDragOver={(e) => {
+        e.preventDefault();
+        selectElement(e, element, contextMenu, setSelectedElement);
       }}
       onMouseOver={(e) => showHoverBox(e)}
       onMouseOut={(e) => hideHoverBox(e)}
@@ -55,10 +63,10 @@ const openContextMenu = (e, contextMenu) => {
   return false;
 };
 
-const selectElement = (e, element, contextMenu, setTarget) => {
+const selectElement = (e, element, contextMenu, setSelectedElement) => {
   e.stopPropagation();
   closeContextMenu(e, contextMenu);
-  setTarget(element);
+  setSelectedElement(element);
 };
 
 const closeContextMenu = (e, contextMenu) => {
@@ -77,23 +85,17 @@ const hideHoverBox = (e) => {
 
 const insertElement = (
   changeChildren,
-  selectedElement,
+  draggedElement,
   contextMenu,
-  setTarget
+  selectedElement
 ) => {
-  if (selectedElement) {
+  if (draggedElement) {
     changeChildren(
       <IframeElement
         contextMenu={contextMenu}
-        setTarget={setTarget}
-        element={selectedElement}
-        selectedElement={selectedElement}
-        key={setTarget.children ? setTarget.children.length : 0}
+        element={JSON.parse(draggedElement)}
+        key={selectedElement.children ? selectedElement.children.length : 0}
       ></IframeElement>
     );
   }
 };
-
-/* 
-Warning: render(...): Replacing React-rendered children with a new root component. If you intended to update the children of this node, you should instead have the existing children update their state and render the new components instead of calling ReactDOM.render.
-*/

@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Panel, PanelItems, PanelTitle, PanelItem } from "../Panel";
 
-export function ElementsPanel({ isActive, elementList, selectElement }) {
+export function ElementsPanel({ isActive, elementList }) {
   const [elements, setElements] = useState();
-
-  // selectElement = (element) => {
-  //   return element;
-  // };
 
   useEffect(() => {
     const temp = [];
@@ -27,7 +23,10 @@ export function ElementsPanel({ isActive, elementList, selectElement }) {
             <PanelItem
               data-element={item.tagName}
               key={i}
-              onClick={(e) => selectElement(item)}
+              draggable={true}
+              onDragStart={(e) => {
+                e.dataTransfer.setData("draggedElement", JSON.stringify(item));
+              }}
             >
               {item.text}
             </PanelItem>
@@ -36,6 +35,6 @@ export function ElementsPanel({ isActive, elementList, selectElement }) {
       </PanelItems>
     </Panel>
   ) : (
-    "no elemts"
+    "No Elements"
   );
 }

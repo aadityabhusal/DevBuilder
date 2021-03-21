@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
 import {
   Panel,
   PanelButton,
@@ -8,25 +9,17 @@ import {
   PanelLabel,
 } from "../Panel";
 
-export function PropertiesPanel({ isActive, target, setTarget }) {
-  // const [tagName, setTagName] = useState("Select an element");
-  // const [id, setId] = useState("");
-  // const [classlist, setClasslist] = useState("");
-  // const [text, setText] = useState("");
-
+export function PropertiesPanel({ isActive }) {
   const [element, setElement] = useState();
+  let [selectedElement] = useContext(SelectedElementContext);
 
   useEffect(() => {
-    if (target) {
-      // setTagName(target.tagName);
-      // setId(target.id);
-      // setClasslist(target.classlist);
-      // setText(target.text);
+    if (selectedElement) {
       setElement(() => {
-        return target;
+        return selectedElement;
       });
     }
-  }, [target]);
+  }, [selectedElement]);
 
   const handleProperty = (e, property) => {
     setElement((prev, prop) => {
