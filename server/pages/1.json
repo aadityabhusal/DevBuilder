@@ -36,30 +36,30 @@
       ]
     },
     "body": {
-      "id": "id",
+      "id": "id1",
       "tagName": "div",
       "classes": ["class1", "class2"],
       "children": [
         {
           "tagName": "header",
-          "id": "id",
+          "id": "id2",
           "classes": ["class1", "class2"],
           "children": [
             {
               "tagName": "div",
-              "id": "id",
+              "id": "id3",
               "classes": ["class1", "class2"],
               "children": [
                 {
                   "tagName": "div",
-                  "id": "id",
+                  "id": "id4",
                   "classes": ["class1", "class2"],
                   "text": "This is the inner div.",
                   "style": "display:inline;color:blue",
                   "children": [
                     {
                       "tagName": "a",
-                      "id": "id",
+                      "id": "id5",
                       "classes": [],
                       "href": "https://github.com",
                       "alt": "GitHub",
@@ -70,16 +70,14 @@
                 },
                 {
                   "tagName": "div",
-                  "id": "id",
+                  "id": "id6",
                   "classes": ["class1", "class2"],
                   "style": "display:inline;color:blue",
                   "children": [
                     {
                       "tagName": "div",
-                      "id": "id",
+                      "id": "id7",
                       "classes": ["class1", "class2"],
-                      "style": "display:inline;color:blue",
-                      "alt": "GitHub",
                       "text": "Go to Github",
                       "children": []
                     }

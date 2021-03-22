@@ -6,6 +6,8 @@ import { renderElements } from "./DisplaySection/renderElements";
 export function IframeElement({ element, children, contextMenu }) {
   const { tagName, text, style, classes, ...attributes } = element;
   element.classlist = classes ? classes.join(" ") : "";
+
+  const [shouldDisplay, setShouldDisplay] = useState(true);
   const [elementChildren, setElementChildren] = useState([]);
   const [, setSelectedElement] = useContext(SelectedElementContext);
   useEffect(() => {
@@ -16,54 +18,54 @@ export function IframeElement({ element, children, contextMenu }) {
 
   const changeChildren = (newChild) => {
     setElementChildren((prev, prop) => {
-      let temp = [...prev, newChild];
-      return temp;
+      return [...prev, newChild];
     });
   };
 
   const HTMLTag = `${tagName}`;
   return (
-    <HTMLTag
-      draggable={true}
-      onClick={(e) =>
-        selectElement(e, element, contextMenu, setSelectedElement)
-      }
-      onDrop={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log(JSON.parse(e.dataTransfer.getData("draggedElement")));
-        let data = JSON.parse(e.dataTransfer.getData("draggedElement"));
-        insertElement(changeChildren, data, contextMenu);
-      }}
-      onDragOver={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        e.target.style.borderColor = "#3498db";
-        selectElement(e, element, contextMenu, setSelectedElement);
-      }}
-      onDragLeave={(e) => (e.target.style.borderColor = "#ecf0f1")}
-      onDragStart={(e) => {
-        e.stopPropagation();
-        let data = element;
-        data.children = [
-          ...data.children,
-          ...loopThroughChildren(elementChildren),
-        ];
-        e.dataTransfer.setData("draggedElement", JSON.stringify(data));
-      }}
-      onDragEnd={(e) => {
-        e.stopPropagation();
-        e.target.parentElement.removeChild(e.target);
-      }}
-      onMouseOver={(e) => showHoverBox(e)}
-      onMouseOut={(e) => hideHoverBox(e)}
-      onContextMenu={(e) => openContextMenu(e, contextMenu)}
-      className={"frame-element " + element.classlist}
-      {...attributes}
-    >
-      {text}
-      {elementChildren}
-    </HTMLTag>
+    shouldDisplay &&
+    children && (
+      <HTMLTag
+        draggable={true}
+        onClick={(e) =>
+          selectElement(e, element, contextMenu, setSelectedElement)
+        }
+        onDrop={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          let data = JSON.parse(e.dataTransfer.getData("draggedElement"));
+          insertElement(changeChildren, data, contextMenu);
+        }}
+        onDragOver={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          e.target.style.borderColor = "#3498db";
+          selectElement(e, element, contextMenu, setSelectedElement);
+        }}
+        onDragLeave={(e) => (e.target.style.borderColor = "#ecf0f1")}
+        onDragStart={(e) => {
+          e.stopPropagation();
+          let data = element;
+          /* PROBLEM IS HEREEEEEEEEEEEE */
+          data.children = [...loopThroughChildren(elementChildren)];
+          e.dataTransfer.setData("draggedElement", JSON.stringify(data));
+        }}
+        onDragEnd={(e) => {
+          e.stopPropagation();
+          // e.target.parentElement.removeChild(e.target);
+          setShouldDisplay(false);
+        }}
+        onMouseOver={(e) => showHoverBox(e)}
+        onMouseOut={(e) => hideHoverBox(e)}
+        onContextMenu={(e) => openContextMenu(e, contextMenu)}
+        className={"frame-element " + element.classlist}
+        {...attributes}
+      >
+        {text}
+        {elementChildren}
+      </HTMLTag>
+    )
   );
 }
 
@@ -104,6 +106,8 @@ const insertElement = (changeChildren, draggedElement, contextMenu) => {
     let random = `${new Date().getTime().toString().slice(-5, -1)}${Math.floor(
       Math.random() * 1000
     )}`;
+    console.log("1", draggedElement);
+
     changeChildren(
       <IframeElement
         contextMenu={contextMenu}
