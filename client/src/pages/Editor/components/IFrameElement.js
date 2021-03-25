@@ -10,6 +10,7 @@ export function IframeElement({ element, children, contextMenu }) {
   const [shouldDisplay, setShouldDisplay] = useState(true);
   const [elementChildren, setElementChildren] = useState([]);
   const [, setSelectedElement] = useContext(SelectedElementContext);
+
   useEffect(() => {
     if (children) {
       setElementChildren(children);
@@ -24,13 +25,20 @@ export function IframeElement({ element, children, contextMenu }) {
 
   const HTMLTag = `${tagName}`;
   return (
-    shouldDisplay &&
-    children && (
+    shouldDisplay && (
       <HTMLTag
         draggable={true}
-        onClick={(e) =>
-          selectElement(e, element, contextMenu, setSelectedElement)
-        }
+        onClick={(e) => {
+          selectElement(e, element, contextMenu, setSelectedElement);
+          if (e.target.nodeName === "A") {
+            e.preventDefault();
+          }
+        }}
+        onDrag={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          e.target.style.display = "none";
+        }}
         onDrop={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -41,13 +49,11 @@ export function IframeElement({ element, children, contextMenu }) {
           e.preventDefault();
           e.stopPropagation();
           e.target.style.borderColor = "#3498db";
-          selectElement(e, element, contextMenu, setSelectedElement);
         }}
         onDragLeave={(e) => (e.target.style.borderColor = "#ecf0f1")}
         onDragStart={(e) => {
           e.stopPropagation();
           let data = element;
-          /* PROBLEM IS HEREEEEEEEEEEEE */
           data.children = [...loopThroughChildren(elementChildren)];
           e.dataTransfer.setData("draggedElement", JSON.stringify(data));
         }}
@@ -106,15 +112,14 @@ const insertElement = (changeChildren, draggedElement, contextMenu) => {
     let random = `${new Date().getTime().toString().slice(-5, -1)}${Math.floor(
       Math.random() * 1000
     )}`;
-    console.log("1", draggedElement);
-
     changeChildren(
       <IframeElement
         contextMenu={contextMenu}
         element={draggedElement}
         key={random}
       >
-        {renderElements(draggedElement, draggedElement.level + 1, contextMenu)}
+        {draggedElement.children &&
+          renderElements(draggedElement, draggedElement.level + 1, contextMenu)}
       </IframeElement>
     );
   }

@@ -18,8 +18,8 @@ export function ViewSection({ site }) {
   return site ? (
     <Frame
       style={{ flex: 1, border: "none" }}
-      initialContent='<!DOCTYPE html><html><head><base target="_blank"><link href="/core.css" rel="stylesheet"></head><body id="body"><script src="/core.js"></script></body></html>'
-      mountTarget="#body"
+      initialContent='<!DOCTYPE html><html><head><base target="_blank"><link href="/core.css" rel="stylesheet"></head><body><div id="container"></div><div id="scriptsContainer"><script src="/core.js"></script></div></body></html>'
+      mountTarget="#container"
     >
       <FrameContextConsumer>
         {(frameContext) => (
