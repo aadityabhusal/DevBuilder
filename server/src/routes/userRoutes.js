@@ -1,40 +1,18 @@
 const express = require("express");
+
+const {
+  createUser,
+  getUser,
+  updateUser,
+  deleteUser,
+} = require("../controllers/userController");
+
 const router = express.Router();
 
 const routes = () => {
-  // Creating a new user
-  router.post("/", (req, res, next) => {
-    try {
-      res.send("Post User Successful");
-    } catch (error) {
-      return next(error);
-    }
-  });
+  router.post("/", createUser);
 
-  // Getting and Deleting a user
-  router
-    .route("/:userId")
-    .get((req, res, next) => {
-      try {
-        res.send("Get User Successful");
-      } catch (error) {
-        return next(error);
-      }
-    })
-    .put((req, res, next) => {
-      try {
-        res.send("Put User Successful");
-      } catch (error) {
-        return next(error);
-      }
-    })
-    .delete((req, res, next) => {
-      try {
-        res.send("Delete User Successful");
-      } catch (error) {
-        return next(error);
-      }
-    });
+  router.route("/:userId").get(getUser).put(updateUser).delete(deleteUser);
 
   return router;
 };
