@@ -11,7 +11,7 @@ const elementRoutes = require("./elementRoutes");
 const router = express.Router();
 
 const routes = () => {
-  router.post("/:siteId", createPage);
+  router.post("/", createPage);
 
   router.route("/:pageId").get(getPage).put(updatePage).delete(deletePage);
 

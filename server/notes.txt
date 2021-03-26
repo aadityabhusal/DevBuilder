@@ -1,3 +1,3 @@
-Validation in Controllers Remaining
+Validation in Controllers and Database Entries Remaining
 Getting all users/sites/pages endpoints Creation Remaining
 Append pages array in Site collection when new Page added in Pages Collection  
