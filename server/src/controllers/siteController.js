@@ -1,31 +1,45 @@
-const createSite = (req, res, next) => {
+const Site = require("../models/siteModel");
+
+const createSite = async (req, res, next) => {
   try {
-    res.send("Post Site Successful");
+    let newSite = new Site(req.body);
+    let site = await newSite.save();
+    res.status(201).json(site);
   } catch (error) {
+    error.status = 400;
     return next(error);
   }
 };
 
-const getSite = (req, res, next) => {
+const getSite = async (req, res, next) => {
   try {
-    res.send("Get Site Successful");
+    let site = await Site.findById(req.params.siteId);
+    res.send(site);
   } catch (error) {
+    error.status = 500;
     return next(error);
   }
 };
 
-const updateSite = (req, res, next) => {
+const updateSite = async (req, res, next) => {
   try {
-    res.send("Put Site Successful");
+    await Site.findOneAndUpdate({ _id: req.params.siteId }, req.body, {
+      new: true,
+      useFindAndModify: false,
+    });
+    res.sendStatus(200);
   } catch (error) {
+    error.status = 400;
     return next(error);
   }
 };
 
-const deleteSite = (req, res, next) => {
+const deleteSite = async (req, res, next) => {
   try {
-    res.send("Delete Site Successful");
+    await Site.deleteOne({ _id: req.params.siteId });
+    res.sendStatus(200);
   } catch (error) {
+    error.status = 500;
     return next(error);
   }
 };

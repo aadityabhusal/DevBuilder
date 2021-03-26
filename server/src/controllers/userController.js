@@ -27,7 +27,7 @@ const updateUser = async (req, res, next) => {
       new: true,
       useFindAndModify: false,
     });
-    res.json({ message: "User Data Updated" });
+    res.sendStatus(200);
   } catch (error) {
     error.status = 400;
     return next(error);
@@ -37,7 +37,7 @@ const updateUser = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
   try {
     await User.deleteOne({ _id: req.params.userId });
-    res.json({ message: "User Deleted" });
+    res.sendStatus(200);
   } catch (error) {
     error.status = 500;
     return next(error);

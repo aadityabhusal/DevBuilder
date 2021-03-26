@@ -9,7 +9,7 @@ const {
 const router = express.Router();
 
 const routes = () => {
-  router.post("/:userId", createSite);
+  router.post("/", createSite);
 
   router.route("/:siteId").get(getSite).put(updateSite).delete(deleteSite);
 

@@ -1,9 +1,13 @@
 const mongoose = require("mongoose");
 
 const SiteSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: "Invalid User Id",
+  },
   name: {
     type: String,
-    required: "Enter your first name",
+    required: "Enter your site name",
   },
   pages: {
     type: Array,
@@ -16,6 +20,10 @@ const SiteSchema = new mongoose.Schema({
   scripts: {
     type: Array,
     default: [],
+  },
+  configuration: {
+    type: Object,
+    default: {},
   },
   createdDate: {
     type: Date,
