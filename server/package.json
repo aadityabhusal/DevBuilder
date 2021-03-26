@@ -2,9 +2,9 @@
   "name": "website-builder-server",
   "version": "1.0.0",
   "description": "The server for the website builders for developers",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Aaditya Bhusal",

@@ -9,7 +9,9 @@ export function IframeElement({ element, children, contextMenu }) {
 
   const [shouldDisplay, setShouldDisplay] = useState(true);
   const [elementChildren, setElementChildren] = useState([]);
-  const [, setSelectedElement] = useContext(SelectedElementContext);
+  const [selectedElement, setSelectedElement] = useContext(
+    SelectedElementContext
+  );
 
   useEffect(() => {
     if (children) {
@@ -33,6 +35,7 @@ export function IframeElement({ element, children, contextMenu }) {
           if (e.target.nodeName === "A") {
             e.preventDefault();
           }
+          console.log(selectedElement);
         }}
         onDrag={(e) => {
           e.preventDefault();

@@ -29,3 +29,5 @@ ISSUES
 6. Validating DOM Nesting i.e. not allowing list item to be nestes inside another list item
 
 7. Error when dropping image element
+
+8. Stopping Unnecessary renders of the elements

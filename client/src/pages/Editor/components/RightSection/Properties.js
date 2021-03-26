@@ -11,7 +11,9 @@ import {
 
 export function PropertiesPanel({ isActive }) {
   const [element, setElement] = useState();
-  let [selectedElement] = useContext(SelectedElementContext);
+  let [selectedElement, setSelectedElement] = useContext(
+    SelectedElementContext
+  );
 
   useEffect(() => {
     if (selectedElement) {
@@ -23,6 +25,9 @@ export function PropertiesPanel({ isActive }) {
 
   const handleProperty = (e, property) => {
     setElement((prev, prop) => {
+      return { ...prev, [property]: e.target.value };
+    });
+    setSelectedElement((prev, prop) => {
       return { ...prev, [property]: e.target.value };
     });
   };
