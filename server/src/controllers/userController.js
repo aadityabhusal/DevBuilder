@@ -1,31 +1,45 @@
-const createUser = (req, res, next) => {
+const User = require("../models/userModel");
+
+const createUser = async (req, res, next) => {
   try {
-    res.send("Post User Successful");
+    let newUser = new User(req.body);
+    let user = await newUser.save();
+    res.status(201).json(user);
   } catch (error) {
+    error.status = 400;
     return next(error);
   }
 };
 
-const getUser = (req, res, next) => {
+const getUser = async (req, res, next) => {
   try {
-    res.send("Get User Successful");
+    let user = await User.findById(req.params.userId);
+    res.send(user);
   } catch (error) {
+    error.status = 500;
     return next(error);
   }
 };
 
-const updateUser = (req, res, next) => {
+const updateUser = async (req, res, next) => {
   try {
-    res.send("Put User Successful");
+    await User.findOneAndUpdate({ _id: req.params.userId }, req.body, {
+      new: true,
+      useFindAndModify: false,
+    });
+    res.json({ message: "User Data Updated" });
   } catch (error) {
+    error.status = 400;
     return next(error);
   }
 };
 
-const deleteUser = (req, res, next) => {
+const deleteUser = async (req, res, next) => {
   try {
-    res.send("Delete User Successful");
+    await User.deleteOne({ _id: req.params.userId });
+    res.json({ message: "User Deleted" });
   } catch (error) {
+    error.status = 500;
     return next(error);
   }
 };
