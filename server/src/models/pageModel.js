@@ -12,11 +12,51 @@ const PageSchema = new mongoose.Schema(
     },
     head: {
       type: Object,
-      default: {},
+      default: {
+        title: "",
+        meta: {},
+        styles: {},
+        scripts: {},
+        links: {},
+      },
     },
     body: {
       type: Object,
-      default: {},
+      default: {
+        _id: mongoose.Types.ObjectId(),
+        id: "",
+        tagName: "body",
+        classes: [],
+        children: [
+          {
+            _id: mongoose.Types.ObjectId(),
+            id: "container",
+            tagName: "div",
+            classes: [],
+            children: [
+              {
+                _id: mongoose.Types.ObjectId(),
+                id: "container",
+                tagName: "header",
+                classes: [],
+                children: [
+                  {
+                    _id: mongoose.Types.ObjectId(),
+                    id: "container",
+                    tagName: "div",
+                    classes: [],
+                    children: [],
+                    data: [],
+                  },
+                ],
+                data: [],
+              },
+            ],
+            data: [],
+          },
+        ],
+        data: [],
+      },
     },
     styles: {
       type: Object,

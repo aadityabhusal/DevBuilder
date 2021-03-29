@@ -15,7 +15,14 @@ const routes = () => {
 
   router.route("/:pageId").get(getPage).put(updatePage).delete(deletePage);
 
-  router.use("/:pageId", elementRoutes());
+  router.use(
+    "/:pageId",
+    (req, res, next) => {
+      req.pageId = req.params.pageId;
+      next();
+    },
+    elementRoutes()
+  );
 
   return router;
 };

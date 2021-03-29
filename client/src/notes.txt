@@ -1,3 +1,7 @@
+FIND More Research Paper!!!!
+
+USE MAPS(or objects) FOR STORING THE CHILDREN ELEMENTS WITH UUID AS KEYS AND ELEMENT OBJECT AS VALUES
+
 Folders:
 hocs
 services
@@ -16,18 +20,22 @@ ISSUES
 1. React Iframe Component doesn't get removed form its parent after being dragged into another element even though it gets removed from the DOM
    Currently Searching: "unmount component in react hooks" and "remove a component from react virtual dom"
 2. (Done) Dragging an Iframe Component and dropping in the same parent div makes the Iframe Component disappear
-
 3. Create an add below and above add above option on either hover or right click
-
 4. While Adding/Updating elements in the iframe do the following things:
    a. (Done) Update the DOM
    b. Update the element in the site JSON tree
    c. Update the navigator tree
-
-5. Add the requirement of 
-
+5. Return dragged element to its original position if not dropped in another element 
 6. Validating DOM Nesting i.e. not allowing list item to be nestes inside another list item
-
 7. Error when dropping image element
-
 8. Stopping Unnecessary renders of the elements
+9. Implementing Undo and Redo functionalities
+10. Slide/Shift and Reorder sibling item while dragover -- Or provide options on right click to move items or send to top/bottom
+11. 
+
+
+
+DIFFERENT APPROACH
+Every Drag and drop does only one action i.e. Solely manipuates the dom using dom events on e.target (no React)
+
+When the user hits the save button a function parses the Tree and extracts the json and sends to the server

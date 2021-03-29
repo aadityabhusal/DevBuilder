@@ -9,9 +9,10 @@ const {
 const router = express.Router();
 
 const routes = () => {
+  router.post("/:parentId", createElement);
+
   router
     .route("/:elementId")
-    .post(createElement)
     .get(getElement)
     .put(updateElement)
     .delete(deleteElement);

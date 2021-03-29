@@ -17,6 +17,9 @@ export function IframeElement({ element, children, contextMenu }) {
     if (children) {
       setElementChildren(children);
     }
+    // if(selectedElement.elemId !== element.elemId){
+
+    // }
   }, [children]);
 
   const changeChildren = (newChild) => {
@@ -51,9 +54,10 @@ export function IframeElement({ element, children, contextMenu }) {
         onDragOver={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          e.target.style.borderColor = "#3498db";
+          showHoverBox(e);
+          // shiftingElements()
         }}
-        onDragLeave={(e) => (e.target.style.borderColor = "#ecf0f1")}
+        onDragLeave={(e) => hideHoverBox(e)}
         onDragStart={(e) => {
           e.stopPropagation();
           let data = element;
@@ -67,6 +71,7 @@ export function IframeElement({ element, children, contextMenu }) {
         }}
         onMouseOver={(e) => showHoverBox(e)}
         onMouseOut={(e) => hideHoverBox(e)}
+        // Instead of applying it to every element, why not try applying it to the body tag just once
         onContextMenu={(e) => openContextMenu(e, contextMenu)}
         className={"frame-element " + element.classlist}
         {...attributes}
@@ -107,7 +112,7 @@ const showHoverBox = (e) => {
 
 const hideHoverBox = (e) => {
   e.stopPropagation();
-  e.target.style.borderColor = "#ecf0f1";
+  e.target.style.borderColor = "#ecf0f1"; //transparent
 };
 
 const insertElement = (changeChildren, draggedElement, contextMenu) => {
@@ -126,4 +131,17 @@ const insertElement = (changeChildren, draggedElement, contextMenu) => {
       </IframeElement>
     );
   }
+};
+
+const shiftingElements = (container, element) => {
+  /* 
+    Do two things:
+      1. Change the order of elements in the parent's children array
+      2. Then re-render the parent with its children
+
+      Do not remove the item from on dragstart to be able to reset to previous if not dropped
+    You can get the unique id given to the children element and then of the use the id to sort the children array 
+
+  */
+  console.log(element);
 };
