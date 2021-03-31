@@ -117,14 +117,12 @@ const hideHoverBox = (e) => {
 
 const insertElement = (changeChildren, draggedElement, contextMenu) => {
   if (draggedElement) {
-    let random = `${new Date().getTime().toString().slice(-5, -1)}${Math.floor(
-      Math.random() * 1000
-    )}`;
+    draggedElement._id = performance.now().toString(36).replace(/\./g, "");
     changeChildren(
       <IframeElement
         contextMenu={contextMenu}
         element={draggedElement}
-        key={random}
+        key={draggedElement._id}
       >
         {draggedElement.children &&
           renderElements(draggedElement, draggedElement.level + 1, contextMenu)}

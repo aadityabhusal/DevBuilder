@@ -27,35 +27,8 @@ const PageSchema = new mongoose.Schema(
         id: "",
         tagName: "body",
         classes: [],
-        children: [
-          {
-            _id: mongoose.Types.ObjectId(),
-            id: "container",
-            tagName: "div",
-            classes: [],
-            children: [
-              {
-                _id: mongoose.Types.ObjectId(),
-                id: "container",
-                tagName: "header",
-                classes: [],
-                children: [
-                  {
-                    _id: mongoose.Types.ObjectId(),
-                    id: "container",
-                    tagName: "div",
-                    classes: [],
-                    children: [],
-                    data: [],
-                  },
-                ],
-                data: [],
-              },
-            ],
-            data: [],
-          },
-        ],
-        data: [],
+        children: {},
+        data: {},
       },
     },
     styles: {
