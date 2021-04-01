@@ -18,15 +18,17 @@ export function ViewSection({ site }) {
   return site ? (
     <Frame
       style={{ flex: 1, border: "none" }}
-      initialContent='<!DOCTYPE html><html><head><base target="_blank"><link href="/core.css" rel="stylesheet"></head><body><div id="container"></div><div id="scriptsContainer"><script src="/core.js"></script></div></body></html>'
-      mountTarget="#container"
+      head={<link type="text/css" rel="stylesheet" href="/core.css" />}
     >
       <FrameContextConsumer>
         {(frameContext) => (
           <StyleSheetManager target={frameContext.document.head}>
             <>
               <ContextMenuFR ref={contextRef} />
-              <IframeElement contextMenu={contextMenu} element={site.body}>
+              <IframeElement
+                contextMenu={contextMenu}
+                element={{ ...site.body, tagName: "div" }} //Changing the tagName from body to div because of frame-component rendering structure
+              >
                 {renderElements(site.body, 1, contextMenu)}
               </IframeElement>
             </>

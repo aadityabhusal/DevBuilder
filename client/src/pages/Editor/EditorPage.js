@@ -16,8 +16,8 @@ export function EditorPage() {
 
   useEffect(() => {
     (async (pageId) => {
-      const { site } = await (await fetch(`/page/${pageId}`)).json();
-      setSite(site);
+      const response = await (await fetch(`/page/${pageId}`)).json();
+      setSite(response);
     })(pageId);
   }, [pageId]);
 

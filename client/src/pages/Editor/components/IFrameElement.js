@@ -8,7 +8,7 @@ export function IframeElement({ element, children, contextMenu }) {
   element.classlist = classes ? classes.join(" ") : "";
 
   const [shouldDisplay, setShouldDisplay] = useState(true);
-  const [elementChildren, setElementChildren] = useState([]);
+  const [elementChildren, setElementChildren] = useState({});
   const [selectedElement, setSelectedElement] = useContext(
     SelectedElementContext
   );
@@ -23,8 +23,9 @@ export function IframeElement({ element, children, contextMenu }) {
   }, [children]);
 
   const changeChildren = (newChild) => {
+    let id = newChild._id;
     setElementChildren((prev, prop) => {
-      return [...prev, newChild];
+      return { ...prev, [id]: newChild };
     });
   };
 
@@ -38,7 +39,6 @@ export function IframeElement({ element, children, contextMenu }) {
           if (e.target.nodeName === "A") {
             e.preventDefault();
           }
-          console.log(selectedElement);
         }}
         onDrag={(e) => {
           e.preventDefault();
@@ -61,7 +61,7 @@ export function IframeElement({ element, children, contextMenu }) {
         onDragStart={(e) => {
           e.stopPropagation();
           let data = element;
-          data.children = [...loopThroughChildren(elementChildren)];
+          data.children = loopThroughChildren(elementChildren);
           e.dataTransfer.setData("draggedElement", JSON.stringify(data));
         }}
         onDragEnd={(e) => {
@@ -77,14 +77,20 @@ export function IframeElement({ element, children, contextMenu }) {
         {...attributes}
       >
         {text}
-        {elementChildren}
+        {Object.values(elementChildren)}
       </HTMLTag>
     )
   );
 }
 
 const loopThroughChildren = (children) => {
-  return children.map((item) => item.props.element);
+  /* Problem is here I think. The rendering of elements and children was done with arrays. I have to modify it to work with objects */
+  let list = {};
+  children.length &&
+    children.forEach((item) => {
+      list[item.props.element._id] = item.props.element;
+    });
+  return list;
 };
 
 const openContextMenu = (e, contextMenu) => {
@@ -141,5 +147,5 @@ const shiftingElements = (container, element) => {
     You can get the unique id given to the children element and then of the use the id to sort the children array 
 
   */
-  console.log(element);
+  // console.log(element);
 };
