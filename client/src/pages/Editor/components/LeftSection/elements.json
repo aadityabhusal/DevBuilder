@@ -1,20 +1,23 @@
 {
   "div": {
+    "_id": "",
     "tagName": "div",
     "id": "",
     "classes": [],
     "text": "Block",
-    "children": []
+    "children": {}
   },
   "a": {
+    "_id": "",
     "tagName": "a",
     "id": "",
     "classes": [],
     "href": "",
     "text": "Link",
-    "children": []
+    "children": {}
   },
   "img": {
+    "_id": "",
     "tagName": "img",
     "id": "",
     "classes": [],
@@ -23,54 +26,43 @@
     "text": "Image"
   },
   "button": {
+    "_id": "",
     "tagName": "button",
     "id": "",
     "classes": [],
     "text": "Button",
-    "children": []
+    "children": {}
   },
   "text": {
+    "_id": "",
     "tagName": "p",
     "id": "",
     "classes": [],
     "text": "Text",
-    "children": []
+    "children": {}
   },
   "ol": {
+    "_id": "",
     "tagName": "ol",
     "id": "",
     "classes": [],
     "text": "Ordered List",
-    "children": [
-      {
-        "tagName": "li",
-        "id": "",
-        "classes": [],
-        "text": "List Item",
-        "children": []
-      }
-    ]
+    "children": {}
   },
   "ul": {
+    "_id": "",
     "tagName": "ul",
     "id": "",
     "classes": [],
     "text": "Unordered List",
-    "children": [
-      {
-        "tagName": "li",
-        "id": "",
-        "classes": [],
-        "text": "List Item",
-        "children": []
-      }
-    ]
+    "children": {}
   },
   "li": {
+    "_id": "",
     "tagName": "li",
     "id": "",
     "classes": [],
     "text": "List Item",
-    "children": []
+    "children": {}
   }
 }
