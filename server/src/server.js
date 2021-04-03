@@ -20,15 +20,4 @@ app.use((err, req, res, next) => {
   res.status(err.status).json({ error: err.message });
 });
 
-// app.get("/page/:pageId", (request, response) => {
-//   let pageId = request.params.pageId;
-//   try {
-//     const data = fs.readFileSync(`src/pages/${pageId}.json`, "utf8");
-//     const responseData = JSON.parse(data);
-//     response.send(responseData);
-//   } catch (error) {
-//     response.send({ error: "Page doesn't exist", pageId });
-//   }
-// });
-
 app.listen(port, () => console.log(`Listening on port ${port}`));

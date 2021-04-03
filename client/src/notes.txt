@@ -39,3 +39,31 @@ DIFFERENT APPROACH
 Every Drag and drop does only one action i.e. Solely manipuates the dom using dom events on e.target (no React)
 
 When the user hits the save button a function parses the Tree and extracts the json and sends to the server
+
+
+
+
+
+
+
+
+
+
+
+Rendering Problem (SOLVED)
+
+The problem is that the children are not being removed from the parent children list
+
+Changes that could be done:
+1. Stop updating and rendering elements with react
+2. Instead do two tasks i.e. Change the DOM directly and Update the database
+Problems
+The initially rendered react tree would remain same and break the site if anything goes wrong
+
+
+Another Solution
+Passing a function from the parent that changes the children list of parent and the positions array
+
+
+Another Solution
+Making every change and update realtime

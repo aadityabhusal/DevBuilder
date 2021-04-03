@@ -1,16 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-
 import { SelectedElementContext } from "../../../contexts/SelectedElementContext";
-import { renderElements } from "./DisplaySection/renderElements";
 
 export function IframeElement({ data, removeFromParent, contextMenu }) {
-  const { tagName, text, ...attributes } = data;
+  const { tagName, text, classes, ...attributes } = data;
   data.classlist = data.classes ? data.classes.join(" ") : "";
 
   const [element, setElement] = useState();
   const [childrenList, setChildrenList] = useState();
   const [, setSelectedElement] = useContext(SelectedElementContext);
-
+  console.log(tagName);
   useEffect(() => {
     if (data) {
       setElement((prev, prop) => data);

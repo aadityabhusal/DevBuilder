@@ -39,4 +39,4 @@ function ContextMenuItem({ name }) {
   return <StyledContextMenuItem>{name}</StyledContextMenuItem>;
 }
 
-const contextMenuList = ["Delete", "Edit", "Move Up", "Move Down"];
+const contextMenuList = ["Move Up", "Move Down", "Delete"];
