@@ -15,7 +15,7 @@ import { StylesPanel } from "./Styles";
 
 const RightContainer = styled.div`
   border-left: 1px solid #bdc3c7;
-  width: 250px;
+  width: 300px;
 `;
 export function RightSection({ target, editTarget }) {
   const [activePanel, setActivePanel] = useState(1);
