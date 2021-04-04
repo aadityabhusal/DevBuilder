@@ -15,7 +15,7 @@ export function PropertiesPanel({ isActive }) {
   let [selectedElement, setSelectedElement] = useContext(
     SelectedElementContext
   );
-  let [siteTree, updateTree] = useContext(SiteTreeContext);
+  let [, updateTree] = useContext(SiteTreeContext);
 
   useEffect(() => {
     if (selectedElement) {
@@ -25,6 +25,9 @@ export function PropertiesPanel({ isActive }) {
     }
   }, [selectedElement]);
 
+  /* 
+    Manage confusion while updating 'classes' field between classes[] and classlist
+  */
   const handleProperty = (e, property) => {
     setElement((prev, prop) => {
       return { ...prev, [property]: e.target.value };
@@ -32,6 +35,10 @@ export function PropertiesPanel({ isActive }) {
     setSelectedElement((prev, prop) => {
       return { ...prev, [property]: e.target.value };
     });
+  };
+
+  const handleSave = (e) => {
+    updateTree(element);
   };
 
   return element ? (
@@ -71,7 +78,7 @@ export function PropertiesPanel({ isActive }) {
         value={element.text}
         onChange={(e) => handleProperty(e, "text")}
       ></PanelTextArea>
-      <PanelButton id="saveProps" onClick={(e) => console.log(siteTree)}>
+      <PanelButton id="saveProps" onClick={handleSave}>
         Save
       </PanelButton>
     </Panel>

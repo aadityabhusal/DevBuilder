@@ -26,8 +26,19 @@ export const SiteTreeProvider = (props) => {
     }
   }
 
+  async function saveSite() {
+    await fetch(`/page/${siteTree._id}`, {
+      method: "put",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(siteTree),
+    });
+  }
+
   return (
-    <SiteTreeContext.Provider value={[siteTree, updateTree]}>
+    <SiteTreeContext.Provider value={[siteTree, updateTree, saveSite]}>
       {props.children}
     </SiteTreeContext.Provider>
   );
