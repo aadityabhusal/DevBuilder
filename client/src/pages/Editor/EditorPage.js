@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import { SelectedElementProvider } from "../../contexts/SelectedElementContext";
+import { SiteTreeProvider } from "../../contexts/SiteTreeContext";
 
 import { LeftSection, DisplaySection, RightSection } from "./components";
 
@@ -23,11 +24,13 @@ export function EditorPage() {
 
   return site ? (
     <EditorContainer>
-      <SelectedElementProvider>
-        <LeftSection />
-        <DisplaySection site={site} />
-        <RightSection />
-      </SelectedElementProvider>
+      <SiteTreeProvider value={site}>
+        <SelectedElementProvider>
+          <LeftSection />
+          <DisplaySection site={site} />
+          <RightSection />
+        </SelectedElementProvider>
+      </SiteTreeProvider>
     </EditorContainer>
   ) : null;
 }

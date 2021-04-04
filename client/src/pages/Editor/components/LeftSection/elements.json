@@ -4,6 +4,7 @@
     "tagName": "div",
     "id": "",
     "classes": [],
+    "path": [],
     "text": "Block",
     "children": {}
   },
@@ -12,6 +13,7 @@
     "tagName": "a",
     "id": "",
     "classes": [],
+    "path": [],
     "href": "",
     "text": "Link",
     "children": {}
@@ -21,6 +23,7 @@
     "tagName": "img",
     "id": "",
     "classes": [],
+    "path": [],
     "src": "",
     "alt": "",
     "text": "Image"
@@ -30,6 +33,7 @@
     "tagName": "button",
     "id": "",
     "classes": [],
+    "path": [],
     "text": "Button",
     "children": {}
   },
@@ -38,6 +42,7 @@
     "tagName": "p",
     "id": "",
     "classes": [],
+    "path": [],
     "text": "Text",
     "children": {}
   },
@@ -46,6 +51,7 @@
     "tagName": "ol",
     "id": "",
     "classes": [],
+    "path": [],
     "text": "Ordered List",
     "children": {}
   },
@@ -54,6 +60,7 @@
     "tagName": "ul",
     "id": "",
     "classes": [],
+    "path": [],
     "text": "Unordered List",
     "children": {}
   },
@@ -62,6 +69,7 @@
     "tagName": "li",
     "id": "",
     "classes": [],
+    "path": [],
     "text": "List Item",
     "children": {}
   }

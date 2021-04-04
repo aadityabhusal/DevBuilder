@@ -27,6 +27,7 @@ const PageSchema = new mongoose.Schema(
         id: "",
         tagName: "body",
         classes: [],
+        path: [],
         children: {},
         data: {},
       },

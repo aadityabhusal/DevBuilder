@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { SiteTreeContext } from "../../../../contexts/SiteTreeContext";
 import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
 import {
   Panel,
@@ -14,6 +15,7 @@ export function PropertiesPanel({ isActive }) {
   let [selectedElement, setSelectedElement] = useContext(
     SelectedElementContext
   );
+  let [siteTree, updateTree] = useContext(SiteTreeContext);
 
   useEffect(() => {
     if (selectedElement) {
@@ -69,7 +71,9 @@ export function PropertiesPanel({ isActive }) {
         value={element.text}
         onChange={(e) => handleProperty(e, "text")}
       ></PanelTextArea>
-      <PanelButton id="saveProps">Save</PanelButton>
+      <PanelButton id="saveProps" onClick={(e) => console.log(siteTree)}>
+        Save
+      </PanelButton>
     </Panel>
   ) : (
     <PanelLabel style={{ textAlign: "center", marginTop: "10px" }}>

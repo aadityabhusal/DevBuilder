@@ -1,21 +1,28 @@
-import React, { createContext, useState } from "react";
+import React, { createContext } from "react";
 
 export const SiteTreeContext = createContext();
 
 export const SiteTreeProvider = (props) => {
-  const [siteTree, setSiteTree] = useState(null);
+  const siteTree = props.value;
+  const bodyChildren = siteTree.body.children;
 
-  function updateTree(site, element, path, action = "", level = 0) {
-    if (level === path.length - 1) {
-      let lastItem = path[path.length - 1];
+  function updateTree(element, action = "", level = 0, site = bodyChildren) {
+    if (element.path) {
+      let lastItem = element.path[element.path.length - 1];
       if (site.hasOwnProperty(lastItem)) {
-        action === "delete"
-          ? delete site[lastItem].children[element._id]
-          : (site[lastItem].children[element._id] = element);
+        if (action === "delete") {
+          delete site[lastItem].children[element._id];
+        } else {
+          site[lastItem].children[element._id] = element;
+        }
+      } else {
+        updateTree(
+          site[element.path[level]].children,
+          element,
+          action,
+          ++level
+        );
       }
-      return;
-    } else {
-      updateTree(site[path[level]].children, element, path, action, ++level);
     }
   }
 

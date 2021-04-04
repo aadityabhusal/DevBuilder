@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { SiteTreeContext } from "../../../contexts/SiteTreeContext";
 import { SelectedElementContext } from "../../../contexts/SelectedElementContext";
 
 export function IframeElement({ data, removeFromParent, contextMenu }) {
@@ -6,13 +7,12 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
   data.classlist = data.classes ? data.classes.join(" ") : "";
 
   const [element, setElement] = useState();
-  const [childrenList, setChildrenList] = useState();
   const [, setSelectedElement] = useContext(SelectedElementContext);
-  console.log(tagName);
+  const [, updateTree] = useContext(SiteTreeContext);
+
   useEffect(() => {
     if (data) {
       setElement((prev, prop) => data);
-      setChildrenList(Object.values(data.children));
     }
   }, [data]);
 
@@ -31,7 +31,9 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
     e.stopPropagation();
     let data = JSON.parse(e.dataTransfer.getData("draggedElement"));
     if (!data._id) data._id = performance.now().toString(36).replace(/\./g, "");
+    if (!data.path.length) data.path = [...element.path, element._id];
     insertElement(data, contextMenu);
+    updateTree(data);
   };
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -47,27 +49,21 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
     removeFromParent(element._id);
   };
   /* 
-  Problem in insertElement & removeElementFromParent: 
-    1. Both perform multiple state changes
-    2. Function breaks when element dropped into itself and its parent
+    Function breaks when element dropped into itself and its parent
   */
   const removeElementFromParent = (childId) => {
     setElement((prev, prop) => {
-      delete prev.children[childId];
-      return prev;
-    });
-    setChildrenList((prev, prop) => {
-      return prev.filter((item) => item._id !== childId);
+      let temp = { ...prev };
+      delete temp.children[childId];
+      return temp;
     });
   };
   const insertElement = (child, contextMenu) => {
     if (!element.children.hasOwnProperty(child._id)) {
       setElement((prev, prop) => {
-        prev.children[child._id] = child;
-        return prev;
-      });
-      setChildrenList((prev, prop) => {
-        return [...prev, child];
+        let temp = { ...prev };
+        temp.children[child._id] = child;
+        return temp;
       });
     }
   };
@@ -90,8 +86,9 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
       {...attributes}
     >
       {text}
-      {childrenList.length
-        ? childrenList.map((elem) => {
+      {Object.values(element.children).length
+        ? Object.values(element.children).map((elem) => {
+            elem.path = [...element.path, element._id];
             return (
               <IframeElement
                 key={elem._id}

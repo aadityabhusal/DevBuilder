@@ -3,7 +3,6 @@ import Frame, { FrameContextConsumer } from "react-frame-component";
 import { StyleSheetManager } from "styled-components";
 import { ContextMenuFR } from "../ContextMenu";
 import { IframeElement } from "../IFrameElement";
-// import { renderElements } from "./renderElements";
 
 export function ViewSection({ site }) {
   const contextRef = useRef();
@@ -27,11 +26,9 @@ export function ViewSection({ site }) {
               <ContextMenuFR ref={contextRef} />
               <IframeElement
                 contextMenu={contextMenu}
-                data={{ ...site.body, tagName: "div" }}
+                data={site.body.children[Object.keys(site.body.children)[0]]}
                 removeFromParent={() => {}} //Changing the tagName from body to div because of frame-component rendering structure
-              >
-                {/* {renderElements(site.body, 1, contextMenu)} */}
-              </IframeElement>
+              ></IframeElement>
             </>
           </StyleSheetManager>
         )}
