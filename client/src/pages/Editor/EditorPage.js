@@ -11,6 +11,13 @@ const EditorContainer = styled.div`
   height: 100vh;
 `;
 
+const CentralContainer = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+`;
+
 export function EditorPage() {
   const { pageId } = useParams();
   const [site, setSite] = useState();
@@ -27,8 +34,10 @@ export function EditorPage() {
       <SiteTreeProvider value={site}>
         <SelectedElementProvider>
           <LeftSection />
-          <DisplaySection site={site} />
-          <RightSection />
+          <CentralContainer>
+            <DisplaySection site={site} />
+            <RightSection />
+          </CentralContainer>
         </SelectedElementProvider>
       </SiteTreeProvider>
     </EditorContainer>

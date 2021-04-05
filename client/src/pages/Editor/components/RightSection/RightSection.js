@@ -14,9 +14,28 @@ import { SettingsPanel } from "./Settings";
 import { StylesPanel } from "./Styles";
 
 const RightContainer = styled.div`
-  border-left: 1px solid #bdc3c7;
-  width: 300px;
+  border-top: 1px solid #bdc3c7;
+  flex: 0 0 300px;
+  display: flex;
 `;
+const RightPanelList = styled(PanelList)`
+  flex-direction: column;
+  border: none;
+  border-right: 1px solid #bdc3c7;
+
+  & div {
+    border: none;
+    padding: 10px;
+    border-bottom: 1px solid #bdc3c7;
+    display: flex;
+    align-items: center;
+  }
+`;
+
+const RightPanels = styled(Panels)`
+  flex: 1;
+`;
+
 export function RightSection({ target, editTarget }) {
   const [activePanel, setActivePanel] = useState(1);
 
@@ -24,7 +43,7 @@ export function RightSection({ target, editTarget }) {
 
   return (
     <RightContainer>
-      <PanelList>
+      <RightPanelList>
         <div className={checkActive(1)} onClick={() => setActivePanel(1)}>
           <PropertiesIcon />
         </div>
@@ -37,8 +56,8 @@ export function RightSection({ target, editTarget }) {
         <div className={checkActive(4)} onClick={() => setActivePanel(4)}>
           <SettingsIcon />
         </div>
-      </PanelList>
-      <Panels>
+      </RightPanelList>
+      <RightPanels>
         <PropertiesPanel
           target={target}
           editTarget={editTarget}
@@ -47,7 +66,7 @@ export function RightSection({ target, editTarget }) {
         <StylesPanel target={target} isActive={checkActive(2)} />
         <ScriptsPanel target={target} isActive={checkActive(3)} />
         <SettingsPanel target={target} isActive={checkActive(4)} />
-      </Panels>
+      </RightPanels>
     </RightContainer>
   );
 }

@@ -5,17 +5,20 @@ import { TopSection } from "./TopSection";
 import { ViewSection } from "./ViewSection";
 
 const DisplayContainer = styled.div`
-  display: flex;
+  /* display: flex;
   flex-direction: column;
+  flex: 1; */
+  display: flex;
   flex: 1;
+  /* width: 100%; */
 `;
 
 export function DisplaySection({ site }) {
   return (
     <DisplayContainer>
-      <TopSection />
+      {/* <TopSection /> */}
       <ViewSection site={site} />
-      <BottomSection />
+      {/* <BottomSection /> */}
     </DisplayContainer>
   );
 }

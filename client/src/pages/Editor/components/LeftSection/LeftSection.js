@@ -12,7 +12,7 @@ import elementList from "./elements.json";
 
 const LeftContainer = styled.div`
   border-right: 1px solid #bdc3c7;
-  width: 250px;
+  flex: 0 0 250px;
 `;
 
 export function LeftSection() {
