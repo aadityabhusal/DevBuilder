@@ -34,6 +34,7 @@ const RightPanelList = styled(PanelList)`
 
 const RightPanels = styled(Panels)`
   flex: 1;
+  overflow: initial;
 `;
 
 export function RightSection({ target, editTarget }) {

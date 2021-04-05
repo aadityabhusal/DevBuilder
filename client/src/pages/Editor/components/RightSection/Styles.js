@@ -6,10 +6,6 @@ import styled from "styled-components";
 const RightPanel = styled(Panel)`
   overflow: initial;
   flex-direction: column;
-  & section {
-    flex: 1;
-    height: 300px;
-  }
 `;
 
 export function StylesPanel({ isActive }) {
