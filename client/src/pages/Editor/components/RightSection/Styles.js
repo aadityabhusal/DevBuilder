@@ -18,9 +18,9 @@ export function StylesPanel({ isActive }) {
 
   const options = {
     selectOnLineNumbers: true,
-    minimap: {
-      enabled: false,
-    },
+    // minimap: {
+    //   enabled: false,
+    // },
   };
 
   const handleChange = (e) => {};

@@ -24,7 +24,7 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    e.target.style.display = "none";
+    removeFromParent(element._id);
   };
   const handleDrop = (e) => {
     e.preventDefault();
@@ -44,13 +44,7 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
     e.stopPropagation();
     e.dataTransfer.setData("draggedElement", JSON.stringify(element));
   };
-  const handleDragEnd = (e) => {
-    e.stopPropagation();
-    removeFromParent(element._id);
-  };
-  /* 
-    Function breaks when element dropped into itself and its parent
-  */
+
   const removeElementFromParent = (childId) => {
     setElement((prev, prop) => {
       let temp = { ...prev };
@@ -59,13 +53,11 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
     });
   };
   const insertElement = (child, contextMenu) => {
-    if (!element.children.hasOwnProperty(child._id)) {
-      setElement((prev, prop) => {
-        let temp = { ...prev };
-        temp.children[child._id] = child;
-        return temp;
-      });
-    }
+    setElement((prev, prop) => {
+      let temp = { ...prev };
+      temp.children[child._id] = child;
+      return temp;
+    });
   };
 
   const HTMLTag = `${tagName}`;
@@ -78,7 +70,6 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
       onDragOver={handleDragOver}
       onDragLeave={(e) => hideHoverBox(e)}
       onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
       onMouseOver={(e) => showHoverBox(e)}
       onMouseOut={(e) => hideHoverBox(e)}
       onContextMenu={(e) => openContextMenu(e, contextMenu)}

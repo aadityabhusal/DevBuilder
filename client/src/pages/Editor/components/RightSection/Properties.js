@@ -15,7 +15,7 @@ export function PropertiesPanel({ isActive }) {
   let [selectedElement, setSelectedElement] = useContext(
     SelectedElementContext
   );
-  let [, updateTree] = useContext(SiteTreeContext);
+  let [, , saveSite] = useContext(SiteTreeContext);
 
   useEffect(() => {
     if (selectedElement) {
@@ -38,7 +38,7 @@ export function PropertiesPanel({ isActive }) {
   };
 
   const handleSave = (e) => {
-    updateTree(element);
+    saveSite();
   };
 
   return (
