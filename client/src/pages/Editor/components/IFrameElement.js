@@ -3,8 +3,9 @@ import { SiteTreeContext } from "../../../contexts/SiteTreeContext";
 import { SelectedElementContext } from "../../../contexts/SelectedElementContext";
 
 export function IframeElement({ data, removeFromParent, contextMenu }) {
-  const { tagName, text, classes, ...attributes } = data;
+  const { tagName, text, classes, attributes, ...rest } = data;
   data.classlist = data.classes ? data.classes.join(" ") : "";
+  const nonClosingTags = ["img", "input", "hr", "br"];
 
   const [element, setElement] = useState();
   const [, setSelectedElement] = useContext(SelectedElementContext);
@@ -59,38 +60,54 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
       return temp;
     });
   };
-
   const HTMLTag = `${tagName}`;
+
   return element ? (
-    <HTMLTag
-      draggable={true}
-      onClick={handleClick}
-      onDrag={handleDrag}
-      onDrop={handleDrop}
-      onDragOver={handleDragOver}
-      onDragLeave={(e) => hideHoverBox(e)}
-      onDragStart={handleDragStart}
-      onMouseOver={(e) => showHoverBox(e)}
-      onMouseOut={(e) => hideHoverBox(e)}
-      onContextMenu={(e) => openContextMenu(e, contextMenu)}
-      className={"frame-element " + element.classlist}
-      {...attributes}
-    >
-      {text}
-      {Object.values(element.children).length
-        ? Object.values(element.children).map((elem) => {
-            elem.path = [...element.path, element._id];
-            return (
-              <IframeElement
-                key={elem._id}
-                contextMenu={contextMenu}
-                data={elem}
-                removeFromParent={removeElementFromParent}
-              ></IframeElement>
-            );
-          })
-        : null}
-    </HTMLTag>
+    !nonClosingTags.includes(tagName) ? (
+      <HTMLTag
+        draggable={true}
+        onClick={handleClick}
+        onDrag={handleDrag}
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onDragLeave={(e) => hideHoverBox(e)}
+        onDragStart={handleDragStart}
+        onMouseOver={(e) => showHoverBox(e)}
+        onMouseOut={(e) => hideHoverBox(e)}
+        onContextMenu={(e) => openContextMenu(e, contextMenu)}
+        className={"frame-element " + element.classlist}
+        {...attributes}
+      >
+        {text}
+        {Object.values(element.children).length
+          ? Object.values(element.children).map((elem) => {
+              elem.path = [...element.path, element._id];
+              return (
+                <IframeElement
+                  key={elem._id}
+                  contextMenu={contextMenu}
+                  data={elem}
+                  removeFromParent={removeElementFromParent}
+                ></IframeElement>
+              );
+            })
+          : null}
+      </HTMLTag>
+    ) : (
+      <HTMLTag
+        draggable={true}
+        onClick={handleClick}
+        onDrag={handleDrag}
+        onDragLeave={(e) => hideHoverBox(e)}
+        onDragStart={handleDragStart}
+        onMouseOver={(e) => showHoverBox(e)}
+        onMouseOut={(e) => hideHoverBox(e)}
+        onContextMenu={(e) => openContextMenu(e, contextMenu)}
+        className={"frame-element " + element.classlist}
+        readOnly={tagName === "input" ? true : false}
+        {...attributes}
+      />
+    )
   ) : null;
 }
 

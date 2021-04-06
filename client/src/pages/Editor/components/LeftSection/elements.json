@@ -2,75 +2,106 @@
   "div": {
     "_id": "",
     "tagName": "div",
-    "id": "",
     "classes": [],
     "path": [],
     "text": "Block",
+    "attributes": {
+      "id": ""
+    },
     "children": {}
   },
   "a": {
     "_id": "",
     "tagName": "a",
-    "id": "",
     "classes": [],
     "path": [],
-    "href": "",
     "text": "Link",
+    "attributes": {
+      "id": "",
+      "href": ""
+    },
     "children": {}
   },
   "img": {
     "_id": "",
     "tagName": "img",
-    "id": "",
     "classes": [],
     "path": [],
-    "src": "",
-    "alt": "",
-    "text": "Image"
+    "attributes": {
+      "id": "",
+      "alt": "",
+      "src": "/placeholder.png"
+    }
   },
   "button": {
     "_id": "",
     "tagName": "button",
-    "id": "",
     "classes": [],
     "path": [],
     "text": "Button",
+    "attributes": {
+      "id": ""
+    },
     "children": {}
+  },
+  "input": {
+    "_id": "",
+    "tagName": "input",
+    "classes": [],
+    "path": [],
+    "attributes": {
+      "id": "",
+      "value": "",
+      "name": "",
+      "type": "text",
+      "placeholder": "Enter text"
+    }
   },
   "text": {
     "_id": "",
     "tagName": "p",
-    "id": "",
     "classes": [],
     "path": [],
     "text": "Text",
+    "attributes": {
+      "id": ""
+    },
     "children": {}
   },
   "ol": {
     "_id": "",
     "tagName": "ol",
-    "id": "",
     "classes": [],
     "path": [],
     "text": "Ordered List",
+    "attributes": {
+      "id": "",
+      "type": "",
+      "start": "",
+      "reversed": ""
+    },
     "children": {}
   },
   "ul": {
     "_id": "",
     "tagName": "ul",
-    "id": "",
     "classes": [],
     "path": [],
     "text": "Unordered List",
+    "attributes": {
+      "id": ""
+    },
     "children": {}
   },
   "li": {
     "_id": "",
     "tagName": "li",
-    "id": "",
     "classes": [],
     "path": [],
     "text": "List Item",
+    "attributes": {
+      "id": ""
+    },
     "children": {}
   }
 }

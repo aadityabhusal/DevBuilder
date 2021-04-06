@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import { Panel, PanelItems, PanelTitle, PanelItem } from "../Panel";
+
+const ElementsPanelItem = styled(PanelItem)`
+  font-size: 16px;
+  font-weight: 500;
+`;
 
 export function ElementsPanel({ isActive, elementList }) {
   const [elements, setElements] = useState();
@@ -20,7 +26,7 @@ export function ElementsPanel({ isActive, elementList }) {
       <PanelItems cols={2}>
         {elements.map((item, i) => {
           return (
-            <PanelItem
+            <ElementsPanelItem
               data-element={item.tagName}
               key={i}
               draggable={true}
@@ -28,8 +34,8 @@ export function ElementsPanel({ isActive, elementList }) {
                 e.dataTransfer.setData("draggedElement", JSON.stringify(item));
               }}
             >
-              {item.text}
-            </PanelItem>
+              &lt;{item.tagName}&gt;
+            </ElementsPanelItem>
           );
         })}
       </PanelItems>
