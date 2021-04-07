@@ -44,4 +44,17 @@ const deletePage = async (req, res, next) => {
   }
 };
 
+// const updateStyles = async (req, res, next) => {
+//   try {
+//     await Page.findOneAndUpdate({ _id: req.params.pageId }, req.body, {
+//       new: true,
+//       useFindAndModify: false,
+//     });
+//     res.sendStatus(200);
+//   } catch (error) {
+//     error.status = 400;
+//     return next(error);
+//   }
+// };
+
 module.exports = { createPage, getPage, updatePage, deletePage };
