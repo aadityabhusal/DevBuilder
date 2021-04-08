@@ -9,35 +9,79 @@ import {
   PanelTextArea,
   PanelLabel,
 } from "../Panel";
+import styled from "styled-components";
+
+const ClassesContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  & input {
+    margin-left: 10px;
+    padding: 5px;
+  }
+
+  & button {
+    padding: 5px;
+    margin-left: 10px;
+  }
+`;
 
 export function PropertiesPanel({ isActive }) {
   const [element, setElement] = useState();
   let [selectedElement, setSelectedElement] = useContext(
     SelectedElementContext
   );
-  let [, , saveSite] = useContext(SiteTreeContext);
+  let [, updateTree, saveSite] = useContext(SiteTreeContext);
 
   useEffect(() => {
     if (selectedElement) {
-      setElement(() => {
+      setElement((prev, prop) => {
         return selectedElement;
       });
     }
   }, [selectedElement]);
 
-  /* 
-    Manage confusion while updating 'classes' field between classes[] and classlist
-  */
+  const handleAttribute = (e, property) => {
+    setElement((prev, prop) => {
+      let temp = { ...prev };
+      temp.attributes[property] = e.target.value;
+      return temp;
+    });
+  };
+
+  const handleClasses = (e, pos) => {
+    setElement((prev, prop) => {
+      let temp = { ...prev };
+      temp.classes[pos] = e.target.value;
+      return temp;
+    });
+  };
+
+  const addClass = (e) => {
+    setElement((prev, prop) => {
+      let temp = { ...prev };
+      temp.classes.push("");
+      return temp;
+    });
+  };
+
   const handleProperty = (e, property) => {
     setElement((prev, prop) => {
-      return { ...prev, [property]: e.target.value };
-    });
-    setSelectedElement((prev, prop) => {
-      return { ...prev, [property]: e.target.value };
+      let temp = { ...prev };
+      temp[property] = e.target.value;
+      console.log(temp);
+      return temp;
     });
   };
 
   const handleSave = (e) => {
+    setElement((prev, prop) => {
+      let temp = { ...prev };
+      temp.classes = temp.classes.filter(Boolean);
+      return temp;
+    });
+    updateTree(element);
     saveSite();
   };
 
@@ -50,36 +94,42 @@ export function PropertiesPanel({ isActive }) {
             <span>HTML Element:</span>
             <b style={{ marginLeft: "5px" }}>{`${element.tagName}`}</b>
           </PanelLabel>
-          <PanelInputText
-            type="text"
-            id="elementId"
-            data-elem-prop="id"
-            placeholder="Enter the id"
-            value={element.id}
-            onChange={(e) => handleProperty(e, "id")}
-          />
-          <PanelInputText
-            type="text"
-            id="elementClass"
-            data-elem-prop="class"
-            placeholder="Enter the classes"
-            value={element.classlist}
-            onChange={(e) => handleProperty(e, "classlist")}
-          />
-          {element.tagName === "a" && (
+          <ClassesContainer>
+            <PanelLabel>Classes</PanelLabel>
+            {element.classes.map((item, i) => {
+              return (
+                <PanelInputText
+                  type="text"
+                  data-elem-prop={`class${i}`}
+                  placeholder="Enter the classes"
+                  key={i}
+                  value={item}
+                  onChange={(e) => handleClasses(e, i)}
+                />
+              );
+            })}
+            <PanelButton id="" onClick={addClass}>
+              Add Class
+            </PanelButton>
+          </ClassesContainer>
+          {Object.entries(element.attributes).map((item, i) => (
+            <PanelInputText
+              type="text"
+              data-elem-prop={item[0]}
+              placeholder={`Enter the ${item[0]}`}
+              key={i}
+              value={item[1]}
+              onChange={(e) => handleAttribute(e, item[0])}
+            />
+          ))}
+          {element.hasOwnProperty("text") && (
             <PanelTextArea
-              id="hrefLink"
-              placeholder="Enter the link address"
-              value={element.href}
-              onChange={(e) => handleProperty(e, "href")}
+              placeholder="Enter the text content"
+              value={element.text}
+              onChange={(e) => handleProperty(e, "text")}
             ></PanelTextArea>
           )}
-          <PanelTextArea
-            id="text"
-            placeholder="Enter the text content"
-            value={element.text}
-            onChange={(e) => handleProperty(e, "text")}
-          ></PanelTextArea>
+
           <PanelButton id="saveProps" onClick={handleSave}>
             Save
           </PanelButton>

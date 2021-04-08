@@ -13,6 +13,7 @@ export const SiteTreeProvider = (props) => {
         if (action === "delete") {
           delete site[lastItem].children[element._id];
         } else {
+          console.log(element);
           site[lastItem].children[element._id] = element;
         }
       } else {
@@ -24,6 +25,12 @@ export const SiteTreeProvider = (props) => {
         );
       }
     }
+    /* 
+      This save the whole site tree on every change
+      Optimization needed here 
+    */
+    // temp
+    // saveSite();
   }
 
   async function saveSite() {

@@ -38,14 +38,18 @@ export function StylesPanel({ isActive }) {
     editor.addCommand(
       monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S,
       function () {
-        // This adds style to the react app not the iframe
         let element = document.createElement("style");
         let sheet;
         document
           .getElementsByTagName("iframe")[0]
           .contentDocument.head.appendChild(element);
         sheet = element.sheet;
-        sheet.insertRule(editorRef.current.getValue(), 0);
+        editorRef.current
+          .getValue()
+          .split("}")
+          .forEach((element, i) => {
+            sheet.insertRule(element + "}", i);
+          });
       }
     );
   };

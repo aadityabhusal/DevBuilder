@@ -4,7 +4,7 @@
     "tagName": "div",
     "classes": [],
     "path": [],
-    "text": "Block",
+    "text": "",
     "attributes": {
       "id": ""
     },
@@ -73,7 +73,7 @@
     "tagName": "ol",
     "classes": [],
     "path": [],
-    "text": "Ordered List",
+    "text": "",
     "attributes": {
       "id": "",
       "type": "",
@@ -87,7 +87,7 @@
     "tagName": "ul",
     "classes": [],
     "path": [],
-    "text": "Unordered List",
+    "text": "",
     "attributes": {
       "id": ""
     },
@@ -98,7 +98,7 @@
     "tagName": "li",
     "classes": [],
     "path": [],
-    "text": "List Item",
+    "text": "",
     "attributes": {
       "id": ""
     },

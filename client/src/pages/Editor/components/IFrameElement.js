@@ -3,8 +3,8 @@ import { SiteTreeContext } from "../../../contexts/SiteTreeContext";
 import { SelectedElementContext } from "../../../contexts/SelectedElementContext";
 
 export function IframeElement({ data, removeFromParent, contextMenu }) {
-  const { tagName, text, classes, attributes, ...rest } = data;
-  data.classlist = data.classes ? data.classes.join(" ") : "";
+  const { tagName, classes, attributes, ...rest } = data;
+  let classlist = data.classes ? data.classes.join(" ") : "";
   const nonClosingTags = ["img", "input", "hr", "br"];
 
   const [element, setElement] = useState();
@@ -75,10 +75,10 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
         onMouseOver={(e) => showHoverBox(e)}
         onMouseOut={(e) => hideHoverBox(e)}
         onContextMenu={(e) => openContextMenu(e, contextMenu)}
-        className={"frame-element " + element.classlist}
+        className={"frame-element " + classlist}
         {...attributes}
       >
-        {text}
+        {data.text}
         {Object.values(element.children).length
           ? Object.values(element.children).map((elem) => {
               elem.path = [...element.path, element._id];
@@ -103,7 +103,7 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
         onMouseOver={(e) => showHoverBox(e)}
         onMouseOut={(e) => hideHoverBox(e)}
         onContextMenu={(e) => openContextMenu(e, contextMenu)}
-        className={"frame-element " + element.classlist}
+        className={"frame-element " + classlist}
         readOnly={tagName === "input" ? true : false}
         {...attributes}
       />
