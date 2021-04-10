@@ -13,9 +13,9 @@ export function ElementsPanel({ isActive, elementList }) {
   useEffect(() => {
     const temp = [];
     for (const key in elementList) {
-      if (Object.hasOwnProperty.call(elementList, key)) {
-        temp.push(elementList[key]);
-      }
+      // if (Object.hasOwnProperty.call(elementList, key)) {
+      temp.push(elementList[key]);
+      // }
     }
     setElements(temp);
   }, [elementList]);

@@ -51,9 +51,9 @@ export function RightSection({ target, editTarget }) {
         <div className={checkActive(2)} onClick={() => setActivePanel(2)}>
           <StylesIcon />
         </div>
-        <div className={checkActive(3)} onClick={() => setActivePanel(3)}>
+        {/* <div className={checkActive(3)} onClick={() => setActivePanel(3)}>
           <ScriptsIcon />
-        </div>
+        </div> */}
         <div className={checkActive(4)} onClick={() => setActivePanel(4)}>
           <SettingsIcon />
         </div>
@@ -65,7 +65,7 @@ export function RightSection({ target, editTarget }) {
           isActive={checkActive(1)}
         />
         <StylesPanel target={target} isActive={checkActive(2)} />
-        <ScriptsPanel target={target} isActive={checkActive(3)} />
+        {/* <ScriptsPanel target={target} isActive={checkActive(3)} /> */}
         <SettingsPanel target={target} isActive={checkActive(4)} />
       </RightPanels>
     </RightContainer>

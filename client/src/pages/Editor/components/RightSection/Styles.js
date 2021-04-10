@@ -62,7 +62,6 @@ export function StylesPanel({ isActive }) {
   };
 
   const addStyle = (e) => {
-    e = window.event;
     if (e.keyCode === 13) {
       let value = e.target.value;
       updateStyles(value);
@@ -86,6 +85,19 @@ export function StylesPanel({ isActive }) {
     setCurrentStyle([currentStyle[0], value]);
     // This needs to get optimzed because it is updating the constext tree on value change
     updateStyles(currentStyle[0], "update", value);
+    let element = document.createElement("style");
+    let sheet;
+    document
+      .getElementsByTagName("iframe")[0]
+      .contentDocument.head.appendChild(element);
+    sheet = element.sheet;
+    sheet.insertRule(editorRef.current.getValue(), 0);
+    editorRef.current
+      .getValue()
+      .split("}")
+      .forEach((element, i) => {
+        sheet.insertRule(element + "}", i);
+      });
   };
 
   const mountEditor = (editor, monaco) => {

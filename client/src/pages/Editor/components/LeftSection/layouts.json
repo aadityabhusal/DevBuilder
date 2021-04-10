@@ -1,0 +1,84 @@
+{
+  "Layout 1": {
+    "_id": "",
+    "tagName": "div",
+    "classes": [],
+    "path": [],
+    "text": "",
+    "attributes": {
+      "id": ""
+    },
+    "children": {
+      "1": {
+        "_id": "",
+        "tagName": "ul",
+        "classes": [],
+        "path": [],
+        "text": "",
+        "attributes": {
+          "id": ""
+        },
+        "children": {
+          "1": {
+            "_id": "",
+            "tagName": "li",
+            "classes": [],
+            "path": [],
+            "text": "Li1",
+            "attributes": {
+              "id": ""
+            },
+            "children": {}
+          },
+          "2": {
+            "_id": "",
+            "tagName": "li",
+            "classes": [],
+            "path": [],
+            "text": "li2",
+            "attributes": {
+              "id": ""
+            },
+            "children": {}
+          }
+        }
+      }
+    }
+  },
+  "Layout 2": {
+    "_id": "",
+    "tagName": "div",
+    "classes": [],
+    "path": [],
+    "text": "",
+    "attributes": {
+      "id": ""
+    },
+    "children": {
+      "1": {
+        "_id": "",
+        "tagName": "input",
+        "classes": [],
+        "path": [],
+        "attributes": {
+          "id": "",
+          "value": "",
+          "name": "",
+          "type": "text",
+          "placeholder": "Enter text"
+        }
+      },
+      "2": {
+        "_id": "",
+        "tagName": "button",
+        "classes": [],
+        "path": [],
+        "text": "Button",
+        "attributes": {
+          "id": ""
+        },
+        "children": {}
+      }
+    }
+  }
+}

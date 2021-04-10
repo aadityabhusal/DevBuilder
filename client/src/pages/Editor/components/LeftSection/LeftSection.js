@@ -9,6 +9,7 @@ import { NavigatorPanel } from "./Navigator";
 import { PagesPanel } from "./Pages";
 
 import elementList from "./elements.json";
+import layoutList from "./layouts.json";
 
 const LeftContainer = styled.div`
   border-right: 1px solid #bdc3c7;
@@ -38,7 +39,7 @@ export function LeftSection() {
       </PanelList>
       <Panels>
         <ElementsPanel elementList={elementList} isActive={checkActive(1)} />
-        <LayoutsPanel isActive={checkActive(2)} />
+        <LayoutsPanel layoutList={layoutList} isActive={checkActive(2)} />
         <PagesPanel isActive={checkActive(3)} />
         <NavigatorPanel isActive={checkActive(4)} />
       </Panels>
