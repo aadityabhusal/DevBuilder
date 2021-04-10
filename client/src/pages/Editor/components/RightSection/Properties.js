@@ -28,22 +28,13 @@ const ClassesContainer = styled.div`
 `;
 
 export function PropertiesPanel({ isActive }) {
-  const [element, setElement] = useState();
-  let [selectedElement, setSelectedElement] = useContext(
+  const [selectedElement, setSelectedElement] = useContext(
     SelectedElementContext
   );
-  let [, updateTree, saveSite] = useContext(SiteTreeContext);
-
-  useEffect(() => {
-    if (selectedElement) {
-      setElement((prev, prop) => {
-        return selectedElement;
-      });
-    }
-  }, [selectedElement]);
+  const { updateTree, saveSite } = useContext(SiteTreeContext);
 
   const handleAttribute = (e, property) => {
-    setElement((prev, prop) => {
+    setSelectedElement((prev, prop) => {
       let temp = { ...prev };
       temp.attributes[property] = e.target.value;
       return temp;
@@ -51,7 +42,7 @@ export function PropertiesPanel({ isActive }) {
   };
 
   const handleClasses = (e, pos) => {
-    setElement((prev, prop) => {
+    setSelectedElement((prev, prop) => {
       let temp = { ...prev };
       temp.classes[pos] = e.target.value;
       return temp;
@@ -59,44 +50,44 @@ export function PropertiesPanel({ isActive }) {
   };
 
   const addClass = (e) => {
-    setElement((prev, prop) => {
+    setSelectedElement((prev, prop) => {
       let temp = { ...prev };
       temp.classes.push("");
       return temp;
     });
   };
-
+  /* 
+    TEXT FIELD NOT UPDATING
+  */
   const handleProperty = (e, property) => {
-    setElement((prev, prop) => {
+    setSelectedElement((prev, prop) => {
       let temp = { ...prev };
       temp[property] = e.target.value;
-      console.log(temp);
       return temp;
     });
   };
 
   const handleSave = (e) => {
-    setElement((prev, prop) => {
+    setSelectedElement((prev, prop) => {
       let temp = { ...prev };
       temp.classes = temp.classes.filter(Boolean);
       return temp;
     });
-    updateTree(element);
-    saveSite();
+    updateTree(selectedElement);
   };
 
   return (
     <Panel className={isActive}>
       <PanelTitle>Properties</PanelTitle>
-      {element ? (
+      {selectedElement ? (
         <>
           <PanelLabel>
             <span>HTML Element:</span>
-            <b style={{ marginLeft: "5px" }}>{`${element.tagName}`}</b>
+            <b style={{ marginLeft: "5px" }}>{`${selectedElement.tagName}`}</b>
           </PanelLabel>
           <ClassesContainer>
             <PanelLabel>Classes</PanelLabel>
-            {element.classes.map((item, i) => {
+            {selectedElement.classes.map((item, i) => {
               return (
                 <PanelInputText
                   type="text"
@@ -112,7 +103,7 @@ export function PropertiesPanel({ isActive }) {
               Add Class
             </PanelButton>
           </ClassesContainer>
-          {Object.entries(element.attributes).map((item, i) => (
+          {Object.entries(selectedElement.attributes).map((item, i) => (
             <PanelInputText
               type="text"
               data-elem-prop={item[0]}
@@ -122,10 +113,10 @@ export function PropertiesPanel({ isActive }) {
               onChange={(e) => handleAttribute(e, item[0])}
             />
           ))}
-          {element.hasOwnProperty("text") && (
+          {selectedElement.hasOwnProperty("text") && (
             <PanelTextArea
               placeholder="Enter the text content"
-              value={element.text}
+              value={selectedElement.text}
               onChange={(e) => handleProperty(e, "text")}
             ></PanelTextArea>
           )}

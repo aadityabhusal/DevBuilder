@@ -3,13 +3,13 @@ import { SiteTreeContext } from "../../../contexts/SiteTreeContext";
 import { SelectedElementContext } from "../../../contexts/SelectedElementContext";
 
 export function IframeElement({ data, removeFromParent, contextMenu }) {
-  const { tagName, classes, attributes, ...rest } = data;
+  const { tagName, text, classes, attributes, ...rest } = data;
   let classlist = data.classes ? data.classes.join(" ") : "";
   const nonClosingTags = ["img", "input", "hr", "br"];
 
   const [element, setElement] = useState();
   const [, setSelectedElement] = useContext(SelectedElementContext);
-  const [, updateTree] = useContext(SiteTreeContext);
+  const { updateTree } = useContext(SiteTreeContext);
 
   useEffect(() => {
     if (data) {
@@ -78,7 +78,7 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
         className={"frame-element " + classlist}
         {...attributes}
       >
-        {data.text}
+        {text}
         {Object.values(element.children).length
           ? Object.values(element.children).map((elem) => {
               elem.path = [...element.path, element._id];

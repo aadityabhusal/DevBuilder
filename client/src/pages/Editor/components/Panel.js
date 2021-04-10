@@ -70,6 +70,7 @@ export const PanelButton = styled(PanelItem).attrs({ as: "button" })`
 `;
 
 export const PanelInputText = styled(PanelItem).attrs({ as: "input" })`
+  flex: 0 1 40%;
   outline: 0;
   cursor: text;
   text-align: left;
@@ -77,6 +78,7 @@ export const PanelInputText = styled(PanelItem).attrs({ as: "input" })`
 `;
 
 export const PanelTextArea = styled(PanelInputText).attrs({ as: "textarea" })`
+  flex: 1;
   resize: vertical;
 `;
 

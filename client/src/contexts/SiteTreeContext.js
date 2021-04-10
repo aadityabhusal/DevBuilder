@@ -6,6 +6,10 @@ export const SiteTreeProvider = (props) => {
   const siteTree = props.value;
   const bodyChildren = siteTree.body.children;
 
+  /* 
+    This save the whole site tree on every change
+    Optimization needed here 
+  */
   function updateTree(element, action = "", level = 0, site = bodyChildren) {
     if (element.path) {
       let lastItem = element.path[element.path.length - 1];
@@ -13,7 +17,6 @@ export const SiteTreeProvider = (props) => {
         if (action === "delete") {
           delete site[lastItem].children[element._id];
         } else {
-          console.log(element);
           site[lastItem].children[element._id] = element;
         }
       } else {
@@ -24,13 +27,20 @@ export const SiteTreeProvider = (props) => {
           ++level
         );
       }
+      saveSite();
     }
-    /* 
-      This save the whole site tree on every change
-      Optimization needed here 
-    */
-    // temp
-    // saveSite();
+  }
+
+  function updateStyles(name, action = "", value = "") {
+    if (!siteTree.head.styles.hasOwnProperty(name)) {
+      siteTree.head.styles[name] = "";
+    } else {
+      if (action === "delete") {
+        delete siteTree.head.styles[name];
+      } else {
+        siteTree.head.styles[name] = value;
+      }
+    }
   }
 
   async function saveSite() {
@@ -45,7 +55,9 @@ export const SiteTreeProvider = (props) => {
   }
 
   return (
-    <SiteTreeContext.Provider value={[siteTree, updateTree, saveSite]}>
+    <SiteTreeContext.Provider
+      value={{ siteTree, updateTree, updateStyles, saveSite }}
+    >
       {props.children}
     </SiteTreeContext.Provider>
   );
