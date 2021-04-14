@@ -1,10 +1,11 @@
 import styled from "styled-components";
 
 export const Panel = styled.div`
-  overflow-y: auto;
   display: none;
+  overflow-y: auto;
   flex-direction: column;
   padding: 5px 10px;
+  height: calc(100vh - 40px);
 
   &.active {
     display: flex;
@@ -14,7 +15,6 @@ export const Panel = styled.div`
 export const PanelList = styled.div`
   display: flex;
   border-bottom: 1px solid #bdc3c7;
-
   & div {
     border-left: 1px solid #bdc3c7;
     text-align: center;
@@ -32,9 +32,7 @@ export const PanelList = styled.div`
   }
 `;
 
-export const Panels = styled.div`
-  overflow: hidden;
-`;
+export const Panels = styled.div``;
 
 export const PanelTitle = styled.div`
   font-size: 16px;

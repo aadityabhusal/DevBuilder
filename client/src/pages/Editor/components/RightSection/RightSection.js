@@ -8,10 +8,10 @@ import {
 } from "../Icons";
 
 import { PanelList, Panels } from "../Panel";
-import { PropertiesPanel } from "./Properties";
+import { PropertiesPanel } from "../LeftSection/Properties";
 import { ScriptsPanel } from "./Scripts";
-import { SettingsPanel } from "./Settings";
-import { StylesPanel } from "./Styles";
+import { SettingsPanel } from "../LeftSection/Settings";
+import { StylesPanel } from "../LeftSection/Styles";
 
 const RightContainer = styled.div`
   border-top: 1px solid #bdc3c7;

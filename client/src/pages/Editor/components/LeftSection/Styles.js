@@ -6,6 +6,7 @@ import { SiteTreeContext } from "../../../../contexts/SiteTreeContext";
 
 const StylePanel = styled(Panel)`
   overflow: initial;
+  padding: 0;
 `;
 
 const StyleList = styled.div`
@@ -40,15 +41,13 @@ const StyleListContainer = styled.div`
 `;
 
 export function StylesPanel({ isActive }) {
-  const containerRef = useRef(null);
   const editorRef = useRef(null);
-  const [height, setHeight] = useState();
+
   const { siteTree, updateStyles, saveSite } = useContext(SiteTreeContext);
   const [currentStyle, setCurrentStyle] = useState([]);
   const [styleList, setStyleList] = useState([]);
 
   useEffect(() => {
-    setHeight(containerRef.current?.parentNode.clientHeight - 10);
     let styles = Object.entries(siteTree.head.styles);
     setStyleList(styles);
     setCurrentStyle([styles[0][0], siteTree.head.styles[styles[0][0]]]);
@@ -106,39 +105,19 @@ export function StylesPanel({ isActive }) {
   };
 
   return (
-    <StylePanel className={isActive} ref={containerRef}>
-      <Container>
-        {currentStyle[0] ? (
-          <MonacoEditor
-            height={height}
-            width="80%"
-            defaultLanguage="css"
-            theme="vs-dark"
-            saveViewState={true}
-            value={currentStyle[1]}
-            options={options}
-            onMount={mountEditor}
-            onChange={handleEditor}
-          ></MonacoEditor>
-        ) : null}
-        <StyleListContainer>
-          <PanelTitle>Styles</PanelTitle>
-          <StyleList>
-            {styleList.map((item) => (
-              <StyleItem key={item[0]} onClick={(e) => setCurrentStyle(item)}>
-                {item[0]}
-                <DeleteStyle onClick={(e) => deleteStyle(e, item[0])}>
-                  x
-                </DeleteStyle>
-              </StyleItem>
-            ))}
-          </StyleList>
-          <PanelInputText
-            placeholder="Type name and hit enter"
-            onKeyUp={addStyle}
-          />
-        </StyleListContainer>
-      </Container>
+    <StylePanel className={isActive}>
+      {currentStyle[0] ? (
+        <MonacoEditor
+          height="95vh"
+          defaultLanguage="css"
+          theme="vs-dark"
+          saveViewState={true}
+          value={currentStyle[1]}
+          options={options}
+          onMount={mountEditor}
+          onChange={handleEditor}
+        ></MonacoEditor>
+      ) : null}
     </StylePanel>
   );
 }

@@ -4,17 +4,11 @@ import styled from "styled-components";
 import { SelectedElementProvider } from "../../contexts/SelectedElementContext";
 import { SiteTreeProvider } from "../../contexts/SiteTreeContext";
 
-import { LeftSection, DisplaySection, RightSection } from "./components";
+import { LeftSection, DisplaySection } from "./components";
 
 const EditorContainer = styled.div`
   display: flex;
-  height: 100vh;
-`;
-
-const CentralContainer = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  max-height: 100vh;
   overflow: hidden;
 `;
 
@@ -34,10 +28,7 @@ export function EditorPage() {
       <SiteTreeProvider value={site}>
         <SelectedElementProvider>
           <LeftSection />
-          <CentralContainer>
-            <DisplaySection site={site} />
-            <RightSection />
-          </CentralContainer>
+          <DisplaySection site={site} />
         </SelectedElementProvider>
       </SiteTreeProvider>
     </EditorContainer>
