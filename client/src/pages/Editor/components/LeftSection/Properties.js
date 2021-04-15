@@ -84,7 +84,7 @@ export function PropertiesPanel({ isActive }) {
               <PanelInputText
                 type="text"
                 data-elem-prop={`class${i}`}
-                placeholder="Enter the classes"
+                placeholder="Enter a class name"
                 key={i}
                 value={item}
                 onChange={(e) => handleClasses(e, i)}

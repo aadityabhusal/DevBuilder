@@ -66,6 +66,7 @@ export const PanelButton = styled(PanelItem).attrs({ as: "button" })`
   font-weight: 600;
   color: #2c3e50;
   background: #f5f6fa;
+  border-color: #95a5a6;
 `;
 
 export const PanelInputText = styled.input`
@@ -78,7 +79,10 @@ export const PanelInputText = styled.input`
   border-bottom: 2px solid #95a5a6;
 `;
 
-export const PanelTextArea = styled(PanelInputText).attrs({ as: "textarea" })``;
+export const PanelTextArea = styled(PanelInputText).attrs({ as: "textarea" })`
+  resize: vertical;
+  min-height: 110px;
+`;
 
 export const PanelLabel = styled.div`
   font-size: 14px;
@@ -92,7 +96,7 @@ export const SectionMask = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 100;
+  z-index: 1;
   opacity: 0;
   display: none;
 `;

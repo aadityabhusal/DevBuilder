@@ -1,47 +1,29 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Panel, PanelItems, PanelTitle, PanelInputText } from "../Panel";
+import { Panel, PanelInputText } from "../Panel";
 import MonacoEditor from "@monaco-editor/react";
 import styled from "styled-components";
 import { SiteTreeContext } from "../../../../contexts/SiteTreeContext";
+import {
+  DropDownButton,
+  AddNewButton,
+  DropDownList,
+  DropDownMenu,
+  DropDownListItem,
+  ItemName,
+  AddItemBox,
+  CloseButton,
+} from "../DropDownMenu";
+import { CloseIcon, DropDownIcon } from "../Icons";
 
 const StylePanel = styled(Panel)`
   overflow: initial;
   padding: 0;
 `;
 
-const StyleList = styled.div`
-  max-height: 200px;
-  overflow: auto;
-`;
-
-const StyleItem = styled.div`
-  padding: 10px;
-  border: 1px solid #eee;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const DeleteStyle = styled.div``;
-
-const Container = styled.div`
-  display: flex;
-`;
-
-const StyleListContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  padding: 5px;
-  & input {
-    justify-self: flex-end;
-    max-height: 20px;
-    margin-top: 10px;
-  }
-`;
-
 export function StylesPanel({ isActive }) {
   const editorRef = useRef(null);
+  const dropDownListRef = useRef();
+  const inputBoxRef = useRef();
 
   const { siteTree, updateStyles, saveSite } = useContext(SiteTreeContext);
   const [currentStyle, setCurrentStyle] = useState([]);
@@ -77,6 +59,7 @@ export function StylesPanel({ isActive }) {
       let arr = prev.filter((item) => item[0] !== name);
       return arr;
     });
+    setCurrentStyle(styleList[0] || []);
     saveSite();
   };
 
@@ -104,8 +87,46 @@ export function StylesPanel({ isActive }) {
     editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, saveSite);
   };
 
+  const removeDropDowns = () => {
+    dropDownListRef.current.style.display = "none";
+    inputBoxRef.current.style.display = "none";
+  };
+
+  const handleDropdown = (e, itemRef) => {
+    e.stopPropagation();
+    removeDropDowns();
+    let display = itemRef.current.style.display;
+    itemRef.current.style.display = display === "flex" ? "none" : "flex";
+  };
+
   return (
-    <StylePanel className={isActive}>
+    <StylePanel onClick={removeDropDowns} className={isActive}>
+      <DropDownMenu>
+        <DropDownButton onClick={(e) => handleDropdown(e, dropDownListRef)}>
+          <ItemName>{currentStyle[0]}.css</ItemName>
+          <DropDownIcon></DropDownIcon>
+        </DropDownButton>
+        <AddNewButton onClick={(e) => handleDropdown(e, inputBoxRef)}>
+          Add Style
+        </AddNewButton>
+        <DropDownList ref={dropDownListRef}>
+          {styleList.map((item, i) => (
+            <DropDownListItem key={i} onClick={(e) => setCurrentStyle(item)}>
+              <ItemName>{item[0]}.css</ItemName>
+              <CloseButton onClick={(e) => deleteStyle(e, item[0])}>
+                <CloseIcon></CloseIcon>
+              </CloseButton>
+            </DropDownListItem>
+          ))}
+        </DropDownList>
+        <AddItemBox ref={inputBoxRef}>
+          <PanelInputText
+            placeholder="Enter a style name and press enter"
+            onClick={(e) => e.stopPropagation()}
+            onKeyUp={addStyle}
+          ></PanelInputText>
+        </AddItemBox>
+      </DropDownMenu>
       {currentStyle[0] ? (
         <MonacoEditor
           height="95vh"

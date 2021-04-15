@@ -19,10 +19,8 @@ const PageInputText = styled(PanelInputText)`
   margin-top: 10px;
 `;
 
-const PageItem = styled.div`
+const PageItem = styled(PanelItem)`
   padding: 10px;
-  border: 1px solid #eee;
-  cursor: pointer;
   display: flex;
   justify-content: space-between;
 `;
