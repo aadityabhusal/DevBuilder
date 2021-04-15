@@ -21,6 +21,7 @@ import elementList from "./elements.json";
 import layoutList from "./layouts.json";
 
 const LeftContainer = styled.div`
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   border-right: 1px solid #bdc3c7;
   flex: 0 0 450px;
   position: relative;

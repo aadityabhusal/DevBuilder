@@ -54,7 +54,7 @@ export const PanelItems = styled.div`
 `;
 
 export const PanelItem = styled.div`
-  font-size: 12px;
+  font-size: 14px;
   border: 1px solid #bdc3c7;
   margin-bottom: 10px;
   text-align: center;
@@ -63,26 +63,25 @@ export const PanelItem = styled.div`
 `;
 
 export const PanelButton = styled(PanelItem).attrs({ as: "button" })`
-  outline: 0;
+  font-weight: 600;
+  color: #2c3e50;
+  background: #f5f6fa;
 `;
 
-export const PanelInputText = styled(PanelItem).attrs({ as: "input" })`
+export const PanelInputText = styled.input`
+  font-size: 14px;
   outline: 0;
-  cursor: text;
-  text-align: left;
-  padding-left: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
   border: none;
   background: #f5f6fa;
-  border-bottom: 2px solid #bdc3c7;
+  border-bottom: 2px solid #95a5a6;
 `;
 
-export const PanelTextArea = styled(PanelInputText).attrs({ as: "textarea" })`
-  flex: 1;
-  resize: vertical;
-`;
+export const PanelTextArea = styled(PanelInputText).attrs({ as: "textarea" })``;
 
 export const PanelLabel = styled.div`
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: 10px;
   margin-left: 5px;
 `;

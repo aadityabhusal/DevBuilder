@@ -13,7 +13,7 @@ const EditorContainer = styled.div`
 `;
 
 const DragLeftSection = styled.div`
-  width: 10px;
+  flex: 0 0 10px;
   cursor: w-resize;
   background-color: #444;
 `;

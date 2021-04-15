@@ -7,11 +7,8 @@ export function LayoutsPanel({ isActive, layoutList }) {
   useEffect(() => {
     const temp = [];
     for (const key in layoutList) {
-      // if (Object.hasOwnProperty.call(layoutList, key)) {
       temp.push([key, layoutList[key]]);
-      // }
     }
-    console.log(temp);
     setLayouts(temp);
   }, [layoutList]);
 
