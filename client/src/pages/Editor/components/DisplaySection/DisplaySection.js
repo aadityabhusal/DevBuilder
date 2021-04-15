@@ -1,24 +1,19 @@
 import React from "react";
 import styled from "styled-components";
-import { BottomSection } from "./BottomSection";
-import { TopSection } from "./TopSection";
+import { SectionMask } from "../Panel";
 import { ViewSection } from "./ViewSection";
 
 const DisplayContainer = styled.div`
-  /* display: flex;
-  flex-direction: column;
-  flex: 1; */
   display: flex;
   flex: 1;
-  /* width: 100%; */
+  position: relative;
 `;
 
 export function DisplaySection({ site }) {
   return (
     <DisplayContainer>
-      {/* <TopSection /> */}
+      <SectionMask id="display-mask"></SectionMask>
       <ViewSection site={site} />
-      {/* <BottomSection /> */}
     </DisplayContainer>
   );
 }
