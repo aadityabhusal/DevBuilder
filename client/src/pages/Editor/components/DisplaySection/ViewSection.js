@@ -21,12 +21,15 @@ export function ViewSection({ site }) {
       <ContextMenuFR ref={contextRef} />
       <OutlineElement ref={outlineRef}></OutlineElement>
       <Frame
+        id="iframe-view"
         style={{ flex: 1, border: "none" }}
         head={
           <>
             <link type="text/css" rel="stylesheet" href="/core.css" />
             {Object.entries(site.head.styles).map((item) => (
-              <style key={item[0]}>{item[1]}</style>
+              <style id={item[0]} key={item[0]}>
+                {item[1]}
+              </style>
             ))}
           </>
         }

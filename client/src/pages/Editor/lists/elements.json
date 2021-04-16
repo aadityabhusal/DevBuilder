@@ -103,5 +103,38 @@
       "id": ""
     },
     "children": {}
+  },
+  "h1": {
+    "_id": "",
+    "tagName": "h1",
+    "classes": [],
+    "path": [],
+    "text": "",
+    "attributes": {
+      "id": ""
+    },
+    "children": {}
+  },
+  "h2": {
+    "_id": "",
+    "tagName": "h2",
+    "classes": [],
+    "path": [],
+    "text": "",
+    "attributes": {
+      "id": ""
+    },
+    "children": {}
+  },
+  "h3": {
+    "_id": "",
+    "tagName": "h3",
+    "classes": [],
+    "path": [],
+    "text": "",
+    "attributes": {
+      "id": ""
+    },
+    "children": {}
   }
 }

@@ -24,6 +24,7 @@ export function StylesPanel({ isActive }) {
   const editorRef = useRef(null);
   const dropDownListRef = useRef();
   const inputBoxRef = useRef();
+  let timeOut = null;
 
   const { siteTree, updateStyles, saveSite } = useContext(SiteTreeContext);
   const [currentStyle, setCurrentStyle] = useState([]);
@@ -50,6 +51,11 @@ export function StylesPanel({ isActive }) {
       saveSite();
       e.target.value = "";
     }
+    let stylesheet = document.createElement("style");
+    stylesheet.id = e.target.value;
+    document
+      .getElementById("iframe-view")
+      .contentDocument.head.appendChild(stylesheet);
   };
 
   const deleteStyle = (e, name) => {
@@ -65,21 +71,12 @@ export function StylesPanel({ isActive }) {
 
   const handleEditor = (value) => {
     setCurrentStyle([currentStyle[0], value]);
-    // This needs to get optimzed because it is updating the constext tree on value change
+    let stylesheet = document
+      .getElementById("iframe-view")
+      .contentDocument.getElementById(currentStyle[0]);
+
+    stylesheet.innerHTML = editorRef.current.getValue();
     updateStyles(currentStyle[0], "update", value);
-    let element = document.createElement("style");
-    let sheet;
-    document
-      .getElementsByTagName("iframe")[0]
-      .contentDocument.head.appendChild(element);
-    sheet = element.sheet;
-    sheet.insertRule(editorRef.current.getValue(), 0);
-    editorRef.current
-      .getValue()
-      .split("}")
-      .forEach((element, i) => {
-        sheet.insertRule(element + "}", i);
-      });
   };
 
   const mountEditor = (editor, monaco) => {

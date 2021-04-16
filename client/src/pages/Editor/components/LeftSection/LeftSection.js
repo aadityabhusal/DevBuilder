@@ -17,8 +17,8 @@ import { PropertiesPanel } from "./Properties";
 import { SettingsPanel } from "./Settings";
 import { StylesPanel } from "./Styles";
 
-import elementList from "./elements.json";
-import layoutList from "./layouts.json";
+import elementList from "../../lists/elements.json";
+import layoutList from "../../lists/layouts.json";
 
 const LeftContainer = styled.div`
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
