@@ -38,18 +38,19 @@ export const DropDownList = styled.div`
   z-index: 1;
   background-color: #fff;
   width: 100%;
-  top: 42px;
-  border-bottom: 1px solid #95a5a6;
+  top: 41px;
+  border-bottom: 2px solid #95a5a6;
 `;
 
 export const DropDownListItem = styled(DropDownButton)`
-  border-bottom: 1px solid #95a5a6;
+  border-top: 1px solid #95a5a6;
 `;
 
 export const AddItemBox = styled(DropDownList)`
   & input {
     margin: 0;
     border: 0;
+    border-top: 1px solid #95a5a6;
   }
 `;
 

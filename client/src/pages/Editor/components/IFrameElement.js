@@ -2,7 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { SiteTreeContext } from "../../../contexts/SiteTreeContext";
 import { SelectedElementContext } from "../../../contexts/SelectedElementContext";
 
-export function IframeElement({ data, removeFromParent, contextMenu }) {
+export function IframeElement({
+  data,
+  removeFromParent,
+  contextMenu,
+  outlineBox,
+}) {
   const { tagName, text, classes, attributes, ...rest } = data;
   let classlist = data.classes ? data.classes.join(" ") : "";
   const nonClosingTags = ["img", "input", "hr", "br"];
@@ -60,6 +65,21 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
       return temp;
     });
   };
+
+  const showHoverBox = (e) => {
+    e.stopPropagation();
+    let { top, left, width, height } = e.target.getBoundingClientRect();
+    outlineBox.current.style.top = top - 1 + "px";
+    outlineBox.current.style.left = left - 1 + "px";
+    outlineBox.current.style.width = width + "px";
+    outlineBox.current.style.height = height + "px";
+    outlineBox.current.style.display = "block";
+  };
+  const hideHoverBox = (e) => {
+    e.stopPropagation();
+    outlineBox.current.style.display = "none";
+  };
+
   const HTMLTag = `${tagName}`;
 
   return element ? (
@@ -86,6 +106,7 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
                 <IframeElement
                   key={elem._id}
                   contextMenu={contextMenu}
+                  outlineBox={outlineBox}
                   data={elem}
                   removeFromParent={removeElementFromParent}
                 ></IframeElement>
@@ -121,11 +142,20 @@ const openContextMenu = (e, contextMenu) => {
 const closeContextMenu = (e, contextMenu) => {
   contextMenu.current.style.display = "none";
 };
-const showHoverBox = (e) => {
-  e.stopPropagation();
-  e.target.style.borderColor = "#3498db";
-};
-const hideHoverBox = (e) => {
-  e.stopPropagation();
-  e.target.style.borderColor = "#ecf0f1"; //or transparent
-};
+
+/* 
+  For hover, instead of manipulating the element's actual border properties
+  Create an element that will appear on top of the hover element that will create a box around and show the element name 
+
+  const showHoverBox = (e) => {
+    e.stopPropagation();
+    let width = parseInt(getComputedStyle(e.target).borderWidth) + 1;
+    console.log(getComputedStyle(e.target).borderColor);
+    e.target.style.borderWidth = width + "px";
+  };
+  const hideHoverBox = (e) => {
+    e.stopPropagation();
+    let width = parseInt(getComputedStyle(e.target).borderWidth) - 1;
+    e.target.style.borderWidth = width + "px";
+  };
+*/

@@ -110,8 +110,11 @@ export function StylesPanel({ isActive }) {
           Add Style
         </AddNewButton>
         <DropDownList ref={dropDownListRef}>
-          {styleList.map((item, i) => (
-            <DropDownListItem key={i} onClick={(e) => setCurrentStyle(item)}>
+          {styleList.map((item) => (
+            <DropDownListItem
+              key={item[0]}
+              onClick={(e) => setCurrentStyle(item)}
+            >
               <ItemName>{item[0]}.css</ItemName>
               <CloseButton onClick={(e) => deleteStyle(e, item[0])}>
                 <CloseIcon></CloseIcon>
