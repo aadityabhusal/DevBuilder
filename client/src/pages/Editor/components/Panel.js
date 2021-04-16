@@ -79,15 +79,22 @@ export const PanelInputText = styled.input`
   border-bottom: 2px solid #95a5a6;
 `;
 
+export const PanelInputCheck = styled.input``;
+
 export const PanelTextArea = styled(PanelInputText).attrs({ as: "textarea" })`
   resize: vertical;
   min-height: 110px;
 `;
 
-export const PanelLabel = styled.div`
+export const PanelLabel = styled.label`
   font-size: 14px;
   margin-bottom: 10px;
   margin-left: 5px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 10px;
+  border-bottom: 1px solid #95a5a6;
 `;
 
 export const SectionMask = styled.div`

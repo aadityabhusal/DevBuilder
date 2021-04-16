@@ -24,7 +24,6 @@ export function StylesPanel({ isActive }) {
   const editorRef = useRef(null);
   const dropDownListRef = useRef();
   const inputBoxRef = useRef();
-  let timeOut = null;
 
   const { siteTree, updateStyles, saveSite } = useContext(SiteTreeContext);
   const [currentStyle, setCurrentStyle] = useState([]);
@@ -52,7 +51,7 @@ export function StylesPanel({ isActive }) {
       e.target.value = "";
     }
     let stylesheet = document.createElement("style");
-    stylesheet.id = e.target.value;
+    stylesheet.id = e.target.value + "-stylesheet";
     document
       .getElementById("iframe-view")
       .contentDocument.head.appendChild(stylesheet);
@@ -70,10 +69,17 @@ export function StylesPanel({ isActive }) {
   };
 
   const handleEditor = (value) => {
-    setCurrentStyle([currentStyle[0], value]);
+    setStyleList((prev) => {
+      return prev.map((item) => {
+        if (item[0] === currentStyle[0]) {
+          item[1] = value;
+        }
+        return item;
+      });
+    });
     let stylesheet = document
       .getElementById("iframe-view")
-      .contentDocument.getElementById(currentStyle[0]);
+      .contentDocument.getElementById(currentStyle[0] + "-stylesheet");
 
     stylesheet.innerHTML = editorRef.current.getValue();
     updateStyles(currentStyle[0], "update", value);

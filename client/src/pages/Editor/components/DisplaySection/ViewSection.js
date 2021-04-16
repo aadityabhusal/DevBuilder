@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Frame, { FrameContextConsumer } from "react-frame-component";
-import styled, { StyleSheetManager } from "styled-components";
+import { StyleSheetManager } from "styled-components";
 import { ContextMenuFR } from "../ContextMenu";
 import { IframeElement } from "../IFrameElement";
 import { OutlineElement } from "../OutlineBox";
@@ -26,8 +26,9 @@ export function ViewSection({ site }) {
         head={
           <>
             <link type="text/css" rel="stylesheet" href="/core.css" />
+            <style id="core-stylesheet"></style>
             {Object.entries(site.head.styles).map((item) => (
-              <style id={item[0]} key={item[0]}>
+              <style id={item[0] + "-stylesheet"} key={item[0]}>
                 {item[1]}
               </style>
             ))}
