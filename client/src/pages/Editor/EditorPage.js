@@ -8,7 +8,7 @@ import { LeftSection, DisplaySection } from "./components";
 
 const EditorContainer = styled.div`
   display: flex;
-  max-height: 100vh;
+  max-height: calc(100vh - 45px);
   overflow: hidden;
 `;
 
@@ -32,7 +32,9 @@ export function EditorPage() {
 
   document.addEventListener("mouseup", (e) => {
     document.removeEventListener("mousemove", resizeLeftSection);
-    document.getElementById("display-mask").style.display = "none";
+    if (document.getElementById("display-mask")) {
+      document.getElementById("display-mask").style.display = "none";
+    }
   });
 
   const handleResize = (e) => {
