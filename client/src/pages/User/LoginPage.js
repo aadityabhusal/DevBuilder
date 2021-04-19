@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useAuth } from "../Auth/useAuth";
+// import { useAuth } from "../Auth/useAuth";
+
 const LoginSection = styled.div`
   display: flex;
   justify-content: center;
@@ -54,14 +55,32 @@ export function LoginPage(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  let auth = useAuth();
+  // let auth = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(props.auth);
-    auth.login(() => {
-      props.history.push("/");
-    });
+    let data = {
+      email,
+      password,
+    };
+
+    try {
+      let user = await fetch(`/user/login`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      console.log(await user.json());
+      // props.history.push("/login");
+    } catch (error) {
+      console.log(error.message);
+    }
+    // auth.login(() => {
+    //   props.history.push("/");
+    // });
   };
 
   return (

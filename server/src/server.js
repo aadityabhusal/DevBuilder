@@ -1,6 +1,6 @@
 const express = require("express");
-const fs = require("fs");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 const port = 8000;
@@ -12,6 +12,7 @@ mongoose.connect("mongodb://localhost/WebsiteBuilder", {
   useUnifiedTopology: true,
 });
 
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/", routes());

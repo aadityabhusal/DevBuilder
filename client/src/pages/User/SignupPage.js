@@ -51,17 +51,21 @@ const SignupBox = styled.div`
 `;
 
 export function SignupPage(props) {
-  const [data, setData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-  });
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let data = {
+      firstName,
+      lastName,
+      email,
+      password,
+    };
     try {
-      await fetch(`/user/`, {
+      await fetch(`/user/signup`, {
         method: "post",
         headers: {
           Accept: "application/json",
@@ -75,12 +79,6 @@ export function SignupPage(props) {
     }
   };
 
-  const handleData = (e) => {
-    setData((prev) => {
-      return { ...prev, [e.target.name]: e.target.value };
-    });
-  };
-
   return (
     <SignupSection>
       <SignupBox>
@@ -88,31 +86,27 @@ export function SignupPage(props) {
         <form onSubmit={handleSubmit} method="POST">
           <input
             type="text"
-            name="firstName"
             placeholder="Enter your first name"
-            value={data["firstName"]}
-            onChange={handleData}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
           ></input>
           <input
             type="text"
             placeholder="Enter your last name"
-            name="lastName"
-            value={data["lastName"]}
-            onChange={handleData}
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
           ></input>
           <input
             type="email"
             placeholder="Enter your email"
-            name="email"
-            value={data["email"]}
-            onChange={handleData}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           ></input>
           <input
             type="password"
             placeholder="Enter your password"
-            name="password"
-            value={data["password"]}
-            onChange={handleData}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           ></input>
           <button>Signup</button>
         </form>
