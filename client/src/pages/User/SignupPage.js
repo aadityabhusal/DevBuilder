@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router";
 import styled from "styled-components";
+import { useAuth } from "../Auth/useAuth";
 
 const SignupSection = styled.div`
   display: flex;
@@ -55,6 +57,7 @@ export function SignupPage(props) {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  let auth = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,7 +68,7 @@ export function SignupPage(props) {
       password,
     };
     try {
-      await fetch(`/user/signup`, {
+      let user = await fetch(`/user/signup`, {
         method: "post",
         headers: {
           Accept: "application/json",
@@ -73,13 +76,16 @@ export function SignupPage(props) {
         },
         body: JSON.stringify(data),
       });
-      props.history.push("/login");
+      if (!user.error) {
+        props.history.push("/login");
+      }
+      throw new Error(user.error);
     } catch (error) {
       console.log(error.message);
     }
   };
 
-  return (
+  return !auth ? (
     <SignupSection>
       <SignupBox>
         <h1>Signup</h1>
@@ -112,5 +118,7 @@ export function SignupPage(props) {
         </form>
       </SignupBox>
     </SignupSection>
+  ) : (
+    <Redirect to={`/user/${auth._id}`} />
   );
 }

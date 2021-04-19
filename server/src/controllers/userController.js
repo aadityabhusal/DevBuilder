@@ -35,7 +35,7 @@ const loginUser = async (req, res, next) => {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
-    res.send({ message: "Login Success" });
+    res.send({ uid: user._id });
   } catch (error) {
     error.status = 400;
     return next(error);
@@ -75,7 +75,7 @@ const authenticateUser = async (req, res, next) => {
     ).toJSON();
     res.send(data);
   } catch (error) {
-    error.status = 500;
+    error.status = 200;
     return next(error);
   }
 };

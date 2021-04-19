@@ -1,11 +1,8 @@
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
-import { useAuth } from "./useAuth";
 
-export function ProtectedRoute(props) {
-  let auth = useAuth();
-
-  if (auth && !auth.isAuthenticated()) {
+export function ProtectedRoute({ user, ...props }) {
+  if (!user) {
     return <Redirect to="/login" />;
   }
   return <Route {...props} />;

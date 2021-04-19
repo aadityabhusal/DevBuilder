@@ -16,7 +16,7 @@ const routes = () => {
   router.post("/signup", createUser);
   router.post("/login", loginUser);
   router.post("/logout", logoutUser);
-  router.post("/auth", authenticateUser);
+  router.get("/auth", authenticateUser);
 
   router.route("/:userId").get(getUser).put(updateUser).delete(deleteUser);
 

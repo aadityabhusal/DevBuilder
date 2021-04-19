@@ -1,11 +1,23 @@
 import { useEffect, useState } from "react";
-import Auth from "./auth";
 
 export const useAuth = () => {
-  const [auth, setAuth] = useState();
+  const [auth, setAuth] = useState(null);
 
   useEffect(() => {
-    setAuth(new Auth());
+    (async () => {
+      try {
+        let response = await fetch(`/user/auth`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+        let user = await response.json();
+        if (!user.error) {
+          setAuth(user);
+        }
+      } catch (error) {}
+    })();
   }, []);
 
   return auth;

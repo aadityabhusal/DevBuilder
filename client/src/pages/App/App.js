@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, NavLink, Route, Switch } from "react-router-dom";
 import "./App.css";
 
@@ -8,6 +8,8 @@ import { LoginPage } from "../User/LoginPage";
 import { SignupPage } from "../User/SignupPage";
 import styled from "styled-components";
 import { ProtectedRoute } from "../Auth/ProtectedRoute";
+import { UserPage } from "../User/UserPage";
+import { useAuth } from "../Auth/useAuth";
 
 const Header = styled.div`
   padding: 10px 20px;
@@ -34,6 +36,18 @@ const Header = styled.div`
 const Footer = styled.div``;
 
 function App() {
+  const auth = useAuth();
+
+  const logout = async (e) => {
+    let response = await fetch(`/user/logout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+  };
+
   return (
     <BrowserRouter>
       <GlobalContainer>
@@ -43,18 +57,27 @@ function App() {
             <NavLink activeClassName="is-active" to="/" exact={true}>
               Home
             </NavLink>
-            <NavLink activeClassName="is-active" to="/login">
-              Login
-            </NavLink>
-            <NavLink activeClassName="is-active" to="/signup">
-              Signup
-            </NavLink>
+            {auth ? (
+              <NavLink activeClassName="is-active" to="/login" onClick={logout}>
+                Logout
+              </NavLink>
+            ) : (
+              <>
+                <NavLink activeClassName="is-active" to="/login">
+                  Login
+                </NavLink>
+                <NavLink activeClassName="is-active" to="/signup">
+                  Signup
+                </NavLink>
+              </>
+            )}
           </nav>
         </Header>
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/signup" component={SignupPage} />
+          <Route exact path="/user/:userId" component={UserPage} />
           <ProtectedRoute>
             <Route exact path="/editor/:pageId" component={EditorPage} />
           </ProtectedRoute>

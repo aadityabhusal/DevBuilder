@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router";
 import styled from "styled-components";
-// import { useAuth } from "../Auth/useAuth";
+import { useAuth } from "../Auth/useAuth";
 
 const LoginSection = styled.div`
   display: flex;
@@ -54,8 +55,7 @@ const LoginBox = styled.div`
 export function LoginPage(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  // let auth = useAuth();
+  let auth = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,25 +65,28 @@ export function LoginPage(props) {
     };
 
     try {
-      let user = await fetch(`/user/login`, {
-        method: "post",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      console.log(await user.json());
-      // props.history.push("/login");
+      let user = await (
+        await fetch(`/user/login`, {
+          method: "post",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(data),
+        })
+      ).json();
+
+      if (!user.error) {
+        props.history.push("/user/" + user.uid);
+      }
+      throw new Error(user.error);
     } catch (error) {
       console.log(error.message);
     }
-    // auth.login(() => {
-    //   props.history.push("/");
-    // });
   };
 
-  return (
+  return !auth ? (
     <LoginSection>
       <LoginBox>
         <h1>Login</h1>
@@ -104,5 +107,7 @@ export function LoginPage(props) {
         </form>
       </LoginBox>
     </LoginSection>
+  ) : (
+    <Redirect to={`/user/${auth._id}`} />
   );
 }
