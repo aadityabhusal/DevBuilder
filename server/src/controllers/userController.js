@@ -1,7 +1,9 @@
 const User = require("../models/userModel");
+const sha256 = require("crypto-js/sha256");
 
 const createUser = async (req, res, next) => {
   try {
+    req.body.password = sha256(req.body.password);
     let newUser = new User(req.body);
     let user = await newUser.save();
     res.status(201).json(user);

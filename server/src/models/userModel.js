@@ -13,9 +13,9 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: "Enter your email address",
   },
-  phone: {
-    type: Number,
-    required: "Enter your phone number",
+  password: {
+    type: String,
+    required: "Enter your password",
   },
   sites: {
     type: Array,

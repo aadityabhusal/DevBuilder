@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-
+import { useAuth } from "../Auth/useAuth";
 const LoginSection = styled.div`
   display: flex;
   justify-content: center;
@@ -50,13 +50,18 @@ const LoginBox = styled.div`
   }
 `;
 
-export function LoginPage() {
+export function LoginPage(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  let auth = useAuth();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(email, password);
+    console.log(props.auth);
+    auth.login(() => {
+      props.history.push("/");
+    });
   };
 
   return (

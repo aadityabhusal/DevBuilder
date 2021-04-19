@@ -7,6 +7,7 @@ import { EditorPage, ErrorPage, HomePage } from "../";
 import { LoginPage } from "../User/LoginPage";
 import { SignupPage } from "../User/SignupPage";
 import styled from "styled-components";
+import { ProtectedRoute } from "../Auth/ProtectedRoute";
 
 const Header = styled.div`
   padding: 10px 20px;
@@ -54,7 +55,9 @@ function App() {
           <Route exact path="/" component={HomePage} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/signup" component={SignupPage} />
-          <Route exact path="/editor/:pageId" component={EditorPage} />
+          <ProtectedRoute>
+            <Route exact path="/editor/:pageId" component={EditorPage} />
+          </ProtectedRoute>
           <Route component={ErrorPage} />
         </Switch>
         <Footer></Footer>
