@@ -36,16 +36,17 @@ const Header = styled.div`
 const Footer = styled.div``;
 
 function App() {
-  const auth = useAuth();
+  const { auth, loggedIn, setLoggedIn } = useAuth();
 
   const logout = async (e) => {
-    let response = await fetch(`/user/logout`, {
+    await fetch(`/user/logout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       credentials: "include",
     });
+    setLoggedIn(false);
   };
 
   return (
@@ -57,10 +58,19 @@ function App() {
             <NavLink activeClassName="is-active" to="/" exact={true}>
               Home
             </NavLink>
-            {auth ? (
-              <NavLink activeClassName="is-active" to="/login" onClick={logout}>
-                Logout
-              </NavLink>
+            {loggedIn ? (
+              <>
+                <NavLink activeClassName="is-active" to={`/user/${auth._id}`}>
+                  {`${auth.firstName} ${auth.lastName}`}
+                </NavLink>
+                <NavLink
+                  activeClassName="is-active"
+                  to="/login"
+                  onClick={logout}
+                >
+                  Logout
+                </NavLink>
+              </>
             ) : (
               <>
                 <NavLink activeClassName="is-active" to="/login">
@@ -75,7 +85,13 @@ function App() {
         </Header>
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route exact path="/login" component={LoginPage} />
+          <Route
+            exact
+            path="/login"
+            render={(props) => (
+              <LoginPage {...props} setLoggedIn={setLoggedIn}></LoginPage>
+            )}
+          />
           <Route exact path="/signup" component={SignupPage} />
           <Route exact path="/user/:userId" component={UserPage} />
           <ProtectedRoute>

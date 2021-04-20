@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router";
 import styled from "styled-components";
-import { useAuth } from "../Auth/useAuth";
 
 const SignupSection = styled.div`
   display: flex;
@@ -52,12 +51,11 @@ const SignupBox = styled.div`
   }
 `;
 
-export function SignupPage(props) {
+export function SignupPage({ auth, ...props }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  let auth = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();

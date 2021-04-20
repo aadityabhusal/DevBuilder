@@ -52,10 +52,10 @@ const LoginBox = styled.div`
   }
 `;
 
-export function LoginPage(props) {
+export function LoginPage({ setLoggedIn, ...props }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  let auth = useAuth();
+  let { auth } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,6 +78,7 @@ export function LoginPage(props) {
       ).json();
 
       if (!user.error) {
+        setLoggedIn(true);
         props.history.push("/user/" + user.uid);
       }
       throw new Error(user.error);

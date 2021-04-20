@@ -26,22 +26,25 @@ const Site = styled.div`
 
 export function UserPage(props) {
   const [user, setUser] = useState();
-  const auth = useAuth();
+  const { auth } = useAuth();
   const { userId } = useParams();
 
   useEffect(() => {
     (async () => {
-      let response = await fetch(`/user/${userId}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      let data = await response.json();
-      console.log(data);
-      setUser(data);
+      if (!auth) {
+        let response = await fetch(`/user/${userId}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+        let data = await response.json();
+        setUser(data);
+      } else {
+        setUser(auth);
+      }
     })();
-  }, []);
+  }, [userId, auth]);
 
   return user ? (
     <div>
