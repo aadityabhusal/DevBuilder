@@ -1,11 +1,38 @@
 const Site = require("../models/siteModel");
+const User = require("../models/userModel");
+const Page = require("../models/pageModel");
 
 const createSite = async (req, res, next) => {
   try {
     let newSite = new Site(req.body);
     let site = await newSite.save();
-    res.status(201).json(site);
+    let user = await User.findOneAndUpdate(
+      { _id: req.body.userId },
+      { $push: { sites: { siteId: site._id, siteName: site.name } } },
+      {
+        new: true,
+        useFindAndModify: false,
+      }
+    );
+
+    let newPage = new Page({
+      siteId: site._id,
+      name: "index.html",
+    });
+    let page = await newPage.save();
+
+    await Site.findOneAndUpdate(
+      { _id: site._id },
+      { $push: { pages: { pageId: page._id, pageName: page.name } } },
+      {
+        new: true,
+        useFindAndModify: false,
+      }
+    );
+    let { sites, password, ...data } = await user.toJSON();
+    res.status(201).json(sites);
   } catch (error) {
+    console.log(error);
     error.status = 400;
     return next(error);
   }

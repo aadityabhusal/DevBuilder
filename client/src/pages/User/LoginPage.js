@@ -78,7 +78,6 @@ export function LoginPage({ setLoggedIn, ...props }) {
       ).json();
 
       if (!user.error) {
-        setLoggedIn(true);
         props.history.push("/user/" + user.uid);
       }
       throw new Error(user.error);

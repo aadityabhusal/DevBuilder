@@ -1,4 +1,5 @@
 const Page = require("../models/pageModel");
+const Site = require("../models/siteModel");
 
 const createPage = async (req, res, next) => {
   try {
@@ -57,4 +58,9 @@ const deletePage = async (req, res, next) => {
 //   }
 // };
 
-module.exports = { createPage, getPage, updatePage, deletePage };
+module.exports = {
+  createPage,
+  getPage,
+  updatePage,
+  deletePage,
+};

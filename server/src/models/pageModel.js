@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const { performance } = require("perf_hooks");
+let elementId = performance.now().toString(36).replace(/\./g, "");
 
 const PageSchema = new mongoose.Schema(
   {
@@ -15,7 +17,9 @@ const PageSchema = new mongoose.Schema(
       default: {
         title: "",
         meta: {},
-        styles: {},
+        styles: {
+          main: "",
+        },
         scripts: {},
         links: {},
       },
@@ -28,17 +32,21 @@ const PageSchema = new mongoose.Schema(
         tagName: "body",
         classes: [],
         path: [],
-        children: {},
+        children: {
+          [elementId]: {
+            _id: elementId,
+            path: [],
+            tagName: "div",
+            classes: ["container"],
+            text: "",
+            attributes: {
+              id: "page-container",
+            },
+            children: {},
+          },
+        },
         data: {},
       },
-    },
-    styles: {
-      type: Object,
-      default: {},
-    },
-    scripts: {
-      type: Object,
-      default: {},
     },
     configuration: {
       type: Object,

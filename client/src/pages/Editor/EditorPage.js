@@ -19,16 +19,27 @@ const DragLeftSection = styled.div`
 `;
 
 export function EditorPage() {
-  const { pageId } = useParams();
+  const { siteId } = useParams();
   const [site, setSite] = useState();
+  const [page, setPage] = useState();
   const dragRef = useRef();
 
   useEffect(() => {
-    (async (pageId) => {
-      const response = await (await fetch(`/page/${pageId}`)).json();
-      setSite(response);
-    })(pageId);
-  }, [pageId]);
+    getSite(siteId);
+  }, [siteId]);
+
+  async function getSite(siteId) {
+    const response = await (await fetch(`/site/${siteId}`)).json();
+    setSite(response);
+    let page = response.pages.find((item) => item.pageName === "index.html");
+    console.log(page);
+    getPage(page.pageId);
+  }
+  async function getPage(pageId) {
+    const response = await (await fetch(`/page/${pageId}`)).json();
+    setPage(response);
+    console.log("OK", response);
+  }
 
   document.addEventListener("mouseup", (e) => {
     document.removeEventListener("mousemove", resizeLeftSection);
@@ -54,13 +65,13 @@ export function EditorPage() {
     }
   };
 
-  return site ? (
+  return page ? (
     <EditorContainer>
-      <SiteTreeProvider value={site}>
+      <SiteTreeProvider value={page}>
         <SelectedElementProvider>
           <LeftSection ref={dragRef} />
           <DragLeftSection onMouseDown={handleResize}></DragLeftSection>
-          <DisplaySection site={site} />
+          <DisplaySection site={page} />
         </SelectedElementProvider>
       </SiteTreeProvider>
     </EditorContainer>

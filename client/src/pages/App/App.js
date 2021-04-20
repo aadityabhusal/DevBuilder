@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BrowserRouter, NavLink, Route, Switch } from "react-router-dom";
 import "./App.css";
 
@@ -36,7 +36,7 @@ const Header = styled.div`
 const Footer = styled.div``;
 
 function App() {
-  const { auth, loggedIn, setLoggedIn } = useAuth();
+  const { auth, setAuth, loggedIn, setLoggedIn } = useAuth();
 
   const logout = async (e) => {
     await fetch(`/user/logout`, {
@@ -47,6 +47,7 @@ function App() {
       credentials: "include",
     });
     setLoggedIn(false);
+    setAuth(null);
   };
 
   return (
@@ -94,9 +95,7 @@ function App() {
           />
           <Route exact path="/signup" component={SignupPage} />
           <Route exact path="/user/:userId" component={UserPage} />
-          <ProtectedRoute>
-            <Route exact path="/editor/:pageId" component={EditorPage} />
-          </ProtectedRoute>
+          <Route path="/editor/:siteId" component={EditorPage} />
           <Route component={ErrorPage} />
         </Switch>
         <Footer></Footer>

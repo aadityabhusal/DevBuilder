@@ -23,5 +23,5 @@ export const useAuth = () => {
     })();
   }, [loggedIn]);
 
-  return { auth, loggedIn, setLoggedIn };
+  return { auth, setAuth, loggedIn, setLoggedIn };
 };
