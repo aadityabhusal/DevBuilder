@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
-import { useAuth } from "../Auth/useAuth";
+import { UserContext } from "../../contexts/UserContext";
 
 const UserHead = styled.div`
   margin: 0 20%;
@@ -73,10 +73,9 @@ const Site = styled.div`
 
 export function UserPage(props) {
   const [user, setUser] = useState();
-  const [siteName, setSiteName] = useState("");
   const [sites, setSites] = useState([]);
-
-  const { auth, setLoggedIn } = useAuth();
+  const { user: authUser } = useContext(UserContext);
+  const [siteName, setSiteName] = useState([]);
   const { userId } = useParams();
 
   const createSite = async (e) => {
@@ -98,14 +97,12 @@ export function UserPage(props) {
   };
 
   useEffect(() => {
-    if (auth) {
-      setLoggedIn(true);
-    }
-    getUser(userId, auth);
-  }, [userId, auth, setLoggedIn]);
+    getUser(userId);
+    setSites(authUser?.sites || []);
+  }, [userId, authUser]);
 
-  const getUser = async (userId, auth) => {
-    if (!auth) {
+  const getUser = async (userId) => {
+    try {
       let response = await fetch(`/user/${userId}`, {
         headers: {
           "Content-Type": "application/json",
@@ -114,9 +111,8 @@ export function UserPage(props) {
       });
       let data = await response.json();
       setUser(data);
-    } else {
-      setUser(auth);
-      setSites(auth.sites);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -126,11 +122,11 @@ export function UserPage(props) {
         <img src="/default-user.png" alt="user" />
         <div>
           <h1>{`${user.firstName} ${user.lastName}`}</h1>
-          {auth && <h2>{`${auth.email}`}</h2>}
+          {authUser && <h2>{`${authUser.email}`}</h2>}
         </div>
       </UserHead>
       <Sites>
-        {auth && (
+        {authUser && (
           <SiteForm>
             <input
               type="text"

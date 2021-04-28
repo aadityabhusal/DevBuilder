@@ -31,22 +31,12 @@ const loginUser = async (req, res, next) => {
     }
 
     const token = jwt.sign({ _id: user._id }, process.env.ACCESS_TOKEN_SECRET);
-    res.cookie("jwt", token, {
-      httpOnly: true,
-      maxAge: 3 * 24 * 60 * 60 * 1000,
-    });
-    res.send({ uid: user._id });
+
+    res.send({ uid: user._id, token });
   } catch (error) {
     error.status = 400;
     return next(error);
   }
-};
-
-const logoutUser = (req, res, next) => {
-  res.cookie("jwt", "", {
-    maxAge: 0,
-  });
-  res.send({ message: "Logout Success" });
 };
 
 const getUser = async (req, res, next) => {
@@ -64,10 +54,10 @@ const getUser = async (req, res, next) => {
 
 const authenticateUser = async (req, res, next) => {
   try {
-    const cookie = req.cookies["jwt"];
-    if (!cookie) throw new Error("Unauthenticated User");
+    const token = req.body.token;
+    if (!token) throw new Error("Unauthenticated User");
 
-    const verify = jwt.verify(cookie, process.env.ACCESS_TOKEN_SECRET);
+    const verify = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     if (!verify) throw new Error("Unauthenticated User");
 
     let { password, ...data } = await (
@@ -106,7 +96,6 @@ const deleteUser = async (req, res, next) => {
 module.exports = {
   createUser,
   loginUser,
-  logoutUser,
   getUser,
   authenticateUser,
   updateUser,

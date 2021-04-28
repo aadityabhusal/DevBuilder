@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import { SelectedElementProvider } from "../../contexts/SelectedElementContext";
 import { SiteTreeProvider } from "../../contexts/SiteTreeContext";
+import { UserContext } from "../../contexts/UserContext";
 
 import { LeftSection, DisplaySection } from "./components";
 
@@ -19,9 +20,11 @@ const DragLeftSection = styled.div`
 `;
 
 export function EditorPage() {
-  const { siteId } = useParams();
   const [site, setSite] = useState();
   const [page, setPage] = useState();
+
+  const { user } = useContext(UserContext);
+  const { siteId } = useParams();
   const dragRef = useRef();
 
   useEffect(() => {
@@ -29,16 +32,18 @@ export function EditorPage() {
   }, [siteId]);
 
   async function getSite(siteId) {
-    const response = await (await fetch(`/site/${siteId}`)).json();
-    setSite(response);
-    let page = response.pages.find((item) => item.pageName === "index.html");
-    console.log(page);
-    getPage(page.pageId);
+    try {
+      const response = await (await fetch(`/site/${siteId}`)).json();
+      setSite(response);
+      let page = response.pages.find((item) => item.pageName === "index.html");
+      getPage(page.pageId);
+    } catch (error) {
+      console.log(error);
+    }
   }
   async function getPage(pageId) {
     const response = await (await fetch(`/page/${pageId}`)).json();
     setPage(response);
-    console.log("OK", response);
   }
 
   document.addEventListener("mouseup", (e) => {
@@ -69,9 +74,9 @@ export function EditorPage() {
     <EditorContainer>
       <SiteTreeProvider value={page}>
         <SelectedElementProvider>
-          <LeftSection ref={dragRef} />
+          <LeftSection ref={dragRef} pages={site.pages} />
           <DragLeftSection onMouseDown={handleResize}></DragLeftSection>
-          <DisplaySection site={page} />
+          <DisplaySection />
         </SelectedElementProvider>
       </SiteTreeProvider>
     </EditorContainer>

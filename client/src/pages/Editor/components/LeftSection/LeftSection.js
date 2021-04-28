@@ -27,7 +27,7 @@ const LeftContainer = styled.div`
   position: relative;
 `;
 
-export const LeftSection = React.forwardRef(({}, ref) => {
+export const LeftSection = React.forwardRef(({ pages }, ref) => {
   const [activePanel, setActivePanel] = useState(1);
 
   const checkActive = (index) => (activePanel === index ? "active" : "");
@@ -57,7 +57,7 @@ export const LeftSection = React.forwardRef(({}, ref) => {
       <Panels>
         <ElementsPanel elementList={elementList} isActive={checkActive(1)} />
         <LayoutsPanel layoutList={layoutList} isActive={checkActive(2)} />
-        <PagesPanel isActive={checkActive(3)} />
+        <PagesPanel pages={pages} isActive={checkActive(3)} />
         <PropertiesPanel isActive={checkActive(4)} />
         <StylesPanel isActive={checkActive(5)} />
         <SettingsPanel isActive={checkActive(6)} />

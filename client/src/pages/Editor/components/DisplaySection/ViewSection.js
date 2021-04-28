@@ -1,22 +1,24 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Frame, { FrameContextConsumer } from "react-frame-component";
 import { StyleSheetManager } from "styled-components";
+import { SiteTreeContext } from "../../../../contexts/SiteTreeContext";
 import { ContextMenuFR } from "../ContextMenu";
 import { IframeElement } from "../IFrameElement";
 import { OutlineElement } from "../OutlineBox";
 
-export function ViewSection({ site }) {
+export function ViewSection() {
   const contextRef = useRef();
   const outlineRef = useRef();
   const [contextMenu, setContextMenu] = useState();
+  const { siteTree } = useContext(SiteTreeContext);
 
   useEffect(() => {
-    if (site) {
+    if (siteTree) {
       setContextMenu(contextRef);
     }
-  }, [site]);
+  }, [siteTree]);
 
-  return site ? (
+  return siteTree ? (
     <>
       <ContextMenuFR ref={contextRef} />
       <OutlineElement ref={outlineRef}></OutlineElement>
@@ -27,7 +29,7 @@ export function ViewSection({ site }) {
           <>
             <link type="text/css" rel="stylesheet" href="/core.css" />
             <style id="core-stylesheet"></style>
-            {Object.entries(site.head.styles).map((item) => (
+            {Object.entries(siteTree.head.styles).map((item) => (
               <style id={item[0] + "-stylesheet"} key={item[0]}>
                 {item[1]}
               </style>
@@ -42,7 +44,11 @@ export function ViewSection({ site }) {
                 <IframeElement
                   contextMenu={contextMenu}
                   outlineBox={outlineRef}
-                  data={site.body.children[Object.keys(site.body.children)[0]]}
+                  data={
+                    siteTree.body.children[
+                      Object.keys(siteTree.body.children)[0]
+                    ]
+                  }
                   removeFromParent={() => {}} //Changing the tagName from body to div because of frame-component rendering structure
                 ></IframeElement>
               </>

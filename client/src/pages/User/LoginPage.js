@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Redirect } from "react-router";
 import styled from "styled-components";
-import { useAuth } from "../Auth/useAuth";
+import { UserContext } from "../../contexts/UserContext";
 
 const LoginSection = styled.div`
   display: flex;
@@ -52,10 +52,10 @@ const LoginBox = styled.div`
   }
 `;
 
-export function LoginPage({ setLoggedIn, ...props }) {
+export function LoginPage(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  let { auth } = useAuth();
+  const { user, setToken } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,7 +65,7 @@ export function LoginPage({ setLoggedIn, ...props }) {
     };
 
     try {
-      let user = await (
+      let response = await (
         await fetch(`/user/login`, {
           method: "post",
           headers: {
@@ -77,16 +77,18 @@ export function LoginPage({ setLoggedIn, ...props }) {
         })
       ).json();
 
-      if (!user.error) {
-        props.history.push("/user/" + user.uid);
+      if (!response.error) {
+        localStorage.setItem("token", response.token);
+        setToken(response.token);
+        props.history.push("/user/" + response.uid);
       }
-      throw new Error(user.error);
+      throw new Error(response.error);
     } catch (error) {
       console.log(error.message);
     }
   };
 
-  return !auth ? (
+  return !user ? (
     <LoginSection>
       <LoginBox>
         <h1>Login</h1>
@@ -108,6 +110,6 @@ export function LoginPage({ setLoggedIn, ...props }) {
       </LoginBox>
     </LoginSection>
   ) : (
-    <Redirect to={`/user/${auth._id}`} />
+    <Redirect to={`/user/${user._id}`} />
   );
 }

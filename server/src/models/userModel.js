@@ -21,9 +21,10 @@ const UserSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
-  createdDate: {
-    type: Date,
-    default: Date.now,
+
+  status: {
+    type: Number,
+    default: 0,
   },
 });
 

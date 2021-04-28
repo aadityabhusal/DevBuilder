@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Redirect } from "react-router";
 import styled from "styled-components";
+import { UserContext } from "../../contexts/UserContext";
 
 const SignupSection = styled.div`
   display: flex;
@@ -51,11 +52,12 @@ const SignupBox = styled.div`
   }
 `;
 
-export function SignupPage({ auth, ...props }) {
+export function SignupPage(props) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { user } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,7 +68,7 @@ export function SignupPage({ auth, ...props }) {
       password,
     };
     try {
-      let user = await fetch(`/user/signup`, {
+      let response = await fetch(`/user/signup`, {
         method: "post",
         headers: {
           Accept: "application/json",
@@ -74,16 +76,16 @@ export function SignupPage({ auth, ...props }) {
         },
         body: JSON.stringify(data),
       });
-      if (!user.error) {
+      if (!response.error) {
         props.history.push("/login");
       }
-      throw new Error(user.error);
+      throw new Error(response.error);
     } catch (error) {
       console.log(error.message);
     }
   };
 
-  return !auth ? (
+  return !user ? (
     <SignupSection>
       <SignupBox>
         <h1>Signup</h1>
@@ -117,6 +119,6 @@ export function SignupPage({ auth, ...props }) {
       </SignupBox>
     </SignupSection>
   ) : (
-    <Redirect to={`/user/${auth._id}`} />
+    <Redirect to={`/user/${user._id}`} />
   );
 }

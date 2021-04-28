@@ -9,11 +9,11 @@ const DisplayContainer = styled.div`
   position: relative;
 `;
 
-export function DisplaySection({ site }) {
+export function DisplaySection() {
   return (
     <DisplayContainer>
       <SectionMask id="display-mask"></SectionMask>
-      <ViewSection site={site} />
+      <ViewSection />
     </DisplayContainer>
   );
 }

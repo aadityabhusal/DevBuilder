@@ -1,9 +1,9 @@
-import React, { createContext } from "react";
+import React, { createContext, useState } from "react";
 
 export const SiteTreeContext = createContext();
 
 export const SiteTreeProvider = (props) => {
-  const siteTree = props.value;
+  const [siteTree, setSiteTree] = useState(props.value);
   const bodyChildren = siteTree.body.children;
 
   /* 
@@ -56,7 +56,7 @@ export const SiteTreeProvider = (props) => {
 
   return (
     <SiteTreeContext.Provider
-      value={{ siteTree, updateTree, updateStyles, saveSite }}
+      value={{ siteTree, setSiteTree, updateTree, updateStyles, saveSite }}
     >
       {props.children}
     </SiteTreeContext.Provider>
