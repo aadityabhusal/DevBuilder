@@ -12,6 +12,30 @@ export function LayoutsPanel({ isActive, layoutList }) {
     setLayouts(temp);
   }, [layoutList]);
 
+  function handleDrag(e, element) {
+    /* Element item collapses sometimes */
+    let result = getResult(element);
+    e.dataTransfer.setData("draggedElement", JSON.stringify(result.item));
+  }
+
+  function getResult(element) {
+    let results = {};
+    if (element.children && Object.keys(element.children).length) {
+      for (const key in element.children) {
+        let { id, item } = getResult(element.children[key]);
+        results[id] = item;
+      }
+    } else {
+      let id = performance.now().toString(36).replace(/\./g, "");
+      element._id = id;
+      return { id, item: element };
+    }
+    return {
+      id: performance.now().toString(36).replace(/\./g, ""),
+      item: { ...element, children: results },
+    };
+  }
+
   return layouts ? (
     <Panel className={isActive}>
       <PanelTitle>Layouts</PanelTitle>
@@ -21,12 +45,7 @@ export function LayoutsPanel({ isActive, layoutList }) {
             <PanelItem
               key={i}
               draggable={true}
-              onDragStart={(e) => {
-                e.dataTransfer.setData(
-                  "draggedElement",
-                  JSON.stringify(item[1])
-                );
-              }}
+              onDragStart={(e) => handleDrag(e, item[1])}
             >
               {item[0]}
             </PanelItem>

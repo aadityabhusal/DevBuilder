@@ -80,5 +80,133 @@
         "children": {}
       }
     }
+  },
+
+  "Header": {
+    "_id": "",
+    "tagName": "div",
+    "classes": [],
+    "path": [],
+    "text": "",
+    "attributes": {
+      "id": "header-section"
+    },
+    "children": {
+      "1j1n6u8n1f5": {
+        "_id": "",
+        "tagName": "div",
+        "classes": [],
+        "path": [],
+        "text": "",
+        "attributes": {
+          "id": "logo"
+        },
+        "children": {
+          "1lfvdbipx49": {
+            "_id": "",
+            "tagName": "img",
+            "classes": [],
+            "path": [],
+            "attributes": {
+              "id": "",
+              "alt": "",
+              "src": "https://thumbs.dreamstime.com/t/nem-coin-symbol-logo-crypto-currency-ethereum-logotype-isolated-white-background-vector-graphics-nem-coin-symbol-logo-106345869.jpg"
+            }
+          }
+        }
+      },
+      "u6beeeeee4": {
+        "_id": "",
+        "tagName": "div",
+        "classes": [],
+        "path": [],
+        "text": "",
+        "attributes": {
+          "id": "searchbox"
+        },
+        "children": {
+          "12772ipx4as": {
+            "_id": "",
+            "tagName": "input",
+            "classes": [],
+            "path": [],
+            "attributes": {
+              "id": "",
+              "value": "",
+              "name": "",
+              "type": "text",
+              "placeholder": "Search for our products here..."
+            }
+          },
+          "14bnbc8n1gd": {
+            "_id": "",
+            "tagName": "button",
+            "classes": [],
+            "path": [],
+            "text": "Search",
+            "attributes": {
+              "id": ""
+            },
+            "children": {}
+          }
+        }
+      },
+      "1pl7bvoha1h": {
+        "_id": "",
+        "tagName": "ul",
+        "classes": [],
+        "path": [],
+        "text": "",
+        "attributes": {
+          "id": "navbar"
+        },
+        "children": {
+          "1uizhtipx2y": {
+            "_id": "",
+            "tagName": "li",
+            "classes": ["", ""],
+            "path": [],
+            "text": "Home",
+            "attributes": {
+              "id": ""
+            },
+            "children": {}
+          },
+          "1wurcyk5rc8": {
+            "_id": "",
+            "tagName": "li",
+            "classes": [],
+            "path": [],
+            "text": "About",
+            "attributes": {
+              "id": ""
+            },
+            "children": {}
+          },
+          "20ozambipxa": {
+            "_id": "",
+            "tagName": "li",
+            "classes": [],
+            "path": [],
+            "text": "Contact",
+            "attributes": {
+              "id": ""
+            },
+            "children": {}
+          },
+          "4g3htipxii": {
+            "_id": "",
+            "tagName": "li",
+            "classes": [],
+            "path": [],
+            "text": "Feedback",
+            "attributes": {
+              "id": ""
+            },
+            "children": {}
+          }
+        }
+      }
+    }
   }
 }
