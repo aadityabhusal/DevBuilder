@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { SelectedElementContext } from "../../../contexts/SelectedElementContext";
-import { SiteTreeContext } from "../../../contexts/SiteTreeContext";
+import { PageTreeContext } from "../../../contexts/PageTreeContext";
 
 const StyledContextMenuItem = styled.li`
   padding: 5px 15px;
@@ -35,7 +35,7 @@ function ContextMenu({}, ref) {
   const { selectedElement, insertPasteElement } = useContext(
     SelectedElementContext
   );
-  const { updateTree } = useContext(SiteTreeContext);
+  const { updateTree } = useContext(PageTreeContext);
 
   /*   function handleMoveUp(e) {
     console.log(selectedElement);

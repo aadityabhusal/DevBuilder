@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { SiteTreeContext } from "../../../contexts/SiteTreeContext";
-import { SelectedElementContext } from "../../../contexts/SelectedElementContext";
+import { PageTreeContext } from "../../../../contexts/PageTreeContext";
+import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
 
 export function IframeElement({
   data,
@@ -14,7 +14,7 @@ export function IframeElement({
 
   const [element, setElement] = useState();
   const { setSelectedElement } = useContext(SelectedElementContext);
-  const { updateTree } = useContext(SiteTreeContext);
+  const { updateTree } = useContext(PageTreeContext);
 
   useEffect(() => {
     if (data) {

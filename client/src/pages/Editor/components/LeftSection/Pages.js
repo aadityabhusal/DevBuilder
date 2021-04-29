@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
-import { SiteTreeContext } from "../../../../contexts/SiteTreeContext";
+import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 import { CloseIcon } from "../Icons";
 import {
   Panel,
@@ -32,7 +32,7 @@ const DeletePage = styled.div``;
 
 export function PagesPanel({ pages, isActive }) {
   const [pageList, setPageList] = useState(pages);
-  const { setSiteTree } = useContext(SiteTreeContext);
+  const { setPageTree } = useContext(PageTreeContext);
   const { siteId } = useParams();
 
   const addPage = async (e) => {
@@ -59,7 +59,7 @@ export function PagesPanel({ pages, isActive }) {
   const setPage = async (e, item) => {
     try {
       const response = await (await fetch(`/page/${item.pageId}`)).json();
-      setSiteTree(response);
+      setPageTree(response);
     } catch (error) {
       console.log(error);
     }
@@ -91,9 +91,11 @@ export function PagesPanel({ pages, isActive }) {
           {pageList.map((item) => (
             <PageItem key={item.pageId} onClick={(e) => setPage(e, item)}>
               {item.pageName}
-              <DeletePage onClick={(e) => deletePage(e, item)}>
-                <CloseIcon></CloseIcon>
-              </DeletePage>
+              {item.pageName !== "index.html" && (
+                <DeletePage onClick={(e) => deletePage(e, item)}>
+                  <CloseIcon></CloseIcon>
+                </DeletePage>
+              )}
             </PageItem>
           ))}
         </PageList>

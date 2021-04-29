@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import { SelectedElementProvider } from "../../contexts/SelectedElementContext";
-import { SiteTreeProvider } from "../../contexts/SiteTreeContext";
+import { PageTreeProvider } from "../../contexts/PageTreeContext";
 import { UserContext } from "../../contexts/UserContext";
 
 import { LeftSection, DisplaySection } from "./components";
+import { SiteTreeProvider } from "../../contexts/SiteTreeContext";
 
 const EditorContainer = styled.div`
   display: flex;
@@ -19,7 +20,7 @@ const DragLeftSection = styled.div`
   background-color: #444;
 `;
 
-export function EditorPage() {
+export function EditorPage({ history }) {
   const [site, setSite] = useState();
   const [page, setPage] = useState();
 
@@ -28,22 +29,25 @@ export function EditorPage() {
   const dragRef = useRef();
 
   useEffect(() => {
-    getSite(siteId);
-  }, [siteId]);
+    getSite(siteId, history, user);
+  }, [siteId, history, user]);
 
-  async function getSite(siteId) {
+  async function getSite(siteId, history, user) {
     try {
-      const response = await (await fetch(`/site/${siteId}`)).json();
-      setSite(response);
-      let page = response.pages.find((item) => item.pageName === "index.html");
-      getPage(page.pageId);
+      const siteResponse = await (await fetch(`/site/${siteId}`)).json();
+      if (siteResponse.userId !== user._id) {
+        history.push("/");
+      } else {
+        setSite(siteResponse);
+        let page = siteResponse.pages.find(
+          (item) => item.pageName === "index.html"
+        );
+        const pageResponse = await (await fetch(`/page/${page.pageId}`)).json();
+        setPage(pageResponse);
+      }
     } catch (error) {
       console.log(error);
     }
-  }
-  async function getPage(pageId) {
-    const response = await (await fetch(`/page/${pageId}`)).json();
-    setPage(response);
   }
 
   document.addEventListener("mouseup", (e) => {
@@ -70,14 +74,18 @@ export function EditorPage() {
     }
   };
 
-  return page ? (
+  return site ? (
     <EditorContainer>
-      <SiteTreeProvider value={page}>
-        <SelectedElementProvider>
-          <LeftSection ref={dragRef} pages={site.pages} />
-          <DragLeftSection onMouseDown={handleResize}></DragLeftSection>
-          <DisplaySection />
-        </SelectedElementProvider>
+      <SiteTreeProvider value={site}>
+        {page ? (
+          <PageTreeProvider value={page}>
+            <SelectedElementProvider>
+              <LeftSection ref={dragRef} />
+              <DragLeftSection onMouseDown={handleResize}></DragLeftSection>
+              <DisplaySection />
+            </SelectedElementProvider>
+          </PageTreeProvider>
+        ) : null}
       </SiteTreeProvider>
     </EditorContainer>
   ) : null;

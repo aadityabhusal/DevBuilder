@@ -1,24 +1,24 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Frame, { FrameContextConsumer } from "react-frame-component";
 import { StyleSheetManager } from "styled-components";
-import { SiteTreeContext } from "../../../../contexts/SiteTreeContext";
+import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 import { ContextMenuFR } from "../ContextMenu";
-import { IframeElement } from "../IFrameElement";
-import { OutlineElement } from "../OutlineBox";
+import { IframeElement } from "./IFrameElement";
+import { OutlineElement } from "./OutlineBox";
 
 export function ViewSection() {
   const contextRef = useRef();
   const outlineRef = useRef();
   const [contextMenu, setContextMenu] = useState();
-  const { siteTree } = useContext(SiteTreeContext);
+  const { pageTree } = useContext(PageTreeContext);
 
   useEffect(() => {
-    if (siteTree) {
+    if (pageTree) {
       setContextMenu(contextRef);
     }
-  }, [siteTree]);
+  }, [pageTree]);
 
-  return siteTree ? (
+  return pageTree ? (
     <>
       <ContextMenuFR ref={contextRef} />
       <OutlineElement ref={outlineRef}></OutlineElement>
@@ -29,7 +29,7 @@ export function ViewSection() {
           <>
             <link type="text/css" rel="stylesheet" href="/core.css" />
             <style id="core-stylesheet"></style>
-            {Object.entries(siteTree.head.styles).map((item) => (
+            {Object.entries(pageTree.head.style).map((item) => (
               <style id={item[0] + "-stylesheet"} key={item[0]}>
                 {item[1]}
               </style>
@@ -45,8 +45,8 @@ export function ViewSection() {
                   contextMenu={contextMenu}
                   outlineBox={outlineRef}
                   data={
-                    siteTree.body.children[
-                      Object.keys(siteTree.body.children)[0]
+                    pageTree.body.children[
+                      Object.keys(pageTree.body.children)[0]
                     ]
                   }
                   removeFromParent={() => {}} //Changing the tagName from body to div because of frame-component rendering structure

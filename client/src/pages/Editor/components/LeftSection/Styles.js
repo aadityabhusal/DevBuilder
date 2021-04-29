@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { Panel, PanelInputText } from "../Panel";
 import MonacoEditor from "@monaco-editor/react";
 import styled from "styled-components";
-import { SiteTreeContext } from "../../../../contexts/SiteTreeContext";
+import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 import {
   DropDownButton,
   AddNewButton,
@@ -25,15 +25,15 @@ export function StylesPanel({ isActive }) {
   const dropDownListRef = useRef();
   const inputBoxRef = useRef();
 
-  const { siteTree, updateStyles, saveSite } = useContext(SiteTreeContext);
+  const { pageTree, updateStyles, savePage } = useContext(PageTreeContext);
   const [currentStyle, setCurrentStyle] = useState([]);
   const [styleList, setStyleList] = useState([]);
 
   useEffect(() => {
-    let styles = Object.entries(siteTree.head.styles);
+    let styles = Object.entries(pageTree.head.style);
     setStyleList(styles);
-    setCurrentStyle([styles[0][0], siteTree.head.styles[styles[0][0]]]);
-  }, [siteTree.head.styles]);
+    setCurrentStyle([styles[0][0], pageTree.head.style[styles[0][0]]]);
+  }, [pageTree.head.style]);
 
   const options = {
     selectOnLineNumbers: true,
@@ -47,7 +47,7 @@ export function StylesPanel({ isActive }) {
       let value = e.target.value;
       updateStyles(value);
       setStyleList((prev) => [...prev, [value, ""]]);
-      saveSite();
+      savePage();
       e.target.value = "";
     }
     let stylesheet = document.createElement("style");
@@ -65,7 +65,7 @@ export function StylesPanel({ isActive }) {
       return arr;
     });
     setCurrentStyle(styleList[0] || []);
-    saveSite();
+    savePage();
   };
 
   const handleEditor = (value) => {
@@ -87,7 +87,7 @@ export function StylesPanel({ isActive }) {
 
   const mountEditor = (editor, monaco) => {
     editorRef.current = editor;
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, saveSite);
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, savePage);
   };
 
   const removeDropDowns = () => {

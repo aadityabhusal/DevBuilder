@@ -17,11 +17,11 @@ const PageSchema = new mongoose.Schema(
       default: {
         title: "",
         meta: {},
-        styles: {
+        style: {
           main: "",
         },
-        scripts: {},
-        links: {},
+        script: {},
+        link: {},
       },
     },
     body: {

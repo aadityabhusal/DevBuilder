@@ -1,6 +1,8 @@
 const Page = require("../models/pageModel");
 const Site = require("../models/siteModel");
 const mongoose = require("mongoose");
+const JSZip = require("jszip");
+const { getHeadHTML, getBodyHTML } = require("./getPageHTML");
 
 const createPage = async (req, res, next) => {
   try {
@@ -70,22 +72,26 @@ const deletePage = async (req, res, next) => {
   }
 };
 
-// const updateStyles = async (req, res, next) => {
-//   try {
-//     await Page.findOneAndUpdate({ _id: req.params.pageId }, req.body, {
-//       new: true,
-//       useFindAndModify: false,
-//     });
-//     res.sendStatus(200);
-//   } catch (error) {
-//     error.status = 400;
-//     return next(error);
-//   }
-// };
+const exportPage = async (req, res, next) => {
+  try {
+    let page = await Page.findById(req.params.pageId);
+    let pageHead = getHeadHTML(page.head);
+    let pageBody = getBodyHTML(page.body);
+    let result = `<!DOCTYPE html><html lang="en"><head>${pageHead}</head>${pageBody}</html>`;
+    const zip = new JSZip();
+    zip.file(page.name, result);
+    const files = await zip.generateAsync({ type: "nodebuffer" });
+    res.end(files);
+  } catch (error) {
+    error.status = 400;
+    return next(error);
+  }
+};
 
 module.exports = {
   createPage,
   getPage,
   updatePage,
   deletePage,
+  exportPage,
 };

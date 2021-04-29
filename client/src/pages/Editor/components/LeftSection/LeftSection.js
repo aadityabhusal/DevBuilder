@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import {
   ElementsIcon,
@@ -19,6 +19,7 @@ import { StylesPanel } from "./Styles";
 
 import elementList from "../../lists/elements.json";
 import layoutList from "../../lists/layouts.json";
+import { SiteTreeContext } from "../../../../contexts/SiteTreeContext";
 
 const LeftContainer = styled.div`
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -27,11 +28,10 @@ const LeftContainer = styled.div`
   position: relative;
 `;
 
-export const LeftSection = React.forwardRef(({ pages }, ref) => {
+export const LeftSection = React.forwardRef(({}, ref) => {
   const [activePanel, setActivePanel] = useState(1);
-
   const checkActive = (index) => (activePanel === index ? "active" : "");
-
+  const { siteTree } = useContext(SiteTreeContext);
   return (
     <LeftContainer id="left-panel" data-panel-side="left" ref={ref}>
       <PanelList className="panel-list">
@@ -57,7 +57,7 @@ export const LeftSection = React.forwardRef(({ pages }, ref) => {
       <Panels>
         <ElementsPanel elementList={elementList} isActive={checkActive(1)} />
         <LayoutsPanel layoutList={layoutList} isActive={checkActive(2)} />
-        <PagesPanel pages={pages} isActive={checkActive(3)} />
+        <PagesPanel pages={siteTree.pages} isActive={checkActive(3)} />
         <PropertiesPanel isActive={checkActive(4)} />
         <StylesPanel isActive={checkActive(5)} />
         <SettingsPanel isActive={checkActive(6)} />

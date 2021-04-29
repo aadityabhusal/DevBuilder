@@ -1,6 +1,8 @@
 const Site = require("../models/siteModel");
 const User = require("../models/userModel");
 const Page = require("../models/pageModel");
+const JSZip = require("jszip");
+const { getHeadHTML, getBodyHTML } = require("./getPageHTML");
 
 const createSite = async (req, res, next) => {
   try {
@@ -71,4 +73,22 @@ const deleteSite = async (req, res, next) => {
   }
 };
 
-module.exports = { createSite, getSite, updateSite, deleteSite };
+const exportSite = async (req, res, next) => {
+  try {
+    const zip = new JSZip();
+    let pages = await Page.find({ siteId: req.params.siteId });
+    pages.forEach(async (page) => {
+      let pageHead = getHeadHTML(page.head);
+      let pageBody = getBodyHTML(page.body);
+      let result = `<!DOCTYPE html><html lang="en"><head>${pageHead}</head>${pageBody}</html>`;
+      zip.file(page.name, result);
+    });
+    const files = await zip.generateAsync({ type: "nodebuffer" });
+    res.end(files);
+  } catch (error) {
+    error.status = 400;
+    return next(error);
+  }
+};
+
+module.exports = { createSite, getSite, updateSite, deleteSite, exportSite };

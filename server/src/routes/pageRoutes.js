@@ -4,6 +4,7 @@ const {
   getPage,
   updatePage,
   deletePage,
+  exportPage,
 } = require("../controllers/pageController");
 
 const elementRoutes = require("./elementRoutes");
@@ -14,6 +15,8 @@ const routes = () => {
   router.post("/", createPage);
 
   router.route("/:pageId").get(getPage).put(updatePage).delete(deletePage);
+
+  router.get("/:pageId/export", exportPage);
 
   router.use(
     "/:pageId",

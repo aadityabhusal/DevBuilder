@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { SiteTreeContext } from "../../../../contexts/SiteTreeContext";
 import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
 import {
   Panel,
@@ -14,7 +13,6 @@ export function PropertiesPanel({ isActive }) {
   const { selectedElement, setSelectedElement } = useContext(
     SelectedElementContext
   );
-  // const { updateTree } = useContext(SiteTreeContext);
 
   const handleAttribute = (e, property) => {
     setSelectedElement((prev, prop) => {
