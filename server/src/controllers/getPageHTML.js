@@ -36,7 +36,7 @@ function getHeadHTML(element) {
   for (const headKey in element) {
     const headItem = element[headKey];
     if (typeof headItem == "object") {
-      if (Object.keys(headItem).length) {
+      if (Object.keys(headItem).length && headKey !== "style") {
         for (const itemKey in headItem) {
           const item = headItem[itemKey];
           result += `<${headKey}>${item}</${headKey}>`;
@@ -49,4 +49,14 @@ function getHeadHTML(element) {
   return result;
 }
 
-module.exports = { getHeadHTML, getBodyHTML };
+function getStyles(styleObj, pageName) {
+  let links = "";
+  let styles = [];
+  for (const itemKey in styleObj) {
+    links += `<link rel="stylesheet" href="./${pageName}/${itemKey}.css">`;
+    styles.push([`${itemKey}.css`, styleObj[itemKey]]);
+  }
+  return { links, styles };
+}
+
+module.exports = { getHeadHTML, getBodyHTML, getStyles };

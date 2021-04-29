@@ -2,7 +2,7 @@ const Page = require("../models/pageModel");
 const Site = require("../models/siteModel");
 const mongoose = require("mongoose");
 const JSZip = require("jszip");
-const { getHeadHTML, getBodyHTML } = require("./getPageHTML");
+const { getHeadHTML, getBodyHTML, getStyles } = require("./getPageHTML");
 
 const createPage = async (req, res, next) => {
   try {
@@ -77,8 +77,15 @@ const exportPage = async (req, res, next) => {
     let page = await Page.findById(req.params.pageId);
     let pageHead = getHeadHTML(page.head);
     let pageBody = getBodyHTML(page.body);
-    let result = `<!DOCTYPE html><html lang="en"><head>${pageHead}</head>${pageBody}</html>`;
     const zip = new JSZip();
+    let pageName = page.name.split(".")[0];
+    let { links, styles } = getStyles(page.head.style, pageName);
+    styles.forEach(async (item) => {
+      zip.folder(pageName).file(item[0], item[1]);
+    });
+
+    let result = `<!DOCTYPE html><html lang="en"><head>${pageHead}${links}</head>${pageBody}</html>`;
+
     zip.file(page.name, result);
     const files = await zip.generateAsync({ type: "nodebuffer" });
     res.end(files);

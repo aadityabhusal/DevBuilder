@@ -31,13 +31,13 @@ export const PageTreeProvider = (props) => {
   }
 
   function updateStyles(name, action = "", value = "") {
-    if (!pageTree.head.styles.hasOwnProperty(name)) {
-      pageTree.head.styles[name] = "";
+    if (!pageTree.head.style.hasOwnProperty(name)) {
+      pageTree.head.style[name] = "";
     } else {
       if (action === "delete") {
-        delete pageTree.head.styles[name];
+        delete pageTree.head.style[name];
       } else {
-        pageTree.head.styles[name] = value;
+        pageTree.head.style[name] = value;
       }
     }
   }

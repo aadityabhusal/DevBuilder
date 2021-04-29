@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 import { SiteTreeContext } from "../../../../contexts/SiteTreeContext";
-import { getBodyHTML, getHeadHTML } from "../../getPageHTML";
+
 import {
   Panel,
   PanelTitle,

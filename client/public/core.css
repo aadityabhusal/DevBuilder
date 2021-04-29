@@ -4,9 +4,8 @@ body {
 
 * {
   border: 1px solid #bdc3c7;
-  padding: 5px;
-  margin: 2px;
-  cursor: pointer;
+  /* padding: 5px;
+  margin: 2px; */
 }
 
 .frame-content,
@@ -17,7 +16,7 @@ html {
   padding: 0 !important;
   margin: 0 !important;
 }
-
+/* 
 button {
   padding: 10px;
   background-color: #3498db;
@@ -34,4 +33,4 @@ input {
 ul {
   list-style: none;
   padding: 0;
-}
+} */

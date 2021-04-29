@@ -24,14 +24,17 @@ export function LayoutsPanel({ isActive, layoutList }) {
       for (const key in element.children) {
         let { id, item } = getResult(element.children[key]);
         results[id] = item;
+        item._id = id;
       }
     } else {
-      let id = performance.now().toString(36).replace(/\./g, "");
+      let id = (performance.now() + Math.random())
+        .toString(36)
+        .replace(/\./g, "");
       element._id = id;
       return { id, item: element };
     }
     return {
-      id: performance.now().toString(36).replace(/\./g, ""),
+      id: (performance.now() + Math.random()).toString(36).replace(/\./g, ""),
       item: { ...element, children: results },
     };
   }
