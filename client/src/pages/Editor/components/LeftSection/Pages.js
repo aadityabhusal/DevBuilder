@@ -25,6 +25,7 @@ const PageItem = styled(PanelItem)`
   padding: 10px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const DeletePage = styled.div``;

@@ -1,7 +1,16 @@
-import React from "react";
-import { Panel, PanelTitle, PanelLabel, PanelInputCheck } from "../Panel";
+import React, { useContext } from "react";
+import { SiteTreeContext } from "../../../../contexts/SiteTreeContext";
+import {
+  Panel,
+  PanelTitle,
+  PanelLabel,
+  PanelInputCheck,
+  PanelButton,
+} from "../Panel";
 
 export function SettingsPanel({ isActive }) {
+  const { saveSite } = useContext(SiteTreeContext);
+
   const handleRemoveBorders = (e) => {
     let stylesheet = document
       .getElementById("iframe-view")
@@ -24,6 +33,9 @@ export function SettingsPanel({ isActive }) {
           onChange={handleRemoveBorders}
         ></PanelInputCheck>
       </PanelLabel>
+      <PanelButton id="saveProps" onClick={saveSite}>
+        Save Site
+      </PanelButton>
     </Panel>
   );
 }

@@ -5,7 +5,7 @@ export const Panel = styled.div`
   overflow-y: auto;
   flex-direction: column;
   padding: 5px 10px;
-  height: calc(100vh - 40px);
+  height: calc(100vh - 80px);
 
   &.active {
     display: flex;

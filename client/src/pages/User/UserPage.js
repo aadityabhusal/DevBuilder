@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { UserContext } from "../../contexts/UserContext";
 
@@ -142,7 +143,7 @@ export function UserPage(props) {
             sites.map((item) => (
               <Site key={item.siteId}>
                 <img src="/siteImage.png" alt="Site" />
-                <a href={`/editor/${item.siteId}`}>{item.siteName}</a>
+                <Link to={`/editor/${item.siteId}`}>{item.siteName}</Link>
               </Site>
             ))
           ) : (

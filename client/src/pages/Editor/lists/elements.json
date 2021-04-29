@@ -4,7 +4,7 @@
     "tagName": "div",
     "classes": [],
     "path": [],
-    "text": "",
+    "text": [""],
     "attributes": {
       "id": ""
     },
@@ -15,7 +15,7 @@
     "tagName": "a",
     "classes": [],
     "path": [],
-    "text": "Link",
+    "text": ["Link"],
     "attributes": {
       "id": "",
       "href": ""
@@ -38,7 +38,7 @@
     "tagName": "button",
     "classes": [],
     "path": [],
-    "text": "Button",
+    "text": ["Button"],
     "attributes": {
       "id": ""
     },
@@ -62,7 +62,7 @@
     "tagName": "p",
     "classes": [],
     "path": [],
-    "text": "Text",
+    "text": ["Text"],
     "attributes": {
       "id": ""
     },
@@ -73,7 +73,7 @@
     "tagName": "ol",
     "classes": [],
     "path": [],
-    "text": "",
+    "text": [""],
     "attributes": {
       "id": "",
       "type": "",
@@ -87,7 +87,7 @@
     "tagName": "ul",
     "classes": [],
     "path": [],
-    "text": "",
+    "text": [""],
     "attributes": {
       "id": ""
     },
@@ -98,7 +98,7 @@
     "tagName": "li",
     "classes": [],
     "path": [],
-    "text": "",
+    "text": ["li"],
     "attributes": {
       "id": ""
     },
@@ -109,7 +109,7 @@
     "tagName": "h1",
     "classes": [],
     "path": [],
-    "text": "",
+    "text": [""],
     "attributes": {
       "id": ""
     },
@@ -120,7 +120,7 @@
     "tagName": "h2",
     "classes": [],
     "path": [],
-    "text": "",
+    "text": [""],
     "attributes": {
       "id": ""
     },
@@ -131,7 +131,7 @@
     "tagName": "h3",
     "classes": [],
     "path": [],
-    "text": "",
+    "text": [""],
     "attributes": {
       "id": ""
     },

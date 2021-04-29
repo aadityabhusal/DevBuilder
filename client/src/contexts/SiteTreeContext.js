@@ -27,7 +27,6 @@ export const SiteTreeProvider = (props) => {
           ++level
         );
       }
-      saveSite();
     }
   }
 

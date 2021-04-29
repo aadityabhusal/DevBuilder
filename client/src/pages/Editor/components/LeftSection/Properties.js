@@ -11,10 +11,10 @@ import {
 } from "../Panel";
 
 export function PropertiesPanel({ isActive }) {
-  const [selectedElement, setSelectedElement] = useContext(
+  const { selectedElement, setSelectedElement } = useContext(
     SelectedElementContext
   );
-  const { updateTree, saveSite } = useContext(SiteTreeContext);
+  // const { updateTree } = useContext(SiteTreeContext);
 
   const handleAttribute = (e, property) => {
     setSelectedElement((prev, prop) => {
@@ -45,19 +45,19 @@ export function PropertiesPanel({ isActive }) {
   const handleProperty = (e, property) => {
     setSelectedElement((prev, prop) => {
       let temp = { ...prev };
-      temp[property] = e.target.value;
+      temp[property][0] = e.target.value;
       return temp;
     });
   };
 
-  const handleSave = (e) => {
-    setSelectedElement((prev, prop) => {
-      let temp = { ...prev };
-      temp.classes = temp.classes.filter(Boolean);
-      return temp;
-    });
-    updateTree(selectedElement);
-  };
+  // const handleSave = (e) => {
+  //   setSelectedElement((prev, prop) => {
+  //     let temp = { ...prev };
+  //     temp.classes = temp.classes.filter(Boolean);
+  //     return temp;
+  //   });
+  //   updateTree(selectedElement);
+  // };
 
   return (
     <Panel className={isActive}>
@@ -102,9 +102,6 @@ export function PropertiesPanel({ isActive }) {
               onChange={(e) => handleProperty(e, "text")}
             ></PanelTextArea>
           )}
-          <PanelButton id="saveProps" onClick={handleSave}>
-            Save
-          </PanelButton>
         </>
       ) : (
         <PanelLabel style={{ textAlign: "center", marginTop: "10px" }}>

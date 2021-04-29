@@ -4,7 +4,7 @@
     "tagName": "div",
     "classes": [],
     "path": [],
-    "text": "",
+    "text": [""],
     "attributes": {
       "id": ""
     },
@@ -14,7 +14,7 @@
         "tagName": "ul",
         "classes": [],
         "path": [],
-        "text": "",
+        "text": [""],
         "attributes": {
           "id": ""
         },
@@ -24,7 +24,7 @@
             "tagName": "li",
             "classes": [],
             "path": [],
-            "text": "Li1",
+            "text": ["Li1"],
             "attributes": {
               "id": ""
             },
@@ -35,7 +35,7 @@
             "tagName": "li",
             "classes": [],
             "path": [],
-            "text": "li2",
+            "text": ["li2"],
             "attributes": {
               "id": ""
             },
@@ -50,7 +50,7 @@
     "tagName": "div",
     "classes": [],
     "path": [],
-    "text": "",
+    "text": [""],
     "attributes": {
       "id": ""
     },
@@ -73,7 +73,7 @@
         "tagName": "button",
         "classes": [],
         "path": [],
-        "text": "Button",
+        "text": ["Button"],
         "attributes": {
           "id": ""
         },
@@ -87,7 +87,7 @@
     "tagName": "div",
     "classes": [],
     "path": [],
-    "text": "",
+    "text": [""],
     "attributes": {
       "id": "header-section"
     },
@@ -97,7 +97,7 @@
         "tagName": "div",
         "classes": [],
         "path": [],
-        "text": "",
+        "text": [""],
         "attributes": {
           "id": "logo"
         },
@@ -120,7 +120,7 @@
         "tagName": "div",
         "classes": [],
         "path": [],
-        "text": "",
+        "text": [""],
         "attributes": {
           "id": "searchbox"
         },
@@ -143,7 +143,7 @@
             "tagName": "button",
             "classes": [],
             "path": [],
-            "text": "Search",
+            "text": ["Search"],
             "attributes": {
               "id": ""
             },
@@ -156,7 +156,7 @@
         "tagName": "ul",
         "classes": [],
         "path": [],
-        "text": "",
+        "text": [""],
         "attributes": {
           "id": "navbar"
         },
@@ -166,7 +166,7 @@
             "tagName": "li",
             "classes": ["", ""],
             "path": [],
-            "text": "Home",
+            "text": ["Home"],
             "attributes": {
               "id": ""
             },
@@ -177,7 +177,7 @@
             "tagName": "li",
             "classes": [],
             "path": [],
-            "text": "About",
+            "text": ["About"],
             "attributes": {
               "id": ""
             },
@@ -188,7 +188,7 @@
             "tagName": "li",
             "classes": [],
             "path": [],
-            "text": "Contact",
+            "text": ["Contact"],
             "attributes": {
               "id": ""
             },
@@ -199,7 +199,7 @@
             "tagName": "li",
             "classes": [],
             "path": [],
-            "text": "Feedback",
+            "text": ["Feedback"],
             "attributes": {
               "id": ""
             },

@@ -9,7 +9,7 @@ import { LeftSection, DisplaySection } from "./components";
 
 const EditorContainer = styled.div`
   display: flex;
-  max-height: calc(100vh - 45px);
+  max-height: calc(100vh - 40px);
   overflow: hidden;
 `;
 

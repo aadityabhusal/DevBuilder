@@ -13,7 +13,7 @@ export function IframeElement({
   const nonClosingTags = ["img", "input", "hr", "br"];
 
   const [element, setElement] = useState();
-  const [, setSelectedElement] = useContext(SelectedElementContext);
+  const { setSelectedElement } = useContext(SelectedElementContext);
   const { updateTree } = useContext(SiteTreeContext);
 
   useEffect(() => {
@@ -27,6 +27,18 @@ export function IframeElement({
     closeContextMenu(e, contextMenu);
     setSelectedElement(element);
   };
+
+  const openContextMenu = (e, contextMenu) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedElement(element);
+    contextMenu.current.style.display = "flex";
+    contextMenu.current.style.top = e.clientY + "px";
+    contextMenu.current.style.left = e.clientX + "px";
+
+    return false;
+  };
+
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -38,7 +50,7 @@ export function IframeElement({
     let data = JSON.parse(e.dataTransfer.getData("draggedElement"));
     if (!data._id) data._id = performance.now().toString(36).replace(/\./g, "");
     if (!data.path.length) data.path = [...element.path, element._id];
-    insertElement(data, contextMenu);
+    insertElement(data);
     updateTree(data);
   };
   const handleDragOver = (e) => {
@@ -58,7 +70,8 @@ export function IframeElement({
       return temp;
     });
   };
-  const insertElement = (child, contextMenu) => {
+  const insertElement = (child, contextMenu = {}) => {
+    console.log("OK", child);
     setElement((prev, prop) => {
       let temp = { ...prev };
       temp.children[child._id] = child;
@@ -98,7 +111,7 @@ export function IframeElement({
         className={"frame-element " + classlist}
         {...attributes}
       >
-        {text}
+        {text.join(" ")}
         {Object.values(element.children).length
           ? Object.values(element.children).map((elem) => {
               elem.path = [...element.path, element._id];
@@ -132,30 +145,17 @@ export function IframeElement({
   ) : null;
 }
 
-const openContextMenu = (e, contextMenu) => {
-  e.preventDefault();
-  contextMenu.current.style.display = "flex";
-  contextMenu.current.style.top = e.clientY + "px";
-  contextMenu.current.style.left = e.clientX + "px";
-  return false;
-};
 const closeContextMenu = (e, contextMenu) => {
   contextMenu.current.style.display = "none";
 };
 
-/* 
-  For hover, instead of manipulating the element's actual border properties
-  Create an element that will appear on top of the hover element that will create a box around and show the element name 
+export const executePaste = async (element, insertElement, updateTree) => {
+  let pasteData = JSON.parse(await navigator.clipboard.readText());
+  pasteData._id = performance.now().toString(36).replace(/\./g, "");
 
-  const showHoverBox = (e) => {
-    e.stopPropagation();
-    let width = parseInt(getComputedStyle(e.target).borderWidth) + 1;
-    console.log(getComputedStyle(e.target).borderColor);
-    e.target.style.borderWidth = width + "px";
-  };
-  const hideHoverBox = (e) => {
-    e.stopPropagation();
-    let width = parseInt(getComputedStyle(e.target).borderWidth) - 1;
-    e.target.style.borderWidth = width + "px";
-  };
-*/
+  if (pasteData) {
+    pasteData.path = [...element.path, element._id];
+    insertElement(pasteData);
+    updateTree(pasteData);
+  }
+};
