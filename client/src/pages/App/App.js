@@ -12,6 +12,7 @@ import { ProtectedRoute } from "../Auth/ProtectedRoute";
 import { UserPage } from "../User/UserPage";
 import { UserProvider } from "../../contexts/UserContext";
 import { Header } from "./Header";
+import { EditUserPage } from "../User/EditUserPage";
 
 const Footer = styled.div``;
 
@@ -30,6 +31,10 @@ function App() {
             />
             <Route exact path="/signup" component={SignupPage} />
             <Route exact path="/user/:userId" component={UserPage} />
+            <ProtectedRoute
+              path="/user/:userId/edit"
+              component={EditUserPage}
+            />
             <ProtectedRoute path="/editor/:siteId" component={EditorPage} />
             <Route component={ErrorPage} />
           </Switch>

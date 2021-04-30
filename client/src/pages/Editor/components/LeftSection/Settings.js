@@ -111,7 +111,11 @@ export function SettingsPanel({ isActive }) {
       <PanelButton id="saveProps" onClick={exportSite}>
         Export Site
       </PanelButton>
-      <PanelButton id="saveProps" onClick={deleteSite}>
+      <PanelButton
+        style={{ background: "#e74c3c", color: "#ecf0f1" }}
+        id="saveProps"
+        onClick={deleteSite}
+      >
         Delete Site
       </PanelButton>
     </Panel>

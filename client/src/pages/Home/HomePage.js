@@ -61,8 +61,8 @@ export function HomePage() {
   return (
     <MainSection>
       <HeroSection>
-        <h1>Create your website with WebCreator</h1>
-        <Link to="/editor/606484eba2802d3304e992fb">Get Started</Link>
+        <h1>Website Builder for Developers</h1>
+        <Link to="/login">Get Started</Link>
       </HeroSection>
       <Features>
         <h2>Features</h2>

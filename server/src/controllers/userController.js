@@ -72,11 +72,16 @@ const authenticateUser = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
   try {
-    await User.findOneAndUpdate({ _id: req.params.userId }, req.body, {
-      new: true,
-      useFindAndModify: false,
-    });
-    res.sendStatus(200);
+    if (req.body.password) {
+      req.body.password = Hex.stringify(sha256(req.body.password));
+    }
+    let { password, ...data } = await (
+      await User.findOneAndUpdate({ _id: req.params.userId }, req.body, {
+        new: true,
+        useFindAndModify: false,
+      })
+    ).toJSON();
+    res.send(data);
   } catch (error) {
     error.status = 400;
     return next(error);
@@ -86,7 +91,7 @@ const updateUser = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
   try {
     await User.deleteOne({ _id: req.params.userId });
-    res.sendStatus(200);
+    res.send({ message: "User Deleted" });
   } catch (error) {
     error.status = 500;
     return next(error);

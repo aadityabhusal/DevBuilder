@@ -14,6 +14,18 @@ const UserHead = styled.div`
     height: 100px;
     margin-right: 30px;
   }
+
+  & h1,
+  h2 {
+    margin-bottom: 0;
+  }
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding-bottom: 20px;
+  }
 `;
 
 const Sites = styled.div`
@@ -72,6 +84,15 @@ const Site = styled.div`
   }
 `;
 
+const EditUserButton = styled(Link)`
+  background-color: #34495e;
+  border: none;
+  color: #fff;
+  padding: 8px;
+  text-decoration: none;
+  align-self: flex-end;
+`;
+
 export function UserPage(props) {
   const [user, setUser] = useState();
   const [sites, setSites] = useState([]);
@@ -123,7 +144,14 @@ export function UserPage(props) {
         <img src="/default-user.png" alt="user" />
         <div>
           <h1>{`${user.firstName} ${user.lastName}`}</h1>
-          {authUser && <h2>{`${authUser.email}`}</h2>}
+          {authUser && (
+            <>
+              <h2>{`${authUser.email}`}</h2>
+              <EditUserButton to={`/user/${authUser._id}/edit`}>
+                Edit Profile
+              </EditUserButton>
+            </>
+          )}
         </div>
       </UserHead>
       <Sites>
