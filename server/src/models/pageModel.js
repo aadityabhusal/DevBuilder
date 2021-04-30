@@ -38,7 +38,7 @@ const PageSchema = new mongoose.Schema(
             path: [],
             tagName: "div",
             classes: ["container"],
-            text: "",
+            text: [],
             attributes: {
               id: "page-container",
             },

@@ -71,7 +71,6 @@ export function IframeElement({
     });
   };
   const insertElement = (child, contextMenu = {}) => {
-    console.log("OK", child);
     setElement((prev, prop) => {
       let temp = { ...prev };
       temp.children[child._id] = child;

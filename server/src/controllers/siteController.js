@@ -1,6 +1,7 @@
 const Site = require("../models/siteModel");
 const User = require("../models/userModel");
 const Page = require("../models/pageModel");
+const mongoose = require("mongoose");
 const JSZip = require("jszip");
 const { getHeadHTML, getBodyHTML, getStyles } = require("./getPageHTML");
 
@@ -56,7 +57,7 @@ const updateSite = async (req, res, next) => {
       new: true,
       useFindAndModify: false,
     });
-    res.sendStatus(200);
+    res.send({ message: "Site Updated" });
   } catch (error) {
     error.status = 400;
     return next(error);
@@ -66,7 +67,19 @@ const updateSite = async (req, res, next) => {
 const deleteSite = async (req, res, next) => {
   try {
     await Site.deleteOne({ _id: req.params.siteId });
-    res.sendStatus(200);
+    await Page.deleteMany({ siteId: req.params.siteId });
+
+    await User.findOneAndUpdate(
+      { _id: req.body.userId },
+      {
+        $pull: {
+          sites: { siteId: mongoose.Types.ObjectId(req.params.siteId) },
+        },
+      },
+      { safe: true, upsert: true, new: true, useFindAndModify: false }
+    );
+
+    res.send({ message: "Site Deleted" });
   } catch (error) {
     error.status = 500;
     return next(error);

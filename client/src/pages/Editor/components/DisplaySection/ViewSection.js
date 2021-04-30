@@ -6,6 +6,23 @@ import { ContextMenuFR } from "../ContextMenu";
 import { IframeElement } from "./IFrameElement";
 import { OutlineElement } from "./OutlineBox";
 
+const coreStyle = `
+* {
+  border: 1px solid #bdc3c7;
+  padding: 5px;
+  margin: 2px;
+}
+
+.frame-content,
+.frame-root,
+body,
+html {
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+`;
+
 export function ViewSection() {
   const contextRef = useRef();
   const outlineRef = useRef();
@@ -27,8 +44,7 @@ export function ViewSection() {
         style={{ flex: 1, border: "none" }}
         head={
           <>
-            <link type="text/css" rel="stylesheet" href="/core.css" />
-            <style id="core-stylesheet"></style>
+            <style id="core-stylesheet">{coreStyle}</style>
             {Object.entries(pageTree.head.style).map((item) => (
               <style id={item[0] + "-stylesheet"} key={item[0]}>
                 {item[1]}
