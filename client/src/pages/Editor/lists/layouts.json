@@ -2,42 +2,42 @@
   "Layout 1": {
     "_id": "",
     "tagName": "div",
-    "classes": [],
     "path": [],
     "text": [""],
     "attributes": {
-      "id": ""
+      "id": "",
+      "class": ""
     },
     "children": {
       "1": {
         "_id": "",
         "tagName": "ul",
-        "classes": [],
         "path": [],
         "text": [""],
         "attributes": {
-          "id": ""
+          "id": "",
+          "class": ""
         },
         "children": {
           "1": {
             "_id": "",
             "tagName": "li",
-            "classes": [],
             "path": [],
             "text": ["Li1"],
             "attributes": {
-              "id": ""
+              "id": "",
+              "class": ""
             },
             "children": {}
           },
           "2": {
             "_id": "",
             "tagName": "li",
-            "classes": [],
             "path": [],
             "text": ["li2"],
             "attributes": {
-              "id": ""
+              "id": "",
+              "class": ""
             },
             "children": {}
           }
@@ -48,20 +48,20 @@
   "Layout 2": {
     "_id": "",
     "tagName": "div",
-    "classes": [],
     "path": [],
     "text": [""],
     "attributes": {
-      "id": ""
+      "id": "",
+      "class": ""
     },
     "children": {
       "1": {
         "_id": "",
         "tagName": "input",
-        "classes": [],
         "path": [],
         "attributes": {
           "id": "",
+          "class": "",
           "value": "",
           "name": "",
           "type": "text",
@@ -71,11 +71,11 @@
       "2": {
         "_id": "",
         "tagName": "button",
-        "classes": [],
         "path": [],
         "text": ["Button"],
         "attributes": {
-          "id": ""
+          "id": "",
+          "class": ""
         },
         "children": {}
       }
@@ -84,30 +84,30 @@
   "Header": {
     "_id": "",
     "tagName": "div",
-    "classes": [],
     "path": [],
     "text": [""],
     "attributes": {
-      "id": "header-section"
+      "id": "header-section",
+      "class": ""
     },
     "children": {
       "1j1n6u8n1f5": {
         "_id": "",
         "tagName": "div",
-        "classes": [],
         "path": [],
         "text": [""],
         "attributes": {
-          "id": "logo"
+          "id": "logo",
+          "class": ""
         },
         "children": {
           "1lfvdbipx49": {
             "_id": "",
             "tagName": "img",
-            "classes": [],
             "path": [],
             "attributes": {
               "id": "",
+              "class": "",
               "alt": "",
               "src": "/placeholder.png"
             }
@@ -117,20 +117,20 @@
       "u6beeeeee4": {
         "_id": "",
         "tagName": "div",
-        "classes": [],
         "path": [],
         "text": [""],
         "attributes": {
-          "id": "searchbox"
+          "id": "searchbox",
+          "class": ""
         },
         "children": {
           "12772ipx4as": {
             "_id": "",
             "tagName": "input",
-            "classes": [],
             "path": [],
             "attributes": {
               "id": "",
+              "class": "",
               "value": "",
               "name": "",
               "type": "text",
@@ -140,11 +140,11 @@
           "14bnbc8n1gd": {
             "_id": "",
             "tagName": "button",
-            "classes": [],
             "path": [],
             "text": ["Search"],
             "attributes": {
-              "id": ""
+              "id": "",
+              "class": ""
             },
             "children": {}
           }
@@ -153,54 +153,54 @@
       "1pl7bvoha1h": {
         "_id": "",
         "tagName": "ul",
-        "classes": [],
         "path": [],
         "text": [""],
         "attributes": {
-          "id": "navbar"
+          "id": "navbar",
+          "class": ""
         },
         "children": {
           "1uizhtipx2y": {
             "_id": "",
             "tagName": "li",
-            "classes": ["", ""],
             "path": [],
             "text": ["Home"],
             "attributes": {
-              "id": ""
+              "id": "",
+              "class": ""
             },
             "children": {}
           },
           "1wurcyk5rc8": {
             "_id": "",
             "tagName": "li",
-            "classes": [],
             "path": [],
             "text": ["About"],
             "attributes": {
-              "id": ""
+              "id": "",
+              "class": ""
             },
             "children": {}
           },
           "20ozambipxa": {
             "_id": "",
             "tagName": "li",
-            "classes": [],
             "path": [],
             "text": ["Contact"],
             "attributes": {
-              "id": ""
+              "id": "",
+              "class": ""
             },
             "children": {}
           },
           "4g3htipxii": {
             "_id": "",
             "tagName": "li",
-            "classes": [],
             "path": [],
             "text": ["Feedback"],
             "attributes": {
-              "id": ""
+              "id": "",
+              "class": ""
             },
             "children": {}
           }
@@ -211,54 +211,54 @@
   "Navbar": {
     "_id": "",
     "tagName": "ul",
-    "classes": [],
     "path": [],
     "text": [""],
     "attributes": {
-      "id": "navbar"
+      "id": "navbar",
+      "class": ""
     },
     "children": {
       "1uizhtipx2y": {
         "_id": "",
         "tagName": "li",
-        "classes": [],
         "path": [],
         "text": ["Home"],
         "attributes": {
-          "id": ""
+          "id": "",
+          "class": ""
         },
         "children": {}
       },
       "1wurcyk5rc8": {
         "_id": "",
         "tagName": "li",
-        "classes": [],
         "path": [],
         "text": ["About"],
         "attributes": {
-          "id": ""
+          "id": "",
+          "class": ""
         },
         "children": {}
       },
       "20ozambipxa": {
         "_id": "",
         "tagName": "li",
-        "classes": [],
         "path": [],
         "text": ["Contact"],
         "attributes": {
-          "id": ""
+          "id": "",
+          "class": ""
         },
         "children": {}
       },
       "4g3htipxii": {
         "_id": "",
         "tagName": "li",
-        "classes": [],
         "path": [],
         "text": ["Feedback"],
         "attributes": {
-          "id": ""
+          "id": "",
+          "class": ""
         },
         "children": {}
       }
@@ -267,30 +267,30 @@
   "Hero Section": {
     "_id": "",
     "tagName": "div",
-    "classes": [],
     "path": [],
     "text": [""],
     "attributes": {
-      "id": "head-section"
+      "id": "head-section",
+      "class": ""
     },
     "children": {
       "1hrus2voh9w": {
         "_id": "",
         "tagName": "div",
-        "classes": [],
         "path": [],
         "text": [""],
         "attributes": {
-          "id": "head-image"
+          "id": "head-image",
+          "class": ""
         },
         "children": {
           "1mnf25rcyjs": {
             "_id": "",
             "tagName": "img",
-            "classes": [],
             "path": [],
             "attributes": {
               "id": "",
+              "class": "",
               "alt": "",
               "src": "/placeholder.png"
             }
@@ -300,34 +300,34 @@
       "1khv5eeeee7": {
         "_id": "",
         "tagName": "div",
-        "classes": [],
         "path": [],
         "text": [""],
         "attributes": {
-          "id": "head-infobox"
+          "id": "head-infobox",
+          "class": ""
         },
         "children": {
           "3fqekvoh8zg": {
             "_id": "",
             "tagName": "h1",
-            "classes": [],
             "path": [],
             "text": ["Welcome to our website"],
             "attributes": {
-              "id": ""
+              "id": "",
+              "class": ""
             },
             "children": {}
           },
           "6a55xu8n1fx": {
             "_id": "",
             "tagName": "p",
-            "classes": [],
             "path": [],
             "text": [
               "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed quo tenetur perferendis voluptatem veritatis nobis quam repellendus vero repudiandae, quas nihil, ab in rerum totam eos at optio ducimus nemo voluptates veniam et, consequuntur sit. Aliquam dicta perferendis labore placeat assumenda quo voluptas unde aspernatur nam maxime asperiores voluptates voluptatibus, eligendi repellat dolor reiciendis vitae quisquam consequuntur commodi architecto totam quasi?"
             ],
             "attributes": {
-              "id": ""
+              "id": "",
+              "class": ""
             },
             "children": {}
           }
@@ -338,61 +338,61 @@
   "Section": {
     "_id": "",
     "tagName": "div",
-    "classes": [],
     "path": [],
     "text": [""],
     "attributes": {
-      "id": "services-section"
+      "id": "services-section",
+      "class": ""
     },
     "children": {
       "cufaza2vpdt": {
         "_id": "",
         "tagName": "h1",
-        "classes": [],
         "path": [],
         "text": ["Our Services"],
         "attributes": {
-          "id": ""
+          "id": "",
+          "class": ""
         },
         "children": {}
       },
       "hvqu8n1ftja": {
         "_id": "",
         "tagName": "div",
-        "classes": [],
         "path": [],
         "text": [""],
         "attributes": {
-          "id": "services-list"
+          "id": "services-list",
+          "class": ""
         },
         "children": {
           "lihtipx48on": {
             "_id": "",
             "tagName": "div",
-            "classes": [],
             "path": [],
             "text": [""],
             "attributes": {
-              "id": ""
+              "id": "",
+              "class": ""
             },
             "children": {
               "4czdyqn1fts": {
                 "_id": "",
                 "tagName": "div",
-                "classes": ["service-img", ""],
                 "path": [],
                 "text": [""],
                 "attributes": {
-                  "id": ""
+                  "id": "",
+                  "class": ""
                 },
                 "children": {
                   "38fz3s2vofl": {
                     "_id": "",
                     "tagName": "img",
-                    "classes": [],
                     "path": [],
                     "attributes": {
                       "id": "",
+                      "class": "",
                       "alt": "",
                       "src": "/placeholder.png"
                     }
@@ -402,21 +402,21 @@
               "2sh3lf4bip7": {
                 "_id": "",
                 "tagName": "div",
-                "classes": [],
                 "path": [],
                 "text": [""],
                 "attributes": {
-                  "id": ""
+                  "id": "",
+                  "class": ""
                 },
                 "children": {
                   "55axha2voz": {
                     "_id": "",
                     "tagName": "h3",
-                    "classes": [],
                     "path": [],
                     "text": ["Cart Item Title"],
                     "attributes": {
-                      "id": ""
+                      "id": "",
+                      "class": ""
                     },
                     "children": {}
                   }
@@ -427,30 +427,30 @@
           "nltjmbipwij": {
             "_id": "",
             "tagName": "div",
-            "classes": [],
             "path": [],
             "text": [""],
             "attributes": {
-              "id": ""
+              "id": "",
+              "class": ""
             },
             "children": {
               "ldin1fu8lzr": {
                 "_id": "",
                 "tagName": "div",
-                "classes": ["service-img", ""],
                 "path": [],
                 "text": [""],
                 "attributes": {
-                  "id": ""
+                  "id": "",
+                  "class": ""
                 },
                 "children": {
                   "3ggmpqn1fts": {
                     "_id": "",
                     "tagName": "img",
-                    "classes": [],
                     "path": [],
                     "attributes": {
                       "id": "",
+                      "class": "",
                       "alt": "",
                       "src": "/placeholder.png"
                     }
@@ -460,21 +460,21 @@
               "2w6uneeeebs": {
                 "_id": "",
                 "tagName": "div",
-                "classes": [],
                 "path": [],
                 "text": [""],
                 "attributes": {
-                  "id": ""
+                  "id": "",
+                  "class": ""
                 },
                 "children": {
                   "1kjzv51fu8r": {
                     "_id": "",
                     "tagName": "h3",
-                    "classes": [],
                     "path": [],
                     "text": ["Cart Item Title"],
                     "attributes": {
-                      "id": ""
+                      "id": "",
+                      "class": ""
                     },
                     "children": {}
                   }
@@ -485,30 +485,30 @@
           "po9451fu8k": {
             "_id": "",
             "tagName": "div",
-            "classes": [],
             "path": [],
             "text": [""],
             "attributes": {
-              "id": ""
+              "id": "",
+              "class": ""
             },
             "children": {
               "167qzgk5rcc": {
                 "_id": "",
                 "tagName": "div",
-                "classes": ["service-img"],
                 "path": [],
                 "text": [""],
                 "attributes": {
-                  "id": ""
+                  "id": "",
+                  "class": ""
                 },
                 "children": {
                   "3ia6s9cyk2s": {
                     "_id": "",
                     "tagName": "img",
-                    "classes": [],
                     "path": [],
                     "attributes": {
                       "id": "",
+                      "class": "",
                       "alt": "",
                       "src": "/placeholder.png"
                     }
@@ -518,21 +518,21 @@
               "2y3asfu8myv": {
                 "_id": "",
                 "tagName": "div",
-                "classes": [],
                 "path": [],
                 "text": [""],
                 "attributes": {
-                  "id": ""
+                  "id": "",
+                  "class": ""
                 },
                 "children": {
                   "18tyllllllym": {
                     "_id": "",
                     "tagName": "h3",
-                    "classes": [],
                     "path": [],
                     "text": ["Cart Item Title"],
                     "attributes": {
-                      "id": ""
+                      "id": "",
+                      "class": ""
                     },
                     "children": {}
                   }
@@ -547,40 +547,40 @@
   "Section List": {
     "_id": "",
     "tagName": "div",
-    "classes": [],
     "path": [],
     "text": [""],
     "attributes": {
-      "id": "services-list"
+      "id": "services-list",
+      "class": ""
     },
     "children": {
       "lihtipx48on": {
         "_id": "",
         "tagName": "div",
-        "classes": [],
         "path": [],
         "text": [""],
         "attributes": {
-          "id": ""
+          "id": "",
+          "class": ""
         },
         "children": {
           "4czdyqn1fts": {
             "_id": "",
             "tagName": "div",
-            "classes": ["service-img", ""],
             "path": [],
             "text": [""],
             "attributes": {
-              "id": ""
+              "id": "",
+              "class": ""
             },
             "children": {
               "38fz3s2vofl": {
                 "_id": "",
                 "tagName": "img",
-                "classes": [],
                 "path": [],
                 "attributes": {
                   "id": "",
+                  "class": "",
                   "alt": "",
                   "src": "/placeholder.png"
                 }
@@ -590,21 +590,21 @@
           "2sh3lf4bip7": {
             "_id": "",
             "tagName": "div",
-            "classes": [],
             "path": [],
             "text": [""],
             "attributes": {
-              "id": ""
+              "id": "",
+              "class": ""
             },
             "children": {
               "55axha2voz": {
                 "_id": "",
                 "tagName": "h3",
-                "classes": [],
                 "path": [],
                 "text": ["Cart Item Title"],
                 "attributes": {
-                  "id": ""
+                  "id": "",
+                  "class": ""
                 },
                 "children": {}
               }
@@ -615,30 +615,30 @@
       "nltjmbipwij": {
         "_id": "",
         "tagName": "div",
-        "classes": [],
         "path": [],
         "text": [""],
         "attributes": {
-          "id": ""
+          "id": "",
+          "class": ""
         },
         "children": {
           "ldin1fu8lzr": {
             "_id": "",
             "tagName": "div",
-            "classes": ["service-img", ""],
             "path": [],
             "text": [""],
             "attributes": {
-              "id": ""
+              "id": "",
+              "class": ""
             },
             "children": {
               "3ggmpqn1fts": {
                 "_id": "",
                 "tagName": "img",
-                "classes": [],
                 "path": [],
                 "attributes": {
                   "id": "",
+                  "class": "",
                   "alt": "",
                   "src": "/placeholder.png"
                 }
@@ -648,21 +648,21 @@
           "2w6uneeeebs": {
             "_id": "",
             "tagName": "div",
-            "classes": [],
             "path": [],
             "text": [""],
             "attributes": {
-              "id": ""
+              "id": "",
+              "class": ""
             },
             "children": {
               "1kjzv51fu8r": {
                 "_id": "",
                 "tagName": "h3",
-                "classes": [],
                 "path": [],
                 "text": ["Cart Item Title"],
                 "attributes": {
-                  "id": ""
+                  "id": "",
+                  "class": ""
                 },
                 "children": {}
               }
@@ -673,30 +673,30 @@
       "po9451fu8k": {
         "_id": "",
         "tagName": "div",
-        "classes": [],
         "path": [],
         "text": [""],
         "attributes": {
-          "id": ""
+          "id": "",
+          "class": ""
         },
         "children": {
           "167qzgk5rcc": {
             "_id": "",
             "tagName": "div",
-            "classes": ["service-img"],
             "path": [],
             "text": [""],
             "attributes": {
-              "id": ""
+              "id": "",
+              "class": ""
             },
             "children": {
               "3ia6s9cyk2s": {
                 "_id": "",
                 "tagName": "img",
-                "classes": [],
                 "path": [],
                 "attributes": {
                   "id": "",
+                  "class": "",
                   "alt": "",
                   "src": "/placeholder.png"
                 }
@@ -706,21 +706,21 @@
           "2y3asfu8myv": {
             "_id": "",
             "tagName": "div",
-            "classes": [],
             "path": [],
             "text": [""],
             "attributes": {
-              "id": ""
+              "id": "",
+              "class": ""
             },
             "children": {
               "18tyllllllym": {
                 "_id": "",
                 "tagName": "h3",
-                "classes": [],
                 "path": [],
                 "text": ["Cart Item Title"],
                 "attributes": {
-                  "id": ""
+                  "id": "",
+                  "class": ""
                 },
                 "children": {}
               }
@@ -733,30 +733,30 @@
   "Card Item": {
     "_id": "",
     "tagName": "div",
-    "classes": [],
     "path": [],
     "text": [""],
     "attributes": {
-      "id": ""
+      "id": "",
+      "class": ""
     },
     "children": {
       "167qzgk5rcc": {
         "_id": "",
         "tagName": "div",
-        "classes": ["service-img"],
         "path": [],
         "text": [""],
         "attributes": {
-          "id": ""
+          "id": "",
+          "class": ""
         },
         "children": {
           "3ia6s9cyk2s": {
             "_id": "",
             "tagName": "img",
-            "classes": [],
             "path": [],
             "attributes": {
               "id": "",
+              "class": "",
               "alt": "",
               "src": "/placeholder.png"
             }
@@ -766,21 +766,21 @@
       "2y3asfu8myv": {
         "_id": "",
         "tagName": "div",
-        "classes": [],
         "path": [],
         "text": [""],
         "attributes": {
-          "id": ""
+          "id": "",
+          "class": ""
         },
         "children": {
           "18tyllllllym": {
             "_id": "",
             "tagName": "h3",
-            "classes": [],
             "path": [],
             "text": ["Cart Item Title"],
             "attributes": {
-              "id": ""
+              "id": "",
+              "class": ""
             },
             "children": {}
           }

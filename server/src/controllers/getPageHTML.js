@@ -8,9 +8,9 @@ function getBodyHTML(element) {
       attributes.push(`${key}="${elementAttributes[key]}"`);
     }
   }
-  if (element.classes.length) {
-    attributes.push(`class="${element.classes.join(" ")}"`);
-  }
+  // if (element.classes.length) {
+  //   attributes.push(`class="${element.classes.join(" ")}"`);
+  // }
 
   if (element.children && Object.keys(element.children).length) {
     children += loopThroughChildren(element.children);

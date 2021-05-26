@@ -8,9 +8,10 @@ export function IframeElement({
   contextMenu,
   outlineBox,
 }) {
-  const { tagName, text, classes, attributes, ...rest } = data;
-  let classlist = data.classes ? data.classes.join(" ") : "";
+  const { tagName, text, attributes, ...rest } = data;
   const nonClosingTags = ["img", "input", "hr", "br"];
+  let elemAttributes = Object.assign({}, attributes);
+  delete elemAttributes.class;
 
   const [element, setElement] = useState();
   const { setSelectedElement } = useContext(SelectedElementContext);
@@ -97,6 +98,7 @@ export function IframeElement({
   return element ? (
     !nonClosingTags.includes(tagName) ? (
       <HTMLTag
+        title={HTMLTag}
         draggable={true}
         onClick={handleClick}
         onDrag={handleDrag}
@@ -107,8 +109,8 @@ export function IframeElement({
         onMouseOver={(e) => showHoverBox(e)}
         onMouseOut={(e) => hideHoverBox(e)}
         onContextMenu={(e) => openContextMenu(e, contextMenu)}
-        className={"frame-element " + classlist}
-        {...attributes}
+        className={"frame-element " + attributes["class"]}
+        {...elemAttributes}
       >
         {text.join(" ")}
         {Object.values(element.children).length
@@ -128,6 +130,7 @@ export function IframeElement({
       </HTMLTag>
     ) : (
       <HTMLTag
+        title={HTMLTag}
         draggable={true}
         onClick={handleClick}
         onDrag={handleDrag}
@@ -136,9 +139,9 @@ export function IframeElement({
         onMouseOver={(e) => showHoverBox(e)}
         onMouseOut={(e) => hideHoverBox(e)}
         onContextMenu={(e) => openContextMenu(e, contextMenu)}
-        className={"frame-element " + classlist}
+        className={"frame-element " + attributes["class"]}
         readOnly={tagName === "input" ? true : false}
-        {...attributes}
+        {...elemAttributes}
       />
     )
   ) : null;

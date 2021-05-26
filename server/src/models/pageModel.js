@@ -28,19 +28,21 @@ const PageSchema = new mongoose.Schema(
       type: Object,
       default: {
         _id: mongoose.Types.ObjectId(),
-        id: "",
         tagName: "body",
-        classes: [],
         path: [],
+        attributes: {
+          id: "",
+          class: "",
+        },
         children: {
           [elementId]: {
             _id: elementId,
             path: [],
             tagName: "div",
-            classes: ["container"],
             text: [],
             attributes: {
               id: "page-container",
+              class: "container",
             },
             children: {},
           },

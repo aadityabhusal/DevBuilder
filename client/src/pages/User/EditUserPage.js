@@ -50,7 +50,9 @@ export function EditUserPage({ history }) {
   const [user, setUser] = useState();
   const [password, setPassword] = useState("");
   const [updated, setUpdated] = useState(false);
-  const { user: authUser, setUser: setAuthUser } = useContext(UserContext);
+  const { user: authUser, setUser: setAuthUser, setToken } = useContext(
+    UserContext
+  );
   const { userId } = useParams();
 
   useEffect(() => {
@@ -86,6 +88,27 @@ export function EditUserPage({ history }) {
 
   const handleInput = (e, field) => {
     setUser((prev) => ({ ...prev, [field]: e.target.value }));
+  };
+
+  const deleteUser = async () => {
+    try {
+      let response = await fetch(`/user/${userId}`, {
+        method: "delete",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+      if (!response.error) {
+        localStorage.removeItem("token");
+        window.location = "http://localhost:3000";
+      } else {
+        throw new Error(response.error);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return user ? (
@@ -124,6 +147,7 @@ export function EditUserPage({ history }) {
           <EditUserButton>Update Profile</EditUserButton>
         </Form>
         <EditUserButton
+          onClick={deleteUser}
           style={{
             marginTop: "20px",
             width: "100%",

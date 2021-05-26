@@ -6,3 +6,7 @@ Append pages array in Site collection when new Page added in Pages Collection
 Solutions to CRUDing Elements
 1. Creating a 2 dimensional positioning system
 2. Doing all the changes in the frontend and updating the whole site tree at once when clicked on save 
+
+
+Not-so-sure features
+- Images uploading (unnecessary and complicated)

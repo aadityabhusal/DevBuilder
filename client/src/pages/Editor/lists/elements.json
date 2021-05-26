@@ -2,22 +2,22 @@
   "div": {
     "_id": "",
     "tagName": "div",
-    "classes": [],
     "path": [],
     "text": [""],
     "attributes": {
-      "id": ""
+      "id": "",
+      "class": ""
     },
     "children": {}
   },
   "a": {
     "_id": "",
     "tagName": "a",
-    "classes": [],
     "path": [],
     "text": ["Link"],
     "attributes": {
       "id": "",
+      "class": "",
       "href": ""
     },
     "children": {}
@@ -25,10 +25,10 @@
   "img": {
     "_id": "",
     "tagName": "img",
-    "classes": [],
     "path": [],
     "attributes": {
       "id": "",
+      "class": "",
       "alt": "",
       "src": "/placeholder.png"
     }
@@ -36,21 +36,21 @@
   "button": {
     "_id": "",
     "tagName": "button",
-    "classes": [],
     "path": [],
     "text": ["Button"],
     "attributes": {
-      "id": ""
+      "id": "",
+      "class": ""
     },
     "children": {}
   },
   "input": {
     "_id": "",
     "tagName": "input",
-    "classes": [],
     "path": [],
     "attributes": {
       "id": "",
+      "class": "",
       "value": "",
       "name": "",
       "type": "text",
@@ -60,22 +60,22 @@
   "text": {
     "_id": "",
     "tagName": "p",
-    "classes": [],
     "path": [],
     "text": ["Text"],
     "attributes": {
-      "id": ""
+      "id": "",
+      "class": ""
     },
     "children": {}
   },
   "ol": {
     "_id": "",
     "tagName": "ol",
-    "classes": [],
     "path": [],
     "text": [""],
     "attributes": {
       "id": "",
+      "class": "",
       "type": "",
       "start": "",
       "reversed": ""
@@ -85,55 +85,55 @@
   "ul": {
     "_id": "",
     "tagName": "ul",
-    "classes": [],
     "path": [],
     "text": [""],
     "attributes": {
-      "id": ""
+      "id": "",
+      "class": ""
     },
     "children": {}
   },
   "li": {
     "_id": "",
     "tagName": "li",
-    "classes": [],
     "path": [],
     "text": ["li"],
     "attributes": {
-      "id": ""
+      "id": "",
+      "class": ""
     },
     "children": {}
   },
   "h1": {
     "_id": "",
     "tagName": "h1",
-    "classes": [],
     "path": [],
     "text": [""],
     "attributes": {
-      "id": ""
+      "id": "",
+      "class": ""
     },
     "children": {}
   },
   "h2": {
     "_id": "",
     "tagName": "h2",
-    "classes": [],
     "path": [],
     "text": [""],
     "attributes": {
-      "id": ""
+      "id": "",
+      "class": ""
     },
     "children": {}
   },
   "h3": {
     "_id": "",
     "tagName": "h3",
-    "classes": [],
     "path": [],
     "text": [""],
     "attributes": {
-      "id": ""
+      "id": "",
+      "class": ""
     },
     "children": {}
   }

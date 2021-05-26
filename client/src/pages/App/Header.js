@@ -36,7 +36,7 @@ export function Header() {
 
   return (
     <HeaderContainer>
-      <div></div>
+      <h3 style={{ margin: 0 }}>Website Builder</h3>
       <nav>
         <NavLink activeClassName="is-active" to="/" exact={true}>
           Home
