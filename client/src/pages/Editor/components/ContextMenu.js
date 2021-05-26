@@ -37,15 +37,10 @@ function ContextMenu({}, ref) {
   );
   const { updateTree } = useContext(PageTreeContext);
 
-  /*   function handleMoveUp(e) {
-    console.log(selectedElement);
-  }
-  function handleMoveDown(e) {
-    console.log(selectedElement);
-  } */
   async function handleCopy(e) {
     await navigator.clipboard.writeText(JSON.stringify(selectedElement));
   }
+
   async function handlePaste(e) {
     let pasteData = await navigator.clipboard.readText();
     if (checkPasteData(pasteData)) {
@@ -56,23 +51,11 @@ function ContextMenu({}, ref) {
       updateTree(pasteData);
     }
   }
-  function handleDelete(e) {
-    console.log(selectedElement);
-  }
 
   return (
     <StyledContextMenu ref={ref}>
-      {/* <StyledContextMenuItem onClick={handleMoveUp}>
-        Move Up
-      </StyledContextMenuItem>
-      <StyledContextMenuItem onClick={handleMoveDown}>
-        Move Down
-      </StyledContextMenuItem> */}
       <StyledContextMenuItem onClick={handleCopy}>Copy</StyledContextMenuItem>
       <StyledContextMenuItem onClick={handlePaste}>Paste</StyledContextMenuItem>
-      <StyledContextMenuItem onClick={handleDelete}>
-        Delete
-      </StyledContextMenuItem>
     </StyledContextMenu>
   );
 }
@@ -81,8 +64,12 @@ export const ContextMenuFR = React.forwardRef(ContextMenu);
 
 function checkPasteData(pasteData) {
   try {
-    JSON.parse(pasteData);
-    return true;
+    let data = JSON.parse(pasteData);
+    if (data._id && data.tagName && data.path.length) {
+      return true;
+    } else {
+      throw new Error();
+    }
   } catch (e) {
     return false;
   }

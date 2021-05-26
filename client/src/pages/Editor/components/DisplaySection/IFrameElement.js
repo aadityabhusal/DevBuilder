@@ -8,7 +8,7 @@ export function IframeElement({
   contextMenu,
   outlineBox,
 }) {
-  const { tagName, text, attributes, ...rest } = data;
+  const { tagName, text, attributes } = data;
   const nonClosingTags = ["img", "input", "hr", "br"];
   let elemAttributes = Object.assign({}, attributes);
   delete elemAttributes.class;
