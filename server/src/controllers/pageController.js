@@ -19,9 +19,9 @@ const createPage = async (req, res, next) => {
     );
     let { pages, ...data } = await site.toJSON();
 
-    res.status(201).json(pages);
+    res.send(pages);
   } catch (error) {
-    error.status = 400;
+    error.status = 500;
     return next(error);
   }
 };
@@ -42,7 +42,7 @@ const updatePage = async (req, res, next) => {
       new: true,
       useFindAndModify: false,
     });
-    res.sendStatus(200);
+    res.send({ message: "Page Updated" });
   } catch (error) {
     error.status = 400;
     return next(error);
@@ -65,7 +65,7 @@ const deletePage = async (req, res, next) => {
 
     let { pages, ...data } = await site.toJSON();
 
-    res.status(201).json(pages);
+    res.send(pages);
   } catch (error) {
     error.status = 500;
     return next(error);

@@ -18,14 +18,14 @@ const routes = () => {
 
   router.get("/:pageId/export", exportPage);
 
-  router.use(
+  /*   router.use(
     "/:pageId",
     (req, res, next) => {
       req.pageId = req.params.pageId;
       next();
     },
     elementRoutes()
-  );
+  ); */
 
   return router;
 };
