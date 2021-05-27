@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const Panel = styled.div`
+  position: relative;
   display: none;
   overflow-y: auto;
   flex-direction: column;

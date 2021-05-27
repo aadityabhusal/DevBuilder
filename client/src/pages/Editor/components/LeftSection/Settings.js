@@ -12,6 +12,13 @@ import {
   PanelButton,
   PanelInputText,
 } from "../Panel";
+import {
+  DialogAction,
+  DialogBox,
+  DialogHead,
+  DialogOverlay,
+  DialogText,
+} from "../DialogBox";
 
 const SettingsInputText = styled(PanelInputText)`
   margin-top: 10px;
@@ -35,6 +42,7 @@ html {
 `;
 
 export function SettingsPanel({ isActive }) {
+  const [dialogBox, setDialogBox] = useState(false);
   const { pageTree, updateTitle, savePage } = useContext(PageTreeContext);
   const { siteTree } = useContext(SiteTreeContext);
   const { user } = useContext(UserContext);
@@ -89,6 +97,28 @@ export function SettingsPanel({ isActive }) {
 
   return (
     <Panel className={isActive}>
+      {dialogBox && (
+        <DialogOverlay>
+          <DialogBox>
+            <DialogHead>
+              <svg height="16px" viewBox="0 0 20 20" width="24px" fill="#000">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+              </svg>
+              Delete Site
+            </DialogHead>
+            <DialogText>Are you sure you want to delete the site?</DialogText>
+            <DialogAction>
+              <PanelButton style={{ color: "#c0392b" }} onClick={deleteSite}>
+                Delete
+              </PanelButton>
+              <PanelButton onClick={(e) => setDialogBox(false)}>
+                Cancel
+              </PanelButton>
+            </DialogAction>
+          </DialogBox>
+        </DialogOverlay>
+      )}
       <PanelTitle>Settings</PanelTitle>
       <PanelLabel>
         <span>Remove Borders from elements</span>
@@ -114,7 +144,7 @@ export function SettingsPanel({ isActive }) {
       <PanelButton
         style={{ background: "#e74c3c", color: "#ecf0f1" }}
         id="saveProps"
-        onClick={deleteSite}
+        onClick={(e) => setDialogBox(true)}
       >
         Delete Site
       </PanelButton>

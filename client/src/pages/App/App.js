@@ -21,7 +21,7 @@ function App() {
     <BrowserRouter>
       <UserProvider>
         <GlobalContainer>
-          <Header></Header>
+          <Header />
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route

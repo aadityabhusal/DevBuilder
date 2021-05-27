@@ -120,7 +120,7 @@ export function UserPage(props) {
 
   useEffect(() => {
     getUser(userId);
-    setSites(authUser?.sites || []);
+    // setSites(authUser?.sites || []);
   }, [userId, authUser]);
 
   const getUser = async (userId) => {
@@ -133,6 +133,7 @@ export function UserPage(props) {
       });
       let data = await response.json();
       setUser(data);
+      setSites(data.sites);
     } catch (error) {
       console.log(error);
     }
@@ -144,7 +145,7 @@ export function UserPage(props) {
         <img src="/default-user.png" alt="user" />
         <div>
           <h1>{`${user.firstName} ${user.lastName}`}</h1>
-          {authUser && (
+          {authUser?._id === user._id && (
             <>
               <h2>{`${authUser.email}`}</h2>
               <EditUserButton to={`/user/${authUser._id}/edit`}>
@@ -155,7 +156,7 @@ export function UserPage(props) {
         </div>
       </UserHead>
       <Sites>
-        {authUser && (
+        {authUser?._id === user._id && (
           <SiteForm>
             <input
               type="text"
@@ -167,7 +168,7 @@ export function UserPage(props) {
           </SiteForm>
         )}
         <SiteList>
-          {sites.length ? (
+          {authUser?._id === user._id && sites.length ? (
             sites.map((item) => (
               <Site key={item.siteId}>
                 <img src="/siteImage.png" alt="Site" />
