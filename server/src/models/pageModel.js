@@ -54,6 +54,10 @@ const PageSchema = new mongoose.Schema(
       type: Object,
       default: {},
     },
+    status: {
+      type: Number,
+      default: 0,
+    },
     createdDate: {
       type: Date,
       default: Date.now,
@@ -61,5 +65,10 @@ const PageSchema = new mongoose.Schema(
   },
   { minimize: false }
 );
+
+PageSchema.pre("findOneAndUpdate", function (next) {
+  this.options.runValidators = true;
+  next();
+});
 
 module.exports = mongoose.model("Page", PageSchema);

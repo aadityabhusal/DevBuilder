@@ -78,8 +78,6 @@ describe("POST - /user/signup", () => {
         lastName: "User",
         email: "tempuser@gmail.com",
         password: "tempuser123",
-        contact: "9876543210",
-        address: "Nepal",
       });
       expect(response.statusCode).toBe(200);
     });
@@ -92,8 +90,6 @@ describe("POST - /user/signup", () => {
         lastName: "User",
         email: "tempuser@gmail.com",
         password: "tempuser123",
-        contact: "9876543210",
-        address: "Nepal",
       });
       expect(response.statusCode).toBe(500);
     });
@@ -123,7 +119,7 @@ describe("POST - /user/auth", () => {
     test("Should respond with a status code of 200", async () => {
       const response = await request(app).post("/user/auth").send({
         token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGFmNGFhMTY2OTY2ZTE2MTg3YWI0ZGMiLCJpYXQiOjE2MjIxMDE1MTd9.EKtiA-gg8r-_wDuAiqElo9uSoh75eaZ_ratlzgTVALs",
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGFmODFiMGIzMzE1ZTIzN2NmZWY4YTQiLCJpYXQiOjE2MjIxMTQ5OTJ9.kGrRWjEAlTbnoPSoLTMEuYPCdtz_fFURL_E2wEty4-g",
       });
       expect(response.statusCode).toBe(200);
     });
@@ -131,7 +127,7 @@ describe("POST - /user/auth", () => {
     test("Should respond with user details", async () => {
       const response = await request(app).post("/user/auth").send({
         token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGFmNGFhMTY2OTY2ZTE2MTg3YWI0ZGMiLCJpYXQiOjE2MjIxMDE1MTd9.EKtiA-gg8r-_wDuAiqElo9uSoh75eaZ_ratlzgTVALs",
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGFmODFiMGIzMzE1ZTIzN2NmZWY4YTQiLCJpYXQiOjE2MjIxMTQ5OTJ9.kGrRWjEAlTbnoPSoLTMEuYPCdtz_fFURL_E2wEty4-g",
       });
       expect(response.body._id).toBeDefined();
     });
@@ -169,10 +165,10 @@ describe("POST - /user/auth", () => {
 describe("PUT - /user/:userId", () => {
   describe("All required values given", () => {
     test("Should respond with a status code of 200", async () => {
-      const _id = "60af4aa166966e16187ab4dc";
+      const _id = "60af81b0b3315e237cfef8a4";
       const lastName = `User#${Math.floor(Math.random() * 10000)}`;
       const response = await request(app)
-        .put("/user/60af4aa166966e16187ab4dc")
+        .put("/user/60af81b0b3315e237cfef8a4")
         .send({
           _id,
           lastName,
@@ -181,10 +177,10 @@ describe("PUT - /user/:userId", () => {
     });
 
     test("Should respond with a status code of 200", async () => {
-      const _id = "60af4aa166966e16187ab4dc";
+      const _id = "60af81b0b3315e237cfef8a4";
       const lastName = `User#${Math.floor(Math.random() * 10000)}`;
       const response = await request(app)
-        .put("/user/60af4aa166966e16187ab4dc")
+        .put("/user/60af81b0b3315e237cfef8a4")
         .send({
           _id,
           lastName,
@@ -195,10 +191,10 @@ describe("PUT - /user/:userId", () => {
 
   describe("Any required values missing", () => {
     test("Should respond with a status code of 400", async () => {
-      const _id = "60af4aa166966e16187ab4dc";
+      const _id = "60af81b0b3315e237cfef8a4";
       const lastName = "";
       const response = await request(app)
-        .put("/user/60af4aa166966e16187ab4dc")
+        .put("/user/60af81b0b3315e237cfef8a4")
         .send({
           _id,
           lastName,
@@ -207,10 +203,10 @@ describe("PUT - /user/:userId", () => {
     });
 
     test("Should respond with error", async () => {
-      const _id = "60af4aa166966e16187ab4dc";
+      const _id = "60af81b0b3315e237cfef8a4";
       const lastName = "";
       const response = await request(app)
-        .put("/user/60af4aa166966e16187ab4dc")
+        .put("/user/60af81b0b3315e237cfef8a4")
         .send({
           _id,
           lastName,
@@ -221,10 +217,10 @@ describe("PUT - /user/:userId", () => {
 
   describe("New Password Provided", () => {
     test("Should respond with a status code of 200", async () => {
-      const _id = "60af4aa166966e16187ab4dc";
+      const _id = "60af81b0b3315e237cfef8a4";
       const password = `testuser123`;
       const response = await request(app)
-        .put("/user/60af4aa166966e16187ab4dc")
+        .put("/user/60af81b0b3315e237cfef8a4")
         .send({
           _id,
           password,
@@ -233,10 +229,10 @@ describe("PUT - /user/:userId", () => {
     });
 
     test("Should respond with a status code of 200", async () => {
-      const _id = "60af4aa166966e16187ab4dc";
+      const _id = "60af81b0b3315e237cfef8a4";
       const password = `testuser123`;
       const response = await request(app)
-        .put("/user/60af4aa166966e16187ab4dc")
+        .put("/user/60af81b0b3315e237cfef8a4")
         .send({
           _id,
           password,
@@ -249,12 +245,12 @@ describe("PUT - /user/:userId", () => {
 describe("GET - /user/:userId", () => {
   describe("Valid User Id Provided", () => {
     test("Should respond with a status code of 200", async () => {
-      const response = await request(app).get("/user/60af4aa166966e16187ab4dc");
+      const response = await request(app).get("/user/60af81b0b3315e237cfef8a4");
       expect(response.statusCode).toBe(200);
     });
 
     test("Should respond with an array", async () => {
-      const response = await request(app).get("/user/60af4aa166966e16187ab4dc");
+      const response = await request(app).get("/user/60af81b0b3315e237cfef8a4");
       expect(response.body.firstName).toBeDefined();
     });
   });
@@ -289,14 +285,14 @@ describe("DELETE - /user/:userId", () => {
     });
   });
 
-  describe("All required values given", () => {
+  /*   describe("All required values given", () => {
     test("Should respond with a status code of 200", async () => {
       const response = await request(app)
-        .delete("/user/60af4f1af4ca4a11083bd961")
+        .delete("/user/60af85e3418c0327a8ac1c62")
         .send({
-          _id: "60af4f1af4ca4a11083bd961",
+          _id: "60af85e3418c0327a8ac1c62",
         });
       expect(response.statusCode).toBe(200);
     });
-  });
+  }); */
 });

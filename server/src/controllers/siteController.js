@@ -33,10 +33,9 @@ const createSite = async (req, res, next) => {
       }
     );
     let { sites, password, ...data } = await user.toJSON();
-    res.status(201).json(sites);
+    res.send(sites);
   } catch (error) {
-    console.log(error);
-    error.status = 400;
+    error.status = 500;
     return next(error);
   }
 };

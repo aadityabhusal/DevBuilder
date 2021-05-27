@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const port = 8000;
 
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://localhost/WebsiteBuilder_Test", {
+mongoose.connect("mongodb://localhost/WebsiteBuilder", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
