@@ -50,7 +50,8 @@ export const SuccessMessage = styled.div`
   border: 1px solid 34495e;
   box-shadow: 0 2px 5px 0 #444;
   margin-bottom: 20px;
-  color: #34495e;
+  color: #fff;
+  background: #2ecc71;
   text-align: center;
 `;
 
