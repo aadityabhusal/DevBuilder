@@ -2,8 +2,16 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import { UserContext } from "../../contexts/UserContext";
+import {
+  DialogAction,
+  DialogBox,
+  DialogHead,
+  DialogOverlay,
+  DialogText,
+} from "../Editor/components/DialogBox";
 
 const EditContainer = styled.div`
+  position: relative;
   margin-top: 20px;
   flex: 0 0 400px;
   padding: 20px;
@@ -50,9 +58,8 @@ export function EditUserPage({ history }) {
   const [user, setUser] = useState();
   const [password, setPassword] = useState("");
   const [updated, setUpdated] = useState(false);
-  const { user: authUser, setUser: setAuthUser, setToken } = useContext(
-    UserContext
-  );
+  const { user: authUser, setUser: setAuthUser } = useContext(UserContext);
+  const [dialogBox, setDialogBox] = useState(false);
   const { userId } = useParams();
 
   useEffect(() => {
@@ -114,6 +121,33 @@ export function EditUserPage({ history }) {
   return user ? (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <EditContainer>
+        {dialogBox && (
+          <DialogOverlay>
+            <DialogBox>
+              <DialogHead>
+                <svg height="16px" viewBox="0 0 20 20" width="24px" fill="#000">
+                  <path d="M0 0h24v24H0z" fill="none" />
+                  <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+                </svg>
+                Delete Profile
+              </DialogHead>
+              <DialogText>
+                Are you sure you want to delete your profile?
+              </DialogText>
+              <DialogAction>
+                <EditUserButton
+                  style={{ background: "#e74c3c" }}
+                  onClick={deleteUser}
+                >
+                  Delete
+                </EditUserButton>
+                <EditUserButton onClick={(e) => setDialogBox(false)}>
+                  Cancel
+                </EditUserButton>
+              </DialogAction>
+            </DialogBox>
+          </DialogOverlay>
+        )}
         <h1 style={{ textAlign: "center" }}>Update your profile</h1>
         {updated && <SuccessMessage>Your profile was updated!</SuccessMessage>}
         <Form onSubmit={handleSubmit} method="POST">
@@ -147,7 +181,7 @@ export function EditUserPage({ history }) {
           <EditUserButton>Update Profile</EditUserButton>
         </Form>
         <EditUserButton
-          onClick={deleteUser}
+          onClick={(e) => setDialogBox(true)}
           style={{
             marginTop: "20px",
             width: "100%",
