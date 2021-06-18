@@ -7,6 +7,7 @@ import { UserContext } from "../../contexts/UserContext";
 
 import { LeftSection, DisplaySection } from "./components";
 import { SiteTreeProvider } from "../../contexts/SiteTreeContext";
+import { CommandProvider } from "../../contexts/CommandContext";
 
 const EditorContainer = styled.div`
   display: flex;
@@ -82,7 +83,9 @@ export function EditorPage({ history }) {
             <SelectedElementProvider>
               <LeftSection ref={dragRef} />
               <DragLeftSection onMouseDown={handleResize}></DragLeftSection>
-              <DisplaySection />
+              <CommandProvider>
+                <DisplaySection />
+              </CommandProvider>
             </SelectedElementProvider>
           </PageTreeProvider>
         ) : null}

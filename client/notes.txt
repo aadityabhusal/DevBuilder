@@ -32,3 +32,13 @@ ISSUES
 9. (Later) Implementing Undo and Redo functionalities (which will solve problem 5 & 6) 
 10. (Later) Slide/Shift and Reorder sibling item while dragover -- Or provide options on right click to move items or send to top/bottom
 11. Give more unique ids to elements and layout childrens
+
+
+
+Implementation
+1. within browser update
+2. realtime db upadate
+3. Bowser caching
+4. Undo + Redo 
+5. Shift Element
+6. Render Optimization

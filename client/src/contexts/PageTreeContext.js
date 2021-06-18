@@ -4,29 +4,28 @@ export const PageTreeContext = createContext();
 
 export const PageTreeProvider = (props) => {
   const [pageTree, setPageTree] = useState(props.value);
-  const bodyChildren = pageTree.body.children;
 
-  /* 
-    This save the whole page tree on every change
-    Optimization needed here 
-  */
-  function updateTree(element, action = "", level = 0, page = bodyChildren) {
-    if (element.path) {
+  function updateTree(
+    element,
+    action = "",
+    level = 0,
+    site = pageTree.body.children
+  ) {
+    if (level === element.path.length - 1) {
       let lastItem = element.path[element.path.length - 1];
-      if (page.hasOwnProperty(lastItem)) {
-        if (action === "delete") {
-          delete page[lastItem].children[element._id];
-        } else {
-          page[lastItem].children[element._id] = element;
-        }
-      } else {
-        updateTree(
-          page[element.path[level]].children,
-          element,
-          action,
-          ++level
-        );
+      if (site.hasOwnProperty(lastItem)) {
+        action === "delete"
+          ? delete site[lastItem].children[element._id]
+          : (site[lastItem].children[element._id] = element);
       }
+      return;
+    } else {
+      updateTree(
+        element,
+        action,
+        level + 1,
+        site[element.path[level]].children
+      );
     }
   }
 
