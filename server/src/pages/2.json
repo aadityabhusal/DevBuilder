@@ -1,0 +1,77 @@
+{
+  "site": {
+    "head": {
+      "meta": {
+        "name1": {
+          "prop1": "val",
+          "prop2": "val",
+          "value": "val"
+        },
+        "name": {
+          "prop1": "val",
+          "prop2": "val",
+          "value": "val"
+        }
+      },
+      "styles": [
+        {
+          "url": "url",
+          "page": "*"
+        },
+        {
+          "url": "url",
+          "page": "about"
+        }
+      ],
+      "scripts": [
+        {
+          "url": "url",
+          "page": "*"
+        },
+        {
+          "NOTE": "MAY NOT BE",
+          "url": "url",
+          "page": "about"
+        }
+      ]
+    },
+    "body": {
+      "tagName": "body",
+      "id": "body",
+      "classes": ["body"],
+      "children": [
+        {
+          "tagName": "div",
+          "id": "first",
+          "classes": ["item"],
+          "data-id": "0",
+          "text": "First Level Div",
+          "children": [
+            {
+              "tagName": "div",
+              "id": "second",
+              "classes": [""],
+              "data-id": "0,0",
+              "text": "Second Level Div",
+              "children": [
+                {
+                  "tagName": "div",
+                  "id": "third",
+                  "classes": [""],
+                  "data-id": "0,0,0",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "scripts": [
+      {
+        "url": "url",
+        "page": "*"
+      }
+    ]
+  }
+}

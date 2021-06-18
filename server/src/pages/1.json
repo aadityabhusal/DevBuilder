@@ -1,0 +1,129 @@
+{
+  "site": {
+    "head": {
+      "meta": {
+        "name1": {
+          "prop1": "val",
+          "prop2": "val",
+          "value": "val"
+        },
+        "name": {
+          "prop1": "val",
+          "prop2": "val",
+          "value": "val"
+        }
+      },
+      "styles": [
+        {
+          "url": "url",
+          "page": "*"
+        },
+        {
+          "url": "url",
+          "page": "about"
+        }
+      ],
+      "scripts": [
+        {
+          "url": "url",
+          "page": "*"
+        },
+        {
+          "NOTE": "MAY NOT BE",
+          "url": "url",
+          "page": "about"
+        }
+      ]
+    },
+    "body": {
+      "_id": "a92047d4-9986-41c8-b59d-92dffc697c70",
+      "level": 0,
+      "tagName": "div",
+      "id": "id1",
+      "classes": ["class1", "class2"],
+      "children": [
+        {
+          "_id": "763077ff-4111-47ce-ba24-2af4a838f382",
+          "level": 1,
+          "tagName": "header",
+          "id": "id2",
+          "classes": ["class1", "class2"],
+          "children": [
+            {
+              "_id": "8c3900c6-a214-4fe3-883e-8a69115e1301",
+              "level": 2,
+              "tagName": "div",
+              "id": "id3",
+              "classes": ["class1", "class2"],
+              "children": [
+                {
+                  "_id": "b7520fee-95e3-4c01-8421-87927985986c",
+                  "level": 3,
+                  "tagName": "div",
+                  "id": "id4",
+                  "classes": ["class1", "class2"],
+                  "text": "This is the inner div.",
+                  "style": "display:inline;color:blue",
+                  "children": [
+                    {
+                      "_id": "df828318-dd8d-4274-8cd9-3789747cabec",
+                      "level": 4,
+                      "tagName": "a",
+                      "id": "id5",
+                      "classes": [],
+                      "href": "https://github.com",
+                      "alt": "GitHub",
+                      "text": "Go to Github",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "_id": "d5bd8aaa-971e-4a2f-ad66-c42766f7a4ac",
+                  "level": 3,
+                  "tagName": "div",
+                  "id": "id6",
+                  "classes": ["class1", "class2"],
+                  "style": "display:inline;color:blue",
+                  "children": [
+                    {
+                      "_id": "13b7cdb2-95f8-48aa-9d02-e20807aafb4c",
+                      "level": 4,
+                      "tagName": "div",
+                      "id": "id7",
+                      "classes": ["class1", "class2"],
+                      "text": "Go to Github",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "_id": "1276fe92-33c9-4daf-8e1d-04b695d2d718",
+          "level": 1,
+          "tagName": "main",
+          "id": "id",
+          "classes": ["class1", "class2"],
+          "children": []
+        },
+        {
+          "_id": "e7693071-4ce6-4ba6-b53a-959d3193a2a0",
+          "level": 1,
+          "tagName": "footer",
+          "id": "id",
+          "classes": ["class1", "class2"],
+          "children": []
+        }
+      ]
+    },
+    "scripts": [
+      {
+        "url": "url",
+        "page": "*"
+      }
+    ]
+  }
+}
