@@ -31,14 +31,26 @@ ISSUES
 8. (Later) Stopping Unnecessary renders of the elements
 9. (Later) Implementing Undo and Redo functionalities (which will solve problem 5 & 6) 
 10. (Later) Slide/Shift and Reorder sibling item while dragover -- Or provide options on right click to move items or send to top/bottom
-11. Give more unique ids to elements and layout childrens
+11. (Done)Give more unique ids to elements and layout childrens
+12. Elements reappearing inside previous parent after being dragged and dropped into a new parent
+13. Dropping adds drop command twice
+14. All the elements render when selecting an element and making changes to SelectedElementContext
+15. Create separate element attributes for html attributes such as required, controls etc. 
 
+
+I HAVE to find a way to access an IframeElement element and then modify it without rendering every element in the site
+
+
+Solution for applying undo and redo:
+   - Create the functions to perform undo and redo inside IframeElement
+   - Call the undo function from CommandContext and if statement to check if the element in the current command is the IframeElement 
+   - Perfrom the action for drag and drop inside the iframe element
+Cons:
+   - Every IframeElement will run check the if statement so it might require more processing and the program might lag. The could be solved by creating a way to accessing any element through their path and select the element and then apply the undo and redo function.
+   -  
 
 
 Implementation
-1. within browser update
-2. realtime db upadate
-3. Bowser caching
-4. Undo + Redo 
-5. Shift Element
-6. Render Optimization
+1. Realtime db upadate
+2. In-browser update and caching
+3. Global function for adding, removing and moving elements

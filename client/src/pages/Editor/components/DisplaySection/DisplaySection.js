@@ -9,11 +9,11 @@ const DisplayContainer = styled.div`
   position: relative;
 `;
 
-export function DisplaySection() {
+export const DisplaySection = React.memo(() => {
   return (
     <DisplayContainer>
       <SectionMask id="display-mask"></SectionMask>
       <ViewSection />
     </DisplayContainer>
   );
-}
+});

@@ -104,6 +104,16 @@
     },
     "children": {}
   },
+  "video": {
+    "_id": "",
+    "tagName": "video",
+    "path": [],
+    "attributes": {
+      "id": "",
+      "class": "",
+      "src": ""
+    }
+  },
   "h1": {
     "_id": "",
     "tagName": "h1",

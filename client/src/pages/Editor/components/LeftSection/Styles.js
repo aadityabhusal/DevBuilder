@@ -47,7 +47,6 @@ export function StylesPanel({ isActive }) {
       let value = e.target.value;
       updateStyles(value);
       setStyleList((prev) => [...prev, [value, ""]]);
-      savePage();
       e.target.value = "";
     }
     let stylesheet = document.createElement("style");
@@ -65,7 +64,6 @@ export function StylesPanel({ isActive }) {
       return arr;
     });
     setCurrentStyle(styleList[0] || []);
-    savePage();
   };
 
   const handleEditor = (value) => {

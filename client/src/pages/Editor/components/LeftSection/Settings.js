@@ -19,6 +19,7 @@ import {
   DialogOverlay,
   DialogText,
 } from "../DialogBox";
+import { CommandContext } from "../../../../contexts/CommandContext";
 
 const SettingsInputText = styled(PanelInputText)`
   margin-top: 10px;
@@ -48,6 +49,8 @@ export function SettingsPanel({ isActive }) {
   const { user } = useContext(UserContext);
   const [title, setTitle] = useState("");
   const history = useHistory();
+
+  const { undo, redo } = useContext(CommandContext);
 
   useEffect(() => {
     setTitle(pageTree.head.title);
@@ -147,6 +150,13 @@ export function SettingsPanel({ isActive }) {
         onClick={(e) => setDialogBox(true)}
       >
         Delete Site
+      </PanelButton>
+      <div style={{ marginTop: "50px" }}></div>
+      <PanelButton id="saveProps" onClick={undo}>
+        Undo Action
+      </PanelButton>
+      <PanelButton id="saveProps" onClick={redo}>
+        Redo Action
       </PanelButton>
     </Panel>
   );

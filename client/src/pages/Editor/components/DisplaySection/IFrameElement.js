@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { CommandContext } from "../../../../contexts/CommandContext";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
 
@@ -9,13 +10,16 @@ export function IframeElement({
   outlineBox,
 }) {
   const { tagName, text, attributes } = data;
-  const nonClosingTags = ["img", "input", "hr", "br"];
+  const nonClosingTags = ["img", "video", "input", "hr", "br"];
   let elemAttributes = Object.assign({}, attributes);
   delete elemAttributes.class;
 
   const [element, setElement] = useState();
   const { setSelectedElement } = useContext(SelectedElementContext);
   const { updateTree } = useContext(PageTreeContext);
+  const { addCommand } = useContext(CommandContext);
+
+  console.log("OK");
 
   useEffect(() => {
     if (data) {
@@ -43,7 +47,7 @@ export function IframeElement({
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    removeFromParent(element._id);
+    removeFromParent(element);
   };
   const handleDrop = (e) => {
     e.preventDefault();
@@ -52,30 +56,49 @@ export function IframeElement({
     if (!data._id) data._id = performance.now().toString(36).replace(/\./g, "");
     if (!data.path.length) data.path = [...element.path, element._id];
     insertElement(data);
-    updateTree(data);
+    // updateTree(data);
   };
+
   const handleDragOver = (e) => {
     e.preventDefault();
     e.stopPropagation();
     showHoverBox(e);
   };
+
   const handleDragStart = (e) => {
     e.stopPropagation();
     e.dataTransfer.setData("draggedElement", JSON.stringify(element));
   };
 
-  const removeElementFromParent = (childId) => {
+  /* 
+  Cannot keep addCommand inside these function 
+  because these functions will be called while doing undo and redo
+  causing the command to be added to the history again
+*/
+
+  const removeElementFromParent = (child) => {
     setElement((prev, prop) => {
       let temp = { ...prev };
-      delete temp.children[childId];
+      delete temp.children[child._id];
       return temp;
     });
+    addCommand({
+      action: "drag",
+      element: { ...child },
+      parent: { ...element },
+    });
   };
+
   const insertElement = (child, contextMenu = {}) => {
     setElement((prev, prop) => {
       let temp = { ...prev };
       temp.children[child._id] = child;
       return temp;
+    });
+    addCommand({
+      action: "drop",
+      element: { ...child },
+      parent: { ...element },
     });
   };
 
@@ -88,6 +111,7 @@ export function IframeElement({
     outlineBox.current.style.height = height + "px";
     outlineBox.current.style.display = "block";
   };
+
   const hideHoverBox = (e) => {
     e.stopPropagation();
     outlineBox.current.style.display = "none";
@@ -141,6 +165,7 @@ export function IframeElement({
         onContextMenu={(e) => openContextMenu(e, contextMenu)}
         className={"frame-element " + attributes["class"]}
         readOnly={tagName === "input" ? true : false}
+        controls={tagName === "video" ? true : false}
         {...elemAttributes}
       />
     )
@@ -149,15 +174,4 @@ export function IframeElement({
 
 const closeContextMenu = (e, contextMenu) => {
   contextMenu.current.style.display = "none";
-};
-
-export const executePaste = async (element, insertElement, updateTree) => {
-  let pasteData = JSON.parse(await navigator.clipboard.readText());
-  pasteData._id = performance.now().toString(36).replace(/\./g, "");
-
-  if (pasteData) {
-    pasteData.path = [...element.path, element._id];
-    insertElement(pasteData);
-    updateTree(pasteData);
-  }
 };

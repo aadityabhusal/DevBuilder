@@ -81,9 +81,9 @@ export function EditorPage({ history }) {
         {page ? (
           <PageTreeProvider value={page}>
             <SelectedElementProvider>
-              <LeftSection ref={dragRef} />
-              <DragLeftSection onMouseDown={handleResize}></DragLeftSection>
               <CommandProvider>
+                <LeftSection ref={dragRef} />
+                <DragLeftSection onMouseDown={handleResize}></DragLeftSection>
                 <DisplaySection />
               </CommandProvider>
             </SelectedElementProvider>
