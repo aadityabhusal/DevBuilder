@@ -35,7 +35,11 @@ export function LayoutsPanel({ isActive, layoutList }) {
     }
     return {
       id: (performance.now() + Math.random()).toString(36).replace(/\./g, ""),
-      item: { ...element, children: results },
+      item: {
+        ...element,
+        children_order: Object.keys(results),
+        children: results,
+      },
     };
   }
 

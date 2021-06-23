@@ -44,6 +44,7 @@ const PageSchema = new mongoose.Schema(
               id: "page-container",
               class: "container",
             },
+            children_order: [],
             children: {},
           },
         },

@@ -1,6 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  createRef,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { CommandContext } from "../../../../contexts/CommandContext";
-import { PageTreeContext } from "../../../../contexts/PageTreeContext";
+// import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
 
 export function IframeElement({
@@ -16,10 +22,9 @@ export function IframeElement({
 
   const [element, setElement] = useState();
   const { setSelectedElement } = useContext(SelectedElementContext);
-  const { updateTree } = useContext(PageTreeContext);
+  const elementRef = createRef();
+  // const { updateTree } = useContext(PageTreeContext);
   const { addCommand } = useContext(CommandContext);
-
-  console.log("OK");
 
   useEffect(() => {
     if (data) {
@@ -49,19 +54,30 @@ export function IframeElement({
     e.stopPropagation();
     removeFromParent(element);
   };
+
   const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
     let data = JSON.parse(e.dataTransfer.getData("draggedElement"));
     if (!data._id) data._id = performance.now().toString(36).replace(/\./g, "");
     if (!data.path.length) data.path = [...element.path, element._id];
-    insertElement(data);
+    let afterElement = localStorage.getItem("afterElement");
+    insertElement(data, afterElement);
+    localStorage.setItem("afterElement", "");
     // updateTree(data);
   };
 
-  const handleDragOver = (e) => {
+  const handleDragOver = async (e) => {
     e.preventDefault();
     e.stopPropagation();
+    /* 
+      Get the placement of the element to insert before here
+      It could be done by giving the ref of the element (manage those propagation behaviour) to the getDragAfterElement
+      Then get the id of the elementBefore from the children array
+      Then add the dragged element before the element using insertElement function along with adding the children_order  
+      */
+    const afterElement = getDragAfterElement(elementRef.current, e.clientY);
+    localStorage.setItem("afterElement", afterElement);
     showHoverBox(e);
   };
 
@@ -79,6 +95,8 @@ export function IframeElement({
   const removeElementFromParent = (child) => {
     setElement((prev, prop) => {
       let temp = { ...prev };
+      let index = temp.children_order.indexOf(child._id);
+      temp.children_order.splice(index, 1);
       delete temp.children[child._id];
       return temp;
     });
@@ -89,12 +107,24 @@ export function IframeElement({
     });
   };
 
-  const insertElement = (child, contextMenu = {}) => {
+  const insertElement = (child, afterElement = null, contextMenu = {}) => {
     setElement((prev, prop) => {
       let temp = { ...prev };
+      if (child._id in temp.children) {
+        return temp;
+      }
+      if (afterElement == null) {
+        temp.children_order.push(child._id);
+      } else {
+        let afterElementIndex = temp.children_order.indexOf(afterElement);
+        temp.children_order.splice(afterElementIndex, 0, child._id);
+      }
       temp.children[child._id] = child;
+      localStorage.setItem("afterElement", "");
       return temp;
     });
+    localStorage.setItem("afterElement", "");
+
     addCommand({
       action: "drop",
       element: { ...child },
@@ -123,6 +153,7 @@ export function IframeElement({
     !nonClosingTags.includes(tagName) ? (
       <HTMLTag
         title={HTMLTag}
+        ref={elementRef}
         draggable={true}
         onClick={handleClick}
         onDrag={handleDrag}
@@ -134,18 +165,19 @@ export function IframeElement({
         onMouseOut={(e) => hideHoverBox(e)}
         onContextMenu={(e) => openContextMenu(e, contextMenu)}
         className={"frame-element " + attributes["class"]}
+        data-_id={element._id}
         {...elemAttributes}
       >
-        {text.join(" ")}
-        {Object.values(element.children).length
-          ? Object.values(element.children).map((elem) => {
-              elem.path = [...element.path, element._id];
+        {text.join("")}
+        {element.children_order.length
+          ? element.children_order.map((elem) => {
+              element.children[elem].path = [...element.path, element._id];
               return (
                 <IframeElement
-                  key={elem._id}
+                  key={element.children[elem]._id}
                   contextMenu={contextMenu}
                   outlineBox={outlineBox}
-                  data={elem}
+                  data={element.children[elem]}
                   removeFromParent={removeElementFromParent}
                 ></IframeElement>
               );
@@ -155,6 +187,7 @@ export function IframeElement({
     ) : (
       <HTMLTag
         title={HTMLTag}
+        data-_id={element._id}
         draggable={true}
         onClick={handleClick}
         onDrag={handleDrag}
@@ -175,3 +208,20 @@ export function IframeElement({
 const closeContextMenu = (e, contextMenu) => {
   contextMenu.current.style.display = "none";
 };
+
+function getDragAfterElement(container, y) {
+  const draggableElements = [...container.querySelectorAll(".frame-element")];
+
+  return draggableElements.reduce(
+    (closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset: offset, element: child.dataset._id };
+      } else {
+        return closest;
+      }
+    },
+    { offset: Number.NEGATIVE_INFINITY }
+  ).element;
+}

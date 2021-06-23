@@ -1,15 +1,3 @@
-FIND More Research Paper!!!!
-
-USE MAPS(or objects) FOR STORING THE CHILDREN ELEMENTS WITH UUID AS KEYS AND ELEMENT OBJECT AS VALUES
-
-Folders:
-hocs
-services
-store
-tests
-routes
-
-
 pages: This folder contains domain-specific/pages-based stateful components
 
 components: This folder contains stateless, reusable and shared components.
@@ -26,31 +14,26 @@ ISSUES
    b. (Done) Update the element in the site JSON tree
    c. (Later) Update the navigator tree
 5. (Done) Return dragged element to its original position if not dropped in another element 
-6. (Later)Validating DOM Nesting i.e. not allowing list item to be nestes inside another list item
-7. (Done) Error when dropping image element
-8. (Later) Stopping Unnecessary renders of the elements
-9. (Later) Implementing Undo and Redo functionalities (which will solve problem 5 & 6) 
-10. (Later) Slide/Shift and Reorder sibling item while dragover -- Or provide options on right click to move items or send to top/bottom
-11. (Done)Give more unique ids to elements and layout childrens
+6. (Done) Error when dropping image element
+7. (Done)Give more unique ids to elements and layout childrens
+8. (Done) Implementing Undo and Redo functionalities (which will solve problem 5) 
+9. (Later)Validating DOM Nesting i.e. not allowing list item to be nestes inside another list item
+10. (Later) Stopping Unnecessary renders of the elements
+11. (Later) Slide/Shift and Reorder sibling item while dragover -- Or provide options on right click to move items or send to top/bottom
 12. Elements reappearing inside previous parent after being dragged and dropped into a new parent
 13. Dropping adds drop command twice
 14. All the elements render when selecting an element and making changes to SelectedElementContext
-15. Create separate element attributes for html attributes such as required, controls etc. 
-
+15. Create separate element attributes for html attributes such as required, controls etc. They can be stored in a array with a checkbox for each of them in the properties panel that can push and pop them in and out of the array respectively.
 
 I HAVE to find a way to access an IframeElement element and then modify it without rendering every element in the site
-
-
-Solution for applying undo and redo:
-   - Create the functions to perform undo and redo inside IframeElement
-   - Call the undo function from CommandContext and if statement to check if the element in the current command is the IframeElement 
-   - Perfrom the action for drag and drop inside the iframe element
-Cons:
-   - Every IframeElement will run check the if statement so it might require more processing and the program might lag. The could be solved by creating a way to accessing any element through their path and select the element and then apply the undo and redo function.
-   -  
-
 
 Implementation
 1. Realtime db upadate
 2. In-browser update and caching
 3. Global function for adding, removing and moving elements
+
+
+NOW:
+Work on element position, and sorting when dragover
+When creating _ids for elements place them in the children_order property
+The whole procedure for inserting and removing elements should be change. Watch the video from WebDevSimlified Drag-Drop-Sorting

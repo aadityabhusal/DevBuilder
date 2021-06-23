@@ -23,7 +23,7 @@ export const UserProvider = (props) => {
           setUser(user);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     })();
   }, [token]);

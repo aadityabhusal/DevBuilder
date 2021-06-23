@@ -8,6 +8,7 @@
       "id": "",
       "class": ""
     },
+    "children_order": [],
     "children": {}
   },
   "a": {
@@ -20,6 +21,7 @@
       "class": "",
       "href": ""
     },
+    "children_order": [],
     "children": {}
   },
   "img": {
@@ -42,6 +44,7 @@
       "id": "",
       "class": ""
     },
+    "children_order": [],
     "children": {}
   },
   "input": {
@@ -66,6 +69,7 @@
       "id": "",
       "class": ""
     },
+    "children_order": [],
     "children": {}
   },
   "ol": {
@@ -80,6 +84,7 @@
       "start": "",
       "reversed": ""
     },
+    "children_order": [],
     "children": {}
   },
   "ul": {
@@ -91,6 +96,7 @@
       "id": "",
       "class": ""
     },
+    "children_order": [],
     "children": {}
   },
   "li": {
@@ -102,6 +108,7 @@
       "id": "",
       "class": ""
     },
+    "children_order": [],
     "children": {}
   },
   "video": {
@@ -123,6 +130,7 @@
       "id": "",
       "class": ""
     },
+    "children_order": [],
     "children": {}
   },
   "h2": {
@@ -134,6 +142,7 @@
       "id": "",
       "class": ""
     },
+    "children_order": [],
     "children": {}
   },
   "h3": {
@@ -145,6 +154,43 @@
       "id": "",
       "class": ""
     },
+    "children_order": [],
+    "children": {}
+  },
+  "tr": {
+    "_id": "",
+    "tagName": "tr",
+    "path": [],
+    "text": [""],
+    "attributes": {
+      "id": "",
+      "class": ""
+    },
+    "children_order": [],
+    "children": {}
+  },
+  "th": {
+    "_id": "",
+    "tagName": "th",
+    "path": [],
+    "text": ["Table Heading"],
+    "attributes": {
+      "id": "",
+      "class": ""
+    },
+    "children_order": [],
+    "children": {}
+  },
+  "td": {
+    "_id": "",
+    "tagName": "td",
+    "path": [],
+    "text": ["Table Data"],
+    "attributes": {
+      "id": "",
+      "class": ""
+    },
+    "children_order": [],
     "children": {}
   }
 }
