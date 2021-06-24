@@ -21,6 +21,15 @@ html {
   padding: 0 !important;
   margin: 0 !important;
 }
+
+#dragging {
+  margin-top: 20px;
+}
+
+#horizontal-dragging {
+  margin-left: 20px;
+}
+
 `;
 
 export function ViewSection() {

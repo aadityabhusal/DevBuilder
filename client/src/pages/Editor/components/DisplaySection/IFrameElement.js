@@ -1,12 +1,5 @@
-import React, {
-  createRef,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { CommandContext } from "../../../../contexts/CommandContext";
-// import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
 
 export function IframeElement({
@@ -22,8 +15,7 @@ export function IframeElement({
 
   const [element, setElement] = useState();
   const { setSelectedElement } = useContext(SelectedElementContext);
-  const elementRef = createRef();
-  // const { updateTree } = useContext(PageTreeContext);
+  const elementRef = useRef();
   const { addCommand } = useContext(CommandContext);
 
   useEffect(() => {
@@ -64,20 +56,27 @@ export function IframeElement({
     let afterElement = localStorage.getItem("afterElement");
     insertElement(data, afterElement);
     localStorage.setItem("afterElement", "");
+    let dragging = document
+      .getElementById("iframe-view")
+      .contentDocument.getElementById("dragging");
+    if (dragging) {
+      dragging.removeAttribute("id");
+    }
     // updateTree(data);
   };
 
   const handleDragOver = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    /* 
-      Get the placement of the element to insert before here
-      It could be done by giving the ref of the element (manage those propagation behaviour) to the getDragAfterElement
-      Then get the id of the elementBefore from the children array
-      Then add the dragged element before the element using insertElement function along with adding the children_order  
-      */
-    const afterElement = getDragAfterElement(elementRef.current, e.clientY);
-    localStorage.setItem("afterElement", afterElement);
+    const afterElement = getDragAfterElement(
+      elementRef.current,
+      e.clientX,
+      e.clientY
+    );
+    localStorage.setItem(
+      "afterElement",
+      afterElement ? afterElement.dataset._id : ""
+    );
     showHoverBox(e);
   };
 
@@ -90,6 +89,10 @@ export function IframeElement({
   Cannot keep addCommand inside these function 
   because these functions will be called while doing undo and redo
   causing the command to be added to the history again
+
+
+  problem
+  two sibling elements getting removed at once every time after the second  dragging of elements
 */
 
   const removeElementFromParent = (child) => {
@@ -97,7 +100,9 @@ export function IframeElement({
       let temp = { ...prev };
       let index = temp.children_order.indexOf(child._id);
       temp.children_order.splice(index, 1);
+      console.log(temp.children);
       delete temp.children[child._id];
+      console.log(temp.children);
       return temp;
     });
     addCommand({
@@ -107,23 +112,21 @@ export function IframeElement({
     });
   };
 
-  const insertElement = (child, afterElement = null, contextMenu = {}) => {
+  const insertElement = (child, afterElement, contextMenu = {}) => {
     setElement((prev, prop) => {
       let temp = { ...prev };
       if (child._id in temp.children) {
         return temp;
       }
-      if (afterElement == null) {
+      if (!afterElement) {
         temp.children_order.push(child._id);
       } else {
         let afterElementIndex = temp.children_order.indexOf(afterElement);
         temp.children_order.splice(afterElementIndex, 0, child._id);
       }
       temp.children[child._id] = child;
-      localStorage.setItem("afterElement", "");
       return temp;
     });
-    localStorage.setItem("afterElement", "");
 
     addCommand({
       action: "drop",
@@ -209,16 +212,33 @@ const closeContextMenu = (e, contextMenu) => {
   contextMenu.current.style.display = "none";
 };
 
-function getDragAfterElement(container, y) {
+/* 
+
+  HORIZONTAL SORTING PROBLEM SOLUTION
+
+  The feature for shifting elements by magin can be used to check
+  if cursor is < 10-20% to the left or right then the element shifts by margin on that side
+  If the cursor is in the center 80-60% the the program checks if the cursor is in the above part or the below part the add the margin above or below
+
+*/
+
+function getDragAfterElement(container, x, y) {
   const draggableElements = [...container.querySelectorAll(".frame-element")];
 
   return draggableElements.reduce(
     (closest, child) => {
       const box = child.getBoundingClientRect();
+      const offsetX = x - box.left - box.width / 2;
+      /* Check if the element is horizontally or vertically placed here */
+      let style = getComputedStyle(child);
+      // if(style.display)  // Use regex here to match 'inline' etc
+
       const offset = y - box.top - box.height / 2;
       if (offset < 0 && offset > closest.offset) {
-        return { offset: offset, element: child.dataset._id };
+        child.id = "dragging";
+        return { offset: offset, element: child };
       } else {
+        child.removeAttribute("id");
         return closest;
       }
     },

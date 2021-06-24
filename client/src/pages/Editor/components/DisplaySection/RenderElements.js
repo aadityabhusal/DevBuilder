@@ -2,7 +2,6 @@ import React from "react";
 import { IframeElement } from "../IFrameElement";
 
 export const renderElements = (element, level, contextMenu) => {
-  // let list = Object.values(element.children);
   return (
     element.children_order.length &&
     element.children_order.map((elem) => {
