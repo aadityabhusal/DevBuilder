@@ -56,11 +56,19 @@ export function IframeElement({
     let afterElement = localStorage.getItem("afterElement");
     insertElement(data, afterElement);
     localStorage.setItem("afterElement", "");
-    let dragging = document
+
+    let vdragging = document
       .getElementById("iframe-view")
-      .contentDocument.getElementById("dragging");
-    if (dragging) {
-      dragging.removeAttribute("id");
+      .contentDocument.getElementById("vertical-dragging");
+    if (vdragging) {
+      vdragging.removeAttribute("id");
+    }
+
+    let hdragging = document
+      .getElementById("iframe-view")
+      .contentDocument.getElementById("horizontal-dragging");
+    if (hdragging) {
+      hdragging.removeAttribute("id");
     }
     // updateTree(data);
   };
@@ -90,7 +98,6 @@ export function IframeElement({
   because these functions will be called while doing undo and redo
   causing the command to be added to the history again
 
-
   problem
   two sibling elements getting removed at once every time after the second  dragging of elements
 */
@@ -100,9 +107,7 @@ export function IframeElement({
       let temp = { ...prev };
       let index = temp.children_order.indexOf(child._id);
       temp.children_order.splice(index, 1);
-      console.log(temp.children);
       delete temp.children[child._id];
-      console.log(temp.children);
       return temp;
     });
     addCommand({
@@ -212,31 +217,21 @@ const closeContextMenu = (e, contextMenu) => {
   contextMenu.current.style.display = "none";
 };
 
-/* 
-
-  HORIZONTAL SORTING PROBLEM SOLUTION
-
-  The feature for shifting elements by magin can be used to check
-  if cursor is < 10-20% to the left or right then the element shifts by margin on that side
-  If the cursor is in the center 80-60% the the program checks if the cursor is in the above part or the below part the add the margin above or below
-
-*/
-
 function getDragAfterElement(container, x, y) {
   const draggableElements = [...container.querySelectorAll(".frame-element")];
 
   return draggableElements.reduce(
     (closest, child) => {
       const box = child.getBoundingClientRect();
-      const offsetX = x - box.left - box.width / 2;
-      /* Check if the element is horizontally or vertically placed here */
-      let style = getComputedStyle(child);
-      // if(style.display)  // Use regex here to match 'inline' etc
+      const offsetTop = y < box.top + box.height * 0.2;
+      const offsetLeft = x < box.left + box.width * 0.2;
 
-      const offset = y - box.top - box.height / 2;
-      if (offset < 0 && offset > closest.offset) {
-        child.id = "dragging";
-        return { offset: offset, element: child };
+      if (offsetLeft && offsetLeft > closest.offset && y < box.bottom) {
+        child.id = "horizontal-dragging";
+        return { element: child, offset: offsetLeft };
+      } else if (offsetTop && offsetTop > closest.offset) {
+        child.id = "vertical-dragging";
+        return { element: child, offset: offsetTop };
       } else {
         child.removeAttribute("id");
         return closest;

@@ -22,7 +22,7 @@ html {
   margin: 0 !important;
 }
 
-#dragging {
+#vertical-dragging {
   margin-top: 20px;
 }
 
