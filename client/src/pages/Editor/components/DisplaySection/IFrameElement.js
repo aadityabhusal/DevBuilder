@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { CommandContext } from "../../../../contexts/CommandContext";
 import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
+const nonClosingTags = ["img", "video", "input", "hr", "br"];
 
 export function IframeElement({
   data,
@@ -9,7 +10,6 @@ export function IframeElement({
   outlineBox,
 }) {
   const { tagName, text, attributes } = data;
-  const nonClosingTags = ["img", "video", "input", "hr", "br"];
   let elemAttributes = Object.assign({}, attributes);
   delete elemAttributes.class;
 
@@ -85,12 +85,19 @@ export function IframeElement({
       "afterElement",
       afterElement ? afterElement.dataset._id : ""
     );
-    showHoverBox(e);
+
+    let data = JSON.parse(localStorage.getItem("draggedElement"));
+    if (nestingValidation(elementRef.current.tagName, data.tagName)) {
+      showHoverBox(e);
+    } else {
+      showHoverBox(e, "#e74c3c");
+    }
   };
 
   const handleDragStart = (e) => {
     e.stopPropagation();
     e.dataTransfer.setData("draggedElement", JSON.stringify(element));
+    localStorage.setItem("draggedElement", JSON.stringify(element));
   };
 
   /* 
@@ -114,6 +121,7 @@ export function IframeElement({
       action: "drag",
       element: { ...child },
       parent: { ...element },
+      index: element.children_order.indexOf(child._id),
     });
   };
 
@@ -137,16 +145,18 @@ export function IframeElement({
       action: "drop",
       element: { ...child },
       parent: { ...element },
+      index: element.children_order.indexOf(child._id),
     });
   };
 
-  const showHoverBox = (e) => {
+  const showHoverBox = (e, color = "#3498db") => {
     e.stopPropagation();
     let { top, left, width, height } = e.target.getBoundingClientRect();
     outlineBox.current.style.top = top - 1 + "px";
     outlineBox.current.style.left = left - 1 + "px";
     outlineBox.current.style.width = width + "px";
     outlineBox.current.style.height = height + "px";
+    outlineBox.current.style.border = "1px solid" + color;
     outlineBox.current.style.display = "block";
   };
 
@@ -195,12 +205,14 @@ export function IframeElement({
     ) : (
       <HTMLTag
         title={HTMLTag}
+        ref={elementRef}
         data-_id={element._id}
         draggable={true}
         onClick={handleClick}
         onDrag={handleDrag}
         onDragLeave={(e) => hideHoverBox(e)}
         onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
         onMouseOver={(e) => showHoverBox(e)}
         onMouseOut={(e) => hideHoverBox(e)}
         onContextMenu={(e) => openContextMenu(e, contextMenu)}
@@ -225,13 +237,13 @@ function getDragAfterElement(container, x, y) {
       const box = child.getBoundingClientRect();
       const offsetTop = y < box.top + box.height * 0.2;
       const offsetLeft = x < box.left + box.width * 0.2;
-
-      if (offsetLeft && offsetLeft > closest.offset && y < box.bottom) {
-        child.id = "horizontal-dragging";
-        return { element: child, offset: offsetLeft };
-      } else if (offsetTop && offsetTop > closest.offset) {
+      /* Needs Some Improvement */
+      if (offsetTop && offsetTop > closest.offset) {
         child.id = "vertical-dragging";
         return { element: child, offset: offsetTop };
+      } else if (offsetLeft && offsetLeft > closest.offset && y < box.bottom) {
+        child.id = "horizontal-dragging";
+        return { element: child, offset: offsetLeft };
       } else {
         child.removeAttribute("id");
         return closest;
@@ -239,4 +251,23 @@ function getDragAfterElement(container, x, y) {
     },
     { offset: Number.NEGATIVE_INFINITY }
   ).element;
+}
+
+function nestingValidation(parentTag, childTag) {
+  let tags = {
+    p: ["p"],
+    li: ["li"],
+    a: ["a"],
+    button: ["button"],
+  };
+  let parent = parentTag.toLowerCase();
+
+  if (nonClosingTags.includes(parent)) {
+    return false;
+  }
+
+  if (tags.hasOwnProperty(parent) && tags[parent].includes(childTag)) {
+    return false;
+  }
+  return true;
 }

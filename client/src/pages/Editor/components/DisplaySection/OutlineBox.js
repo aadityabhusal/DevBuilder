@@ -4,7 +4,6 @@ import styled from "styled-components";
 const OutlineContainer = styled.div`
   position: absolute;
   display: none;
-  border: 1px solid #3498db;
   z-index: 100;
   pointer-events: none;
   user-select: none;

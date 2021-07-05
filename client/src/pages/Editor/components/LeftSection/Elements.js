@@ -11,18 +11,15 @@ export function ElementsPanel({ isActive, elementList }) {
   const [elements, setElements] = useState();
 
   useEffect(() => {
-    const temp = [];
-    for (const key in elementList) {
-      temp.push(elementList[key]);
-    }
-    setElements(temp);
+    let list = Object.entries(elementList);
+    setElements(list);
   }, [elementList]);
 
   return elements ? (
     <Panel className={isActive}>
       <PanelTitle>Elements</PanelTitle>
       <PanelItems cols={2}>
-        {elements.map((item, i) => {
+        {elements.map(([key, item], i) => {
           return (
             <ElementsPanelItem
               data-element={item.tagName}
@@ -30,9 +27,10 @@ export function ElementsPanel({ isActive, elementList }) {
               draggable={true}
               onDragStart={(e) => {
                 e.dataTransfer.setData("draggedElement", JSON.stringify(item));
+                localStorage.setItem("draggedElement", JSON.stringify(item));
               }}
             >
-              &lt;{item.tagName}&gt;
+              &lt;{key}&gt;
             </ElementsPanelItem>
           );
         })}

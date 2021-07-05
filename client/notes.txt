@@ -1,8 +1,3 @@
-pages: This folder contains domain-specific/pages-based stateful components
-
-components: This folder contains stateless, reusable and shared components.
-
-
 ISSUES
 
 1. (Done) React Iframe Component doesn't get removed form its parent after being dragged into another element even though it gets removed from the DOM
@@ -10,30 +5,35 @@ ISSUES
 2. (Done) Dragging an Iframe Component and dropping in the same parent div makes the Iframe Component disappear
 3. (Done) Create an add below and above add above option on either hover or right click
 4. While Adding/Updating elements in the iframe do the following things:
-   a. (Done)Update the DOM
+   a. (Done) Update the DOM
    b. (Done) Update the element in the site JSON tree
-   c. (Later) Update the navigator tree
 5. (Done) Return dragged element to its original position if not dropped in another element 
 6. (Done) Error when dropping image element
-7. (Done)Give more unique ids to elements and layout childrens
+7. (Done) Give more unique ids to elements and layout childrens
 8. (Done) Implementing Undo and Redo functionalities (which will solve problem 5) 
-9. (Later)Validating DOM Nesting i.e. not allowing list item to be nestes inside another list item
-10. (Later) Stopping Unnecessary renders of the elements
-11. (Later) Slide/Shift and Reorder sibling item while dragover -- Or provide options on right click to move items or send to top/bottom
-12. Elements reappearing inside previous parent after being dragged and dropped into a new parent
-13. Dropping adds drop command twice
-14. All the elements render when selecting an element and making changes to SelectedElementContext
-15. Create separate element attributes for html attributes such as required, controls etc. They can be stored in a array with a checkbox for each of them in the properties panel that can push and pop them in and out of the array respectively.
+9. (Done) Slide/Shift and Reorder sibling item while dragover -- Or provide options on right click to move items or send to top/bottom
+10. (Done) Elements reappearing inside previous parent after being dragged and dropped into a new parent
+11. (Done) Dropping adds drop command twice
+12. (Done) Work on element position, and sorting when dragover
+13. (Done) When creating _ids for elements place them in the children_order property
+14. (Done) The whole procedure for inserting and removing elements should be change. Watch the video from WebDevSimlified Drag-Drop-Sorting
+15. (Now) Validating DOM Nesting i.e. not allowing list item to be nestes inside another list item
+16. (Later) Create separate element attributes for html attributes such as required, controls etc. They can be stored in a array with a checkbox for each of them in the properties panel that can push and pop them in and out of the array respectively.
+17. Stopping Unnecessary renders of the elements
+18. All the elements render when selecting an element and making changes to SelectedElementContext
+19. Find a way to access an IframeElement element and then modify it without rendering every element in the site
 
-I HAVE to find a way to access an IframeElement element and then modify it without rendering every element in the site
+
+HTML boolean attributes such as 'required', 'controls' can be stored in an array that could be stored as a value of a property in the element object.
+E.g. {
+   tagName: "",
+   ...,
+   booleanAttributes: ['required', '...']
+}
+
+The Properties Panel will contain the list of all the boolean (and all other) attributes of each element. The program will then check the attributes present in the boolean attributes. The user can add/remove boolean attributes by checking/unchecking in Properties panel
 
 Implementation
 1. Realtime db upadate
 2. In-browser update and caching
 3. Global function for adding, removing and moving elements
-
-
-NOW:
-Work on element position, and sorting when dragover
-When creating _ids for elements place them in the children_order property
-The whole procedure for inserting and removing elements should be change. Watch the video from WebDevSimlified Drag-Drop-Sorting

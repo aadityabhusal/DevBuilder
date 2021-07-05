@@ -192,5 +192,17 @@
     },
     "children_order": [],
     "children": {}
+  },
+  "databox": {
+    "_id": "",
+    "tagName": "div",
+    "path": [],
+    "text": [""],
+    "attributes": {
+      "id": "",
+      "class": ""
+    },
+    "children_order": [],
+    "children": {}
   }
 }
