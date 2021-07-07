@@ -36,7 +36,7 @@ export function ViewSection() {
   const contextRef = useRef();
   const outlineRef = useRef();
   const [contextMenu, setContextMenu] = useState();
-  const { pageTree } = useContext(PageTreeContext);
+  const { pageTree, navigatorTree } = useContext(PageTreeContext);
 
   useEffect(() => {
     if (pageTree) {
@@ -69,6 +69,7 @@ export function ViewSection() {
                 <IframeElement
                   contextMenu={contextMenu}
                   outlineBox={outlineRef}
+                  navigator={navigatorTree}
                   data={
                     pageTree.body.children[
                       Object.keys(pageTree.body.children)[0]

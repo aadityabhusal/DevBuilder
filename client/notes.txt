@@ -1,4 +1,80 @@
+Implementation
+0. Navigator Section
+1. Realtime db upadate
+2. In-browser update and caching
+3. Global function for adding, removing and moving elements
+
+* See if Redux can solve the problem of re-rendering of all elements in the view section 
+
 ISSUES
+
+15. (Now) Validating DOM Nesting i.e. not allowing list item to be nestes inside another list item
+16. (Later) Create separate element attributes for html attributes such as required, controls etc. They can be stored in a array with a checkbox for each of them in the properties panel that can push and pop them in and out of the array respectively.
+17. Stopping Unnecessary renders of the elements
+18. All the elements render when selecting an element and making changes to SelectedElementContext
+19. Find a way to access an IframeElement element and then modify it without rendering every element in the site
+
+_________________________________
+
+Boolean attributes:
+
+HTML boolean attributes such as 'required', 'controls' can be stored in an array that could be stored as a value of a property in the element object.
+E.g. {
+   tagName: "",
+   ...,
+   booleanAttributes: ['required', '...']
+}
+The Properties Panel will contain the list of all the boolean (and all other) attributes of each element. The program will then check the attributes present in the boolean attributes. The user can add/remove boolean attributes by checking/unchecking in Properties panel
+
+_________________________________
+
+Databox identifier:
+
+An identifier will be given to every databox so that when the final code is generated for exporting, the JS code get the databox element and display the data in it. The identifier will be stored in data-* attribute.
+The children elements inside the databox results element that are assigned a field from API results will have the field name stores in data-* attribute.
+
+_________________________________
+
+Sub elements:
+
+Create sub-elements that cannot be dragged or interacted with but could be partially dropped elements into.
+These elements could have a property in their element object indicating to be a sub element
+Eg. src element inside video element, results element inside databox element
+
+_________________________________
+
+Custom Elements and Layouts:
+
+There will be a section for users to create their own elements or layouts. They will have fixed properties and could be used throughout the site. Changes done to one instance of a element or layout will be applied to all the instances.
+
+_________________________________
+
+Element communication between Navigator, Properties and HTML Elements 
+
+Since both HTML elements and element objects have id
+we can communicate between left and right section by taking the ID from HTML element and then updating the pageTree and then updating the HTML element.
+
+Webflow also stores the ID of each elements in HTML data-* properties 
+e.g. data-w-id="", data-wf-id=["",""], data-w-instance-of=""
+The elements in the navigator panel also store the elements' id and perform action accordingly
+
+_________________________________
+
+Adding Styling changes to history 
+
+The styling of the elements can be added to the action history in three conditions:
+1. Valid style created
+2. Style saved
+3. Node value changes in node based styling
+_________________________________
+
+Node based styling can be applied for storing styles. An object of styles can be created where the styles are stored in the properties named by the CSS selectors. The css property names can also be stored a properties of each css selector object. The style object can be then stringified.
+
+This can help in separating and managing styles, displaying and changing the styles of indivisual elements' styles.
+
+_________________________________
+
+DONE:
 
 1. (Done) React Iframe Component doesn't get removed form its parent after being dragged into another element even though it gets removed from the DOM
    Currently Searching: "unmount component in react hooks" and "remove a component from react virtual dom"
@@ -17,23 +93,3 @@ ISSUES
 12. (Done) Work on element position, and sorting when dragover
 13. (Done) When creating _ids for elements place them in the children_order property
 14. (Done) The whole procedure for inserting and removing elements should be change. Watch the video from WebDevSimlified Drag-Drop-Sorting
-15. (Now) Validating DOM Nesting i.e. not allowing list item to be nestes inside another list item
-16. (Later) Create separate element attributes for html attributes such as required, controls etc. They can be stored in a array with a checkbox for each of them in the properties panel that can push and pop them in and out of the array respectively.
-17. Stopping Unnecessary renders of the elements
-18. All the elements render when selecting an element and making changes to SelectedElementContext
-19. Find a way to access an IframeElement element and then modify it without rendering every element in the site
-
-
-HTML boolean attributes such as 'required', 'controls' can be stored in an array that could be stored as a value of a property in the element object.
-E.g. {
-   tagName: "",
-   ...,
-   booleanAttributes: ['required', '...']
-}
-
-The Properties Panel will contain the list of all the boolean (and all other) attributes of each element. The program will then check the attributes present in the boolean attributes. The user can add/remove boolean attributes by checking/unchecking in Properties panel
-
-Implementation
-1. Realtime db upadate
-2. In-browser update and caching
-3. Global function for adding, removing and moving elements

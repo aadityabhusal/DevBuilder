@@ -5,6 +5,7 @@ import {
   LayoutsIcon,
   PagesIcon,
   PropertiesIcon,
+  NavigatorIcon,
   SettingsIcon,
   StylesIcon,
 } from "../Icons";
@@ -14,6 +15,7 @@ import { ElementsPanel } from "./Elements";
 import { LayoutsPanel } from "./Layouts";
 import { PagesPanel } from "./Pages";
 import { PropertiesPanel } from "./Properties";
+import { NavigatorPanel } from "./Navigator";
 import { SettingsPanel } from "./Settings";
 import { StylesPanel } from "./Styles";
 
@@ -48,9 +50,12 @@ export const LeftSection = React.forwardRef(({}, ref) => {
           <PropertiesIcon />
         </div>
         <div className={checkActive(5)} onClick={() => setActivePanel(5)}>
-          <StylesIcon />
+          <NavigatorIcon />
         </div>
         <div className={checkActive(6)} onClick={() => setActivePanel(6)}>
+          <StylesIcon />
+        </div>
+        <div className={checkActive(7)} onClick={() => setActivePanel(7)}>
           <SettingsIcon />
         </div>
       </PanelList>
@@ -59,8 +64,9 @@ export const LeftSection = React.forwardRef(({}, ref) => {
         <LayoutsPanel layoutList={layoutList} isActive={checkActive(2)} />
         <PagesPanel pages={siteTree.pages} isActive={checkActive(3)} />
         <PropertiesPanel isActive={checkActive(4)} />
-        <StylesPanel isActive={checkActive(5)} />
-        <SettingsPanel isActive={checkActive(6)} />
+        <NavigatorPanel isActive={checkActive(5)} />
+        <StylesPanel isActive={checkActive(6)} />
+        <SettingsPanel isActive={checkActive(7)} />
       </Panels>
     </LeftContainer>
   );
