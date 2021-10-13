@@ -17,7 +17,7 @@ export function IframeElement({
   const { setSelectedElement } = useContext(SelectedElementContext);
   const elementRef = useRef();
   const { addCommand } = useContext(CommandContext);
-  console.log("OK");
+
   useEffect(() => {
     if (data) {
       setElement((prev, prop) => data);
