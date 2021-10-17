@@ -18,7 +18,7 @@ const PageSchema = new mongoose.Schema(
         title: "",
         meta: {},
         style: {
-          main: "",
+          main: [],
         },
         script: {},
         link: {},

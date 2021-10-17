@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Panel, PanelInputText } from "../Panel";
-import MonacoEditor from "@monaco-editor/react";
 import styled from "styled-components";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 import {
@@ -14,6 +13,7 @@ import {
   CloseButton,
 } from "../DropDownMenu";
 import { CloseIcon, DropDownIcon } from "../Icons";
+import { StyleEditor } from "./StyleEditor";
 
 const StylePanel = styled(Panel)`
   overflow: initial;
@@ -21,10 +21,10 @@ const StylePanel = styled(Panel)`
 `;
 
 export function StylesPanel({ isActive }) {
-  const editorRef = useRef(null);
   const dropDownListRef = useRef();
   const inputBoxRef = useRef();
 
+  /* SavePage function to save the style */
   const { pageTree, updateStyles, savePage } = useContext(PageTreeContext);
   const [currentStyle, setCurrentStyle] = useState([]);
   const [styleList, setStyleList] = useState([]);
@@ -34,13 +34,6 @@ export function StylesPanel({ isActive }) {
     setStyleList(styles);
     setCurrentStyle([styles[0][0], pageTree.head.style[styles[0][0]]]);
   }, [pageTree.head.style]);
-
-  const options = {
-    selectOnLineNumbers: true,
-    minimap: {
-      enabled: false,
-    },
-  };
 
   const addStyle = (e) => {
     if (e.keyCode === 13) {
@@ -66,6 +59,7 @@ export function StylesPanel({ isActive }) {
     setCurrentStyle(styleList[0] || []);
   };
 
+  /* Handles editor's onChange events */
   const handleEditor = (value) => {
     setStyleList((prev) => {
       return prev.map((item) => {
@@ -79,13 +73,9 @@ export function StylesPanel({ isActive }) {
       .getElementById("iframe-view")
       .contentDocument.getElementById(currentStyle[0] + "-stylesheet");
 
-    stylesheet.innerHTML = editorRef.current.getValue();
+    /* stylelist value from editor */
+    stylesheet.innerHTML = value;
     updateStyles(currentStyle[0], "update", value);
-  };
-
-  const mountEditor = (editor, monaco) => {
-    editorRef.current = editor;
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, savePage);
   };
 
   const removeDropDowns = () => {
@@ -131,17 +121,9 @@ export function StylesPanel({ isActive }) {
           ></PanelInputText>
         </AddItemBox>
       </DropDownMenu>
+      {/* 0 = css file name & 1 = css text */}
       {currentStyle[0] ? (
-        <MonacoEditor
-          height="95vh"
-          defaultLanguage="css"
-          theme="vs-dark"
-          saveViewState={true}
-          value={currentStyle[1]}
-          options={options}
-          onMount={mountEditor}
-          onChange={handleEditor}
-        ></MonacoEditor>
+        <StyleEditor styleList={currentStyle[1]} handleEditor={handleEditor} />
       ) : null}
     </StylePanel>
   );

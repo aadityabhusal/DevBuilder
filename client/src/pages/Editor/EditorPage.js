@@ -66,9 +66,7 @@ export function EditorPage({ history }) {
     if (dragRef.current.clientWidth >= 400) {
       document.getElementById("display-mask").style.display = "block";
       dragRef.current.style.flex = `0 0 ${e.pageX}px`;
-      document.getElementsByClassName(
-        "monaco-editor"
-      )[0].style.width = `${e.pageX}px`;
+      document.getElementById("style-container").style.width = `${e.pageX}px`;
     } else {
       dragRef.current.style.flex = `0 0 400px`;
       document.removeEventListener("mousemove", resizeLeftSection);
