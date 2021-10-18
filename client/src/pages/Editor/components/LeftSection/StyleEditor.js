@@ -5,10 +5,16 @@ import { StyleBlock } from "./StyleBlock";
 export function StyleEditor({ styleList, handleEditor }) {
   const [styleBlocks, setStyleBlocks] = useState(styleList);
 
+  /* 
+    - Validate blocks by checking if the selector is empty or similar to other selector
+    - Make the "Add new Style" button stick to the bottom 
+    - when add new button is created focus on the selector input of the last item of the array
+  */
+
   const addNewStyle = () => {
     let newStyle = {
       selector: "",
-      style: [["", "", false]],
+      style: [],
     };
     setStyleBlocks((blocks) => {
       let temp = [...blocks];
@@ -18,21 +24,28 @@ export function StyleEditor({ styleList, handleEditor }) {
   };
   return (
     <StyleContainer id="style-container">
-      {styleBlocks.map((styleBlock, i) => (
-        <StyleBlock data={styleBlock} key={i} />
-      ))}
+      <StyleBlockList>
+        {styleBlocks.map((styleBlock, i) => (
+          <StyleBlock data={styleBlock} key={i} />
+        ))}
+      </StyleBlockList>
       <AddNewStyle onClick={addNewStyle}>Add New Style</AddNewStyle>
     </StyleContainer>
   );
 }
 
 const StyleContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  padding: 10px 0;
+  flex: 1;
+  height: calc(100% - 200px);
+  padding-top: 15px;
   display: flex;
   flex-direction: column;
+`;
+
+const StyleBlockList = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  border-bottom: 1px solid #bdc3c7;
 `;
 
 const AddNewStyle = styled.button`

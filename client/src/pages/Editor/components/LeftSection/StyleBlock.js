@@ -11,13 +11,24 @@ export function StyleBlock({ data }) {
     setSelector(e.target.value);
   };
 
+  const handleCurrentProperty = (item, i) => {
+    if (currentProperty[0] !== item[0]) {
+      setCurrentProperty([...item, i]);
+    }
+  };
+
   const checkProperty = (e) => {
+    e.target.style.borderTop = "none";
     e.target.style.borderColor = "#bdc3c7";
 
-    let update = propertyList.map((item) => {
+    if (currentProperty[0] === e.target.value) return;
+
+    let update = propertyList.map((item, i) => {
       if (item[0] === currentProperty[0]) {
-        let foundSame = propertyList.find((item) => item[0] === e.target.value);
-        if (foundSame) {
+        let foundSame = propertyList.findIndex(
+          (item) => item[0] === e.target.value
+        );
+        if (foundSame !== -1 && foundSame !== currentProperty[3]) {
           let val = e.target.value.slice(0, -1);
           item[0] = val;
           item[2] = false;
@@ -27,9 +38,10 @@ export function StyleBlock({ data }) {
           item[2] = true;
         }
       }
+      /* and index is not equals to current item */
       if (!properties.includes(item[0])) {
         item[2] = false;
-        e.target.style.borderColor = "#e74c3c";
+        e.target.style.border = "1px solid #e74c3c";
       }
       return item;
     });
@@ -72,6 +84,8 @@ export function StyleBlock({ data }) {
           value={selector}
           onChange={updateSelector}
           placeholder="Enter selector"
+          onKeyDown={(e) => addProperty(e, -1)}
+          autoFocus={propertyList.length === 0 ? true : false}
         />
       </StyleHead>
       <StyleList>
@@ -80,15 +94,16 @@ export function StyleBlock({ data }) {
             <StyleInput
               list="properties-data-list"
               defaultValue={item[0]}
-              onFocus={(e) => setCurrentProperty(item)}
+              onFocus={(e) => handleCurrentProperty(item, i)}
               onBlur={checkProperty}
               autocomplete="off"
               placeholder="Enter property name"
+              autoFocus={item[2] === false ? true : false}
             />
             <StyleInput
               className="value-input"
               value={item[1]}
-              onFocus={(e) => setCurrentProperty(item)}
+              onFocus={(e) => handleCurrentProperty(item, i)}
               onChange={updateValue}
               placeholder="Enter property value"
               onKeyUp={(e) => addProperty(e, i)}
@@ -106,7 +121,6 @@ export function StyleBlock({ data }) {
 }
 
 const BlockContainer = styled.div`
-  min-height: 50px;
   border-bottom: 1px solid #bdc3c7;
   padding: 10px;
 
@@ -115,7 +129,9 @@ const BlockContainer = styled.div`
   }
 `;
 
-const StyleHead = styled.div``;
+const StyleHead = styled.div`
+  border-bottom: 1px solid #bdc3c7;
+`;
 
 const StyleInput = styled.input`
   padding: 5px;
@@ -123,9 +139,11 @@ const StyleInput = styled.input`
   outline: none;
   border-radius: 0;
   width: 170px;
+  border-top: none;
 
   &.selector-input {
     border-bottom: none;
+    border-top: 1px solid #bdc3c7;
   }
 
   &.value-input {

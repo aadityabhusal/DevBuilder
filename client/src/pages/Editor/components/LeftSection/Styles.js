@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Panel, PanelInputText } from "../Panel";
+import { Panel, PanelInputText, PanelTitle } from "../Panel";
 import styled from "styled-components";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 import {
@@ -18,6 +18,7 @@ import { StyleEditor } from "./StyleEditor";
 const StylePanel = styled(Panel)`
   overflow: initial;
   padding: 0;
+  height: calc(100vh - 85px);
 `;
 
 export function StylesPanel({ isActive }) {
