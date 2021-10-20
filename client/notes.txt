@@ -95,39 +95,3 @@ DONE:
 12. (Done) Work on element position, and sorting when dragover
 13. (Done) When creating _ids for elements place them in the children_order property
 14. (Done) The whole procedure for inserting and removing elements should be change. Watch the video from WebDevSimlified Drag-Drop-Sorting
-
-
-CSS Style Objects
-
-[
-  {
-    "selector": ".nav-item>div",
-    "style": {
-      "margin": "100px",
-      "border": "1px solid black",
-      "background-color": "#3498db"
-    }
-  },
-  {
-    "selector": ".nav-item>div",
-    "style": {
-      "margin": "100px",
-      "border": "1px solid black",
-      "background-color": "#3498db"
-    }
-  }
-]
-
-{
-  "style_order": [".nav-item>div", ".nav-item"],
-  ".nav-item>div": {
-    "margin": "100px",
-    "border": "1px solid black",
-    "background-color": "#3498db"
-  },
-  ".nav-item": {
-    "margin": "100px",
-    "border": "1px solid black",
-    "background-color": "#3498db"
-  }
-}

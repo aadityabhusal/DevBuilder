@@ -1,37 +1,54 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { StyleBlock } from "./StyleBlock";
 
 export function StyleEditor({ styleList, handleEditor }) {
-  const [styleBlocks, setStyleBlocks] = useState(styleList);
+  const [styleBlocks, setStyleBlocks] = useState();
 
-  /* 
-    - Validate blocks by checking if the selector is empty or similar to other selector
-    - Make the "Add new Style" button stick to the bottom 
-    - when add new button is created focus on the selector input of the last item of the array
-  */
+  useEffect(() => {
+    setStyleBlocks((prev) => styleList);
+  }, [styleList]);
 
   const addNewStyle = () => {
-    let newStyle = {
-      selector: "",
-      style: [],
-    };
-    setStyleBlocks((blocks) => {
-      let temp = [...blocks];
-      temp.push(newStyle);
+    let foundInvalid = styleBlocks.findIndex((item) => item.isValid === false);
+    if (foundInvalid === -1) {
+      setStyleBlocks((blocks) => {
+        let temp = [...blocks];
+        temp.push({
+          selector: "",
+          style: [],
+          isValid: false,
+          order: Object.keys(temp).length,
+        });
+        return temp;
+      });
+    }
+  };
+
+  const handleStyleBlock = (styleBlock) => {
+    setStyleBlocks((prev) => {
+      let temp = [...prev];
+      delete styleBlock.prev;
+      temp[styleBlock.order] = styleBlock;
       return temp;
     });
   };
-  return (
+
+  return styleBlocks ? (
     <StyleContainer id="style-container">
       <StyleBlockList>
-        {styleBlocks.map((styleBlock, i) => (
-          <StyleBlock data={styleBlock} key={i} />
+        {styleBlocks.map((styleBlock) => (
+          <StyleBlock
+            data={styleBlock}
+            key={styleBlock.order}
+            handleStyleBlock={handleStyleBlock}
+            selectorList={styleBlocks.map((item) => item.selector)}
+          />
         ))}
       </StyleBlockList>
       <AddNewStyle onClick={addNewStyle}>Add New Style</AddNewStyle>
     </StyleContainer>
-  );
+  ) : null;
 }
 
 const StyleContainer = styled.div`

@@ -40,7 +40,7 @@ export function StylesPanel({ isActive }) {
     if (e.keyCode === 13) {
       let value = e.target.value;
       updateStyles(value);
-      setStyleList((prev) => [...prev, [value, ""]]);
+      setStyleList((prev) => [...prev, [value, []]]);
       e.target.value = "";
     }
     let stylesheet = document.createElement("style");
@@ -124,7 +124,10 @@ export function StylesPanel({ isActive }) {
       </DropDownMenu>
       {/* 0 = css file name & 1 = css text */}
       {currentStyle[0] ? (
-        <StyleEditor styleList={currentStyle[1]} handleEditor={handleEditor} />
+        <StyleEditor
+          styleList={pageTree.head.style[Object.keys(pageTree.head.style)[0]]}
+          handleEditor={handleEditor}
+        />
       ) : null}
     </StylePanel>
   );

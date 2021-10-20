@@ -54,11 +54,11 @@ export function ViewSection() {
         head={
           <>
             <style id="core-stylesheet">{coreStyle}</style>
-            {Object.entries(pageTree.head.style).map((item) => (
+            {/* {Object.entries(pageTree.head.style).map((item) => (
               <style id={item[0] + "-stylesheet"} key={item[0]}>
                 {item[1]}
               </style>
-            ))}
+            ))} */}
           </>
         }
       >

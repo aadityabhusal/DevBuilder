@@ -1,6 +1,10 @@
 import React from "react";
 import { IframeElement } from "../IFrameElement";
 
+/* 
+  This code is not used anywhere else
+*/
+
 export const renderElements = (element, level, contextMenu) => {
   return (
     element.children_order.length &&
