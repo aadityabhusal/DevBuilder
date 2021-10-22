@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { properties } from "../../lists/properties";
 import { CloseIcon } from "../Icons";
 
@@ -114,6 +114,15 @@ export function StyleBlock({
       });
     }
   };
+
+  const deleteProperty = (order) => {
+    handleStyleBlock({
+      ...data,
+      prev: data.selector,
+      style: propertyList.filter((item) => item.order !== order),
+    });
+  };
+
   const handleParent = () => {
     if (data.isValid) {
       handleStyleBlock({
@@ -136,7 +145,7 @@ export function StyleBlock({
           onKeyDown={(e) => addProperty(e, -1)}
           autoFocus={propertyList.length === 0 ? true : false}
         />
-        <CloseButton onClick={(e) => deleteBlock(data.order)}>
+        <CloseButton onClick={(e) => deleteBlock(data.order)} type="block">
           <CloseIcon />
         </CloseButton>
       </StyleHead>
@@ -162,6 +171,12 @@ export function StyleBlock({
               placeholder="Enter property value"
               onKeyUp={(e) => addProperty(e, item.order)}
             />
+            <CloseButton
+              onClick={(e) => deleteProperty(item.order)}
+              type="prop"
+            >
+              <CloseIcon />
+            </CloseButton>
           </StyleListItem>
         ))}
       </StyleList>
@@ -191,6 +206,19 @@ const StyleHead = styled.div`
 
 const CloseButton = styled.div`
   cursor: pointer;
+  ${({ type }) =>
+    type === "prop" &&
+    css`
+      border: 1px solid #bdc3c7;
+      border-left: none;
+      border-top: none;
+      align-self: stretch;
+      & > svg {
+        width: 18px;
+        height: 18px;
+        vertical-align: middle;
+      }
+    `}
 `;
 
 const StyleInput = styled.input`
@@ -222,6 +250,7 @@ const StyleList = styled.ul`
 
 const StyleListItem = styled.li`
   display: flex;
+  align-items: center;
 `;
 
 const PropertiesDataList = styled.datalist`
