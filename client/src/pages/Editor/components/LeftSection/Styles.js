@@ -25,24 +25,25 @@ export function StylesPanel({ isActive }) {
   const dropDownListRef = useRef();
   const inputBoxRef = useRef();
 
-  /* SavePage function to save the style */
-  const { pageTree, updateStyles, savePage } = useContext(PageTreeContext);
-  const [currentStyle, setCurrentStyle] = useState([]);
-  const [styleList, setStyleList] = useState([]);
+  const { pageTree, updateStyles } = useContext(PageTreeContext);
+  const [currentStyle, setCurrentStyle] = useState();
+  const [styleList, setStyleList] = useState();
 
   useEffect(() => {
-    let styles = Object.entries(pageTree.head.style);
+    let styles = Object.values(pageTree.head.style);
     setStyleList(styles);
-    setCurrentStyle([styles[0][0], pageTree.head.style[styles[0][0]]]);
+    setCurrentStyle(styles[0]);
   }, [pageTree.head.style]);
 
   const addStyle = (e) => {
     if (e.keyCode === 13) {
-      let value = e.target.value;
-      updateStyles(value);
-      setStyleList((prev) => [...prev, [value, []]]);
+      let name = e.target.value;
+      let newStyle = { name, styles: [] };
+      updateStyles(name);
+      setStyleList((prev) => [...prev, newStyle]);
       e.target.value = "";
     }
+
     let stylesheet = document.createElement("style");
     stylesheet.id = e.target.value + "-stylesheet";
     document
@@ -54,29 +55,10 @@ export function StylesPanel({ isActive }) {
     e.stopPropagation();
     updateStyles(name, "delete");
     setStyleList((prev) => {
-      let arr = prev.filter((item) => item[0] !== name);
+      let arr = prev.filter((item) => item.name !== name);
       return arr;
     });
     setCurrentStyle(styleList[0] || []);
-  };
-
-  /* Handles editor's onChange events */
-  const handleEditor = (value) => {
-    setStyleList((prev) => {
-      return prev.map((item) => {
-        if (item[0] === currentStyle[0]) {
-          item[1] = value;
-        }
-        return item;
-      });
-    });
-    let stylesheet = document
-      .getElementById("iframe-view")
-      .contentDocument.getElementById(currentStyle[0] + "-stylesheet");
-
-    /* stylelist value from editor */
-    stylesheet.innerHTML = value;
-    updateStyles(currentStyle[0], "update", value);
   };
 
   const removeDropDowns = () => {
@@ -89,30 +71,32 @@ export function StylesPanel({ isActive }) {
     removeDropDowns();
     let display = itemRef.current.style.display;
     itemRef.current.style.display = display === "flex" ? "none" : "flex";
+    itemRef.current.children[0].focus();
   };
 
   return (
     <StylePanel onClick={removeDropDowns} className={isActive}>
       <DropDownMenu>
         <DropDownButton onClick={(e) => handleDropdown(e, dropDownListRef)}>
-          <ItemName>{currentStyle[0]}.css</ItemName>
+          <ItemName>{currentStyle && currentStyle.name}.css</ItemName>
           <DropDownIcon></DropDownIcon>
         </DropDownButton>
         <AddNewButton onClick={(e) => handleDropdown(e, inputBoxRef)}>
           Add Style
         </AddNewButton>
         <DropDownList ref={dropDownListRef}>
-          {styleList.map((item) => (
-            <DropDownListItem
-              key={item[0]}
-              onClick={(e) => setCurrentStyle(item)}
-            >
-              <ItemName>{item[0]}.css</ItemName>
-              <CloseButton onClick={(e) => deleteStyle(e, item[0])}>
-                <CloseIcon></CloseIcon>
-              </CloseButton>
-            </DropDownListItem>
-          ))}
+          {styleList &&
+            styleList.map((item) => (
+              <DropDownListItem
+                key={item.name}
+                onClick={(e) => setCurrentStyle(item)}
+              >
+                <ItemName>{item.name}.css</ItemName>
+                <CloseButton onClick={(e) => deleteStyle(e, item.name)}>
+                  <CloseIcon></CloseIcon>
+                </CloseButton>
+              </DropDownListItem>
+            ))}
         </DropDownList>
         <AddItemBox ref={inputBoxRef}>
           <PanelInputText
@@ -122,15 +106,7 @@ export function StylesPanel({ isActive }) {
           ></PanelInputText>
         </AddItemBox>
       </DropDownMenu>
-      {/* 0 = css file name & 1 = css text */}
-      {currentStyle[0] ? (
-        <StyleEditor
-          currentStyle={
-            pageTree.head.style[Object.keys(pageTree.head.style)[0]]
-          }
-          handleEditor={handleEditor}
-        />
-      ) : null}
+      {currentStyle ? <StyleEditor currentStyle={currentStyle} /> : null}
     </StylePanel>
   );
 }

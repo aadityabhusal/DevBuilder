@@ -2,8 +2,31 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { StyleBlock } from "./StyleBlock";
 
-export function StyleEditor({ currentStyle, handleEditor }) {
+export function StyleEditor({ currentStyle }) {
   const [styleBlocks, setStyleBlocks] = useState();
+
+  /* Changes to the display section will be applied here
+
+  Handles editor's onChange events
+  const handleEditor = (value) => {
+    setStyleList((prev) => {
+      return prev.map((item) => {
+        if (item.name === currentStyle.name) {
+          item = value; // value not defined properly
+        }
+        return item;
+      });
+    });
+    let stylesheet = document
+      .getElementById("iframe-view")
+      .contentDocument.getElementById(currentStyle.name + "-stylesheet");
+
+    // stylelist value from editor
+    stylesheet.innerHTML = value;
+    // updateStyles(currentStyle[0], "update", value);
+  };
+
+  */
 
   useEffect(() => {
     setStyleBlocks((prev) => currentStyle.styles);

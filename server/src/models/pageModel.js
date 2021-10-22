@@ -19,7 +19,7 @@ const PageSchema = new mongoose.Schema(
         meta: {},
         style: {
           main: {
-            name: "main.css",
+            name: "main",
             styles: [],
           },
         },

@@ -29,14 +29,15 @@ export const PageTreeProvider = (props) => {
     }
   }
 
-  function updateStyles(name, action = "", value = "") {
+  function updateStyles(name, action = "") {
     if (!pageTree.head.style.hasOwnProperty(name)) {
-      pageTree.head.style[name] = "";
+      pageTree.head.style[name] = { name, styles: [] };
     } else {
       if (action === "delete") {
         delete pageTree.head.style[name];
       } else {
-        pageTree.head.style[name] = value;
+        // Edit style page name case here
+        // pageTree.head.style[name] = { name, styles: [] };
       }
     }
   }
