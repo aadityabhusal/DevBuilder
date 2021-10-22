@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import Frame, { FrameContextConsumer } from "react-frame-component";
 import { StyleSheetManager } from "styled-components";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
+import { getCSSText } from "../../../../utils/getCSSText";
 import { ContextMenuFR } from "../ContextMenu";
 import { IframeElement } from "./IFrameElement";
 import { OutlineElement } from "./OutlineBox";
@@ -54,11 +55,11 @@ export function ViewSection() {
         head={
           <>
             <style id="core-stylesheet">{coreStyle}</style>
-            {/* {Object.entries(pageTree.head.style).map((item) => (
-              <style id={item[0] + "-stylesheet"} key={item[0]}>
-                {item[1]}
+            {Object.values(pageTree.head.style).map((item) => (
+              <style id={item.name + "-stylesheet"} key={item.name}>
+                {getCSSText(item.styles)}
               </style>
-            ))} */}
+            ))}
           </>
         }
       >

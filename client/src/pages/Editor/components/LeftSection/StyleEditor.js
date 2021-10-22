@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { getCSSText } from "../../../../utils/getCSSText";
 import { StyleBlock } from "./StyleBlock";
 
 export function StyleEditor({ currentStyle }) {
@@ -55,10 +56,19 @@ export function StyleEditor({ currentStyle }) {
       delete styleBlock.prev;
       if (styleBlock.isValid) {
         currentStyle.styles[styleBlock.order] = styleBlock;
+        updateStyle();
       }
       temp[styleBlock.order] = styleBlock;
       return temp;
     });
+  };
+
+  const updateStyle = () => {
+    let stylesheet = document
+      .getElementById("iframe-view")
+      .contentDocument.getElementById(currentStyle.name + "-stylesheet");
+
+    if (stylesheet) stylesheet.innerHTML = getCSSText(styleBlocks);
   };
 
   return styleBlocks ? (
