@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { properties } from "../../lists/properties";
+import { CloseIcon } from "../Icons";
 
-export function StyleBlock({ data, selectorList, handleStyleBlock }) {
+export function StyleBlock({
+  data,
+  selectorList,
+  handleStyleBlock,
+  deleteBlock,
+}) {
   const [propertyList, setPropertyList] = useState();
   const [currentProperty, setCurrentProperty] = useState({});
 
@@ -130,6 +136,9 @@ export function StyleBlock({ data, selectorList, handleStyleBlock }) {
           onKeyDown={(e) => addProperty(e, -1)}
           autoFocus={propertyList.length === 0 ? true : false}
         />
+        <CloseButton onClick={(e) => deleteBlock(data.order)}>
+          <CloseIcon />
+        </CloseButton>
       </StyleHead>
       <StyleList>
         {propertyList.map((item) => (
@@ -175,7 +184,13 @@ const BlockContainer = styled.div`
 `;
 
 const StyleHead = styled.div`
+  display: flex;
+  justify-content: space-between;
   border-bottom: 1px solid #bdc3c7;
+`;
+
+const CloseButton = styled.div`
+  cursor: pointer;
 `;
 
 const StyleInput = styled.input`

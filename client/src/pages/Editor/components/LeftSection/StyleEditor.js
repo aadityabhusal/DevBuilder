@@ -31,16 +31,25 @@ export function StyleEditor({ currentStyle }) {
     setStyleBlocks((prev) => {
       let temp = [...prev];
       delete styleBlock.prev;
+      temp[styleBlock.order] = styleBlock;
       if (styleBlock.isValid) {
         currentStyle.styles[styleBlock.order] = styleBlock;
-        updateStyle();
+        updateStyle(temp);
       }
-      temp[styleBlock.order] = styleBlock;
       return temp;
     });
   };
 
-  const updateStyle = () => {
+  const deleteBlock = (order) => {
+    setStyleBlocks((prev) => {
+      let temp = prev.filter((item) => item.order !== order);
+      currentStyle.styles = temp;
+      updateStyle(temp);
+      return temp;
+    });
+  };
+
+  const updateStyle = (styleBlocks) => {
     let stylesheet = document
       .getElementById("iframe-view")
       .contentDocument.getElementById(currentStyle.name + "-stylesheet");
@@ -56,6 +65,7 @@ export function StyleEditor({ currentStyle }) {
             data={styleBlock}
             key={styleBlock.order}
             handleStyleBlock={handleStyleBlock}
+            deleteBlock={deleteBlock}
             selectorList={styleBlocks.map((item) => item.selector)}
           />
         ))}

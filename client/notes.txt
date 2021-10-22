@@ -25,17 +25,6 @@ ISSUES
 
 _________________________________
 
-Block-based CSS editor
-
-- should i use contenteditable or textarea
-- contenteditable will be beneficial in providing styles and highlighting to the code but it will be hard to extract just the text without tags
-- textarea will be beneficial adding removing text but it will not provide syntax highlighting to the code (which is a big problem)
-- other problems such as indentation etc also needs to be solved
-- should scss be allowed because modifying css text with style changes 
--or should i use a lightweight css only editor
-
-_________________________________
-
 Boolean attributes:
 
 HTML boolean attributes such as 'required', 'controls' can be stored in an array that could be stored as a value of a property in the element object.
