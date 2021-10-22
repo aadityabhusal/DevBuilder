@@ -123,6 +123,7 @@ export function StyleBlock({ data, selectorList, handleStyleBlock }) {
       <StyleHead>
         <StyleInput
           className="selector-input"
+          key={data.selector}
           defaultValue={data.selector}
           onBlur={checkSelector}
           placeholder="Enter selector"
@@ -135,6 +136,7 @@ export function StyleBlock({ data, selectorList, handleStyleBlock }) {
           <StyleListItem key={item.order}>
             <StyleInput
               list="properties-data-list"
+              key={item.name}
               defaultValue={item.name}
               onFocus={(e) => handleCurrentProperty(item)}
               onBlur={checkProperty}
