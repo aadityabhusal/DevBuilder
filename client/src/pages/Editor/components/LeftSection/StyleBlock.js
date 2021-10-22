@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { properties } from "../../lists/properties";
-import { CloseIcon } from "../Icons";
+import { CloseIcon, PasteIcon } from "../Icons";
 
 export function StyleBlock({
   data,
@@ -145,6 +145,9 @@ export function StyleBlock({
           onKeyDown={(e) => addProperty(e, -1)}
           autoFocus={propertyList.length === 0 ? true : false}
         />
+        <PasteButton>
+          <PasteIcon />
+        </PasteButton>
         <CloseButton onClick={(e) => deleteBlock(data.order)} type="block">
           <CloseIcon />
         </CloseButton>
@@ -200,7 +203,6 @@ const BlockContainer = styled.div`
 
 const StyleHead = styled.div`
   display: flex;
-  justify-content: space-between;
   border-bottom: 1px solid #bdc3c7;
 `;
 
@@ -221,6 +223,11 @@ const CloseButton = styled.div`
     `}
 `;
 
+const PasteButton = styled.div`
+  margin-right: 10px;
+  cursor: pointer;
+`;
+
 const StyleInput = styled.input`
   padding: 5px;
   border: 1px solid #bdc3c7;
@@ -232,6 +239,7 @@ const StyleInput = styled.input`
   &.selector-input {
     border-bottom: none;
     border-top: 1px solid #bdc3c7;
+    margin-right: auto;
   }
 
   &.value-input {
