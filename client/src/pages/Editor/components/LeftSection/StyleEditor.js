@@ -2,24 +2,25 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { StyleBlock } from "./StyleBlock";
 
-export function StyleEditor({ styleList, handleEditor }) {
+export function StyleEditor({ currentStyle, handleEditor }) {
   const [styleBlocks, setStyleBlocks] = useState();
 
   useEffect(() => {
-    setStyleBlocks((prev) => styleList);
-  }, [styleList]);
+    setStyleBlocks((prev) => currentStyle.styles);
+  }, [currentStyle]);
 
   const addNewStyle = () => {
     let foundInvalid = styleBlocks.findIndex((item) => item.isValid === false);
     if (foundInvalid === -1) {
       setStyleBlocks((blocks) => {
         let temp = [...blocks];
-        temp.push({
+        let newBlock = {
           selector: "",
           style: [],
           isValid: false,
-          order: Object.keys(temp).length,
-        });
+          order: temp.length,
+        };
+        temp.push(newBlock);
         return temp;
       });
     }
@@ -29,6 +30,9 @@ export function StyleEditor({ styleList, handleEditor }) {
     setStyleBlocks((prev) => {
       let temp = [...prev];
       delete styleBlock.prev;
+      if (styleBlock.isValid) {
+        currentStyle.styles[styleBlock.order] = styleBlock;
+      }
       temp[styleBlock.order] = styleBlock;
       return temp;
     });

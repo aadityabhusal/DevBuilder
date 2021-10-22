@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Panel, PanelInputText, PanelTitle } from "../Panel";
+import { Panel, PanelInputText } from "../Panel";
 import styled from "styled-components";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 import {
@@ -125,7 +125,9 @@ export function StylesPanel({ isActive }) {
       {/* 0 = css file name & 1 = css text */}
       {currentStyle[0] ? (
         <StyleEditor
-          styleList={pageTree.head.style[Object.keys(pageTree.head.style)[0]]}
+          currentStyle={
+            pageTree.head.style[Object.keys(pageTree.head.style)[0]]
+          }
           handleEditor={handleEditor}
         />
       ) : null}
