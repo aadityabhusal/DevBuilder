@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
+import { getCSSArray } from "../../../../utils/getCSSArray";
 import { properties } from "../../lists/properties";
 import { CloseIcon, PasteIcon } from "../Icons";
 
@@ -133,6 +134,16 @@ export function StyleBlock({
     }
   };
 
+  const pasteStyle = async () => {
+    let pasteData = await navigator.clipboard.readText();
+    let cssArray = getCSSArray(pasteData);
+    if (cssArray) {
+      cssArray.forEach((element) => {
+        // do work here
+      });
+    }
+  };
+
   return propertyList ? (
     <BlockContainer>
       <StyleHead>
@@ -145,7 +156,7 @@ export function StyleBlock({
           onKeyDown={(e) => addProperty(e, -1)}
           autoFocus={propertyList.length === 0 ? true : false}
         />
-        <PasteButton>
+        <PasteButton onClick={(e) => pasteStyle()}>
           <PasteIcon />
         </PasteButton>
         <CloseButton onClick={(e) => deleteBlock(data.order)} type="block">
