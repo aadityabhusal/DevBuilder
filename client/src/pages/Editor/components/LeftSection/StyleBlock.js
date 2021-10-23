@@ -1,45 +1,20 @@
 import { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
-import { getCSSArray } from "../../../../utils/getCSSArray";
+import styled from "styled-components";
 import { properties } from "../../lists/properties";
-import { CloseIcon, PasteIcon } from "../Icons";
+import { CloseIcon } from "../Icons";
 
-export function StyleBlock({
-  data,
-  selectorList,
-  handleStyleBlock,
-  deleteBlock,
-}) {
+/* 
+  Stop sending updates to the parent element for updates related to properties and values
+  Handle them here and update the tree with pass by reference
+*/
+
+export function StyleBlock({ data }) {
   const [propertyList, setPropertyList] = useState();
   const [currentProperty, setCurrentProperty] = useState({});
 
   useEffect(() => {
     setPropertyList((prev) => data.style);
   }, [data]);
-
-  const checkSelector = (e) => {
-    e.target.style.borderBottom = "none";
-    e.target.style.borderColor = "#bdc3c7";
-    let isValid = true;
-    let selector = e.target.value;
-
-    let findSelector = selectorList.findIndex((item) => item === selector);
-
-    if (
-      e.target.value === "" ||
-      (findSelector !== -1 && findSelector !== data.order)
-    ) {
-      e.target.style.border = "1px solid #e74c3c";
-      isValid = false;
-    }
-    handleStyleBlock({
-      isValid,
-      selector,
-      order: data.order,
-      prev: data.selector,
-      style: propertyList,
-    });
-  };
 
   const handleCurrentProperty = (item) => {
     if (currentProperty.name !== item.name) {
@@ -71,6 +46,7 @@ export function StyleBlock({
           } else {
             item.name = e.target.value;
             item.isValid = true;
+            data.style[item.order] = item;
           }
         }
         if (!properties.includes(item.name)) {
@@ -117,126 +93,61 @@ export function StyleBlock({
   };
 
   const deleteProperty = (order) => {
-    handleStyleBlock({
-      ...data,
-      prev: data.selector,
-      style: propertyList.filter((item) => item.order !== order),
+    setPropertyList((prev) => {
+      let temp = [...prev];
+      temp.filter((item) => item.order !== order);
+      data.style = temp;
+      return temp;
     });
-  };
-
-  const handleParent = () => {
-    if (data.isValid) {
-      handleStyleBlock({
-        ...data,
-        prev: data.selector,
-        style: propertyList,
-      });
-    }
-  };
-
-  const pasteStyle = async () => {
-    let pasteData = await navigator.clipboard.readText();
-    let cssArray = getCSSArray(pasteData);
-    if (cssArray) {
-      cssArray.forEach((element) => {
-        // do work here
-      });
-    }
+    // handleStyleBlock({
+    //   ...data,
+    //   prev: data.selector,
+    //   style: propertyList.filter((item) => item.order !== order),
+    // });
   };
 
   return propertyList ? (
-    <BlockContainer>
-      <StyleHead>
-        <StyleInput
-          className="selector-input"
-          key={data.selector}
-          defaultValue={data.selector}
-          onBlur={checkSelector}
-          placeholder="Enter selector"
-          onKeyDown={(e) => addProperty(e, -1)}
-          autoFocus={propertyList.length === 0 ? true : false}
-        />
-        <PasteButton onClick={(e) => pasteStyle()}>
-          <PasteIcon />
-        </PasteButton>
-        <CloseButton onClick={(e) => deleteBlock(data.order)} type="block">
-          <CloseIcon />
-        </CloseButton>
-      </StyleHead>
-      <StyleList>
-        {propertyList.map((item) => (
-          <StyleListItem key={item.order}>
-            <StyleInput
-              list="properties-data-list"
-              key={item.name}
-              defaultValue={item.name}
-              onFocus={(e) => handleCurrentProperty(item)}
-              onBlur={checkProperty}
-              autocomplete="off"
-              placeholder="Enter property name"
-              autoFocus={item.isValid === false ? true : false}
-            />
-            <StyleInput
-              className="value-input"
-              value={item.value}
-              onFocus={(e) => handleCurrentProperty(item)}
-              onChange={updateValue}
-              onBlur={handleParent}
-              placeholder="Enter property value"
-              onKeyUp={(e) => addProperty(e, item.order)}
-            />
-            <CloseButton
-              onClick={(e) => deleteProperty(item.order)}
-              type="prop"
-            >
-              <CloseIcon />
-            </CloseButton>
-          </StyleListItem>
-        ))}
-      </StyleList>
-      <PropertiesDataList id="properties-data-list">
-        {properties.map((item, i) => (
-          <option value={item} key={i} />
-        ))}
-      </PropertiesDataList>
-    </BlockContainer>
+    <StyleList>
+      {propertyList.map((item) => (
+        <StyleListItem key={item.order}>
+          <StyleInput
+            list="properties-data-list"
+            key={item.name}
+            defaultValue={item.name}
+            onFocus={(e) => handleCurrentProperty(item)}
+            onBlur={checkProperty}
+            autocomplete="off"
+            placeholder="Enter property name"
+            autoFocus={item.isValid === false ? true : false}
+          />
+          <StyleInput
+            className="value-input"
+            value={item.value}
+            onFocus={(e) => handleCurrentProperty(item)}
+            onChange={updateValue}
+            placeholder="Enter property value"
+            onKeyUp={(e) => addProperty(e, item.order)}
+          />
+          <CloseButton onClick={(e) => deleteProperty(item.order)} type="prop">
+            <CloseIcon />
+          </CloseButton>
+        </StyleListItem>
+      ))}
+    </StyleList>
   ) : null;
 }
 
-const BlockContainer = styled.div`
-  border-bottom: 1px solid #bdc3c7;
-  padding: 10px;
-
-  &.selected-block {
-    background-color: #ecf0f1;
-  }
-`;
-
-const StyleHead = styled.div`
-  display: flex;
-  border-bottom: 1px solid #bdc3c7;
-`;
-
 const CloseButton = styled.div`
   cursor: pointer;
-  ${({ type }) =>
-    type === "prop" &&
-    css`
-      border: 1px solid #bdc3c7;
-      border-left: none;
-      border-top: none;
-      align-self: stretch;
-      & > svg {
-        width: 18px;
-        height: 18px;
-        vertical-align: middle;
-      }
-    `}
-`;
-
-const PasteButton = styled.div`
-  margin-right: 10px;
-  cursor: pointer;
+  border: 1px solid #bdc3c7;
+  border-left: none;
+  border-top: none;
+  align-self: stretch;
+  & > svg {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+  }
 `;
 
 const StyleInput = styled.input`
@@ -246,12 +157,6 @@ const StyleInput = styled.input`
   border-radius: 0;
   width: 170px;
   border-top: none;
-
-  &.selector-input {
-    border-bottom: none;
-    border-top: 1px solid #bdc3c7;
-    margin-right: auto;
-  }
 
   &.value-input {
     border-left: none;
@@ -270,12 +175,4 @@ const StyleList = styled.ul`
 const StyleListItem = styled.li`
   display: flex;
   align-items: center;
-`;
-
-const PropertiesDataList = styled.datalist`
-  background-color: red;
-
-  option {
-    background-color: red;
-  }
 `;

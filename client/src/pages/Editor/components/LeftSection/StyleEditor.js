@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getCSSText } from "../../../../utils/getCSSText";
+import { getCSSText, updateStyle } from "../../../../utils";
 import { StyleBlock } from "./StyleBlock";
+import { properties } from "../../lists/properties";
+import { CloseIcon, PasteIcon } from "../Icons";
 
 export function StyleEditor({ currentStyle }) {
   const [styleBlocks, setStyleBlocks] = useState();
@@ -15,11 +17,12 @@ export function StyleEditor({ currentStyle }) {
     if (foundInvalid === -1) {
       setStyleBlocks((blocks) => {
         let temp = [...blocks];
+        let order = temp.length ? temp[temp.length - 1].order + 1 : 0;
         let newBlock = {
           selector: "",
           style: [],
           isValid: false,
-          order: temp.length,
+          order,
         };
         temp.push(newBlock);
         return temp;
@@ -27,15 +30,21 @@ export function StyleEditor({ currentStyle }) {
     }
   };
 
-  const handleStyleBlock = (styleBlock) => {
+  const handleStyleBlock = (e, styleBlock) => {
+    let isValid = checkSelector(e.target.value, styleBlock.order);
+    if (!isValid) e.target.style.border = "1px solid #e74c3c";
+    styleBlock.isValid = isValid;
+    styleBlock.selector = e.target.value;
+
     setStyleBlocks((prev) => {
-      let temp = [...prev];
-      delete styleBlock.prev;
-      temp[styleBlock.order] = styleBlock;
-      if (styleBlock.isValid) {
-        currentStyle.styles[styleBlock.order] = styleBlock;
-        updateStyle(temp);
-      }
+      let temp = prev.map((item, i) => {
+        if (item.order === styleBlock.order) {
+          // this doesn't work when new styles are created immediately after creating a new style
+          currentStyle.styles[i] = styleBlock;
+          return styleBlock;
+        }
+        return item;
+      });
       return temp;
     });
   };
@@ -44,30 +53,80 @@ export function StyleEditor({ currentStyle }) {
     setStyleBlocks((prev) => {
       let temp = prev.filter((item) => item.order !== order);
       currentStyle.styles = temp;
-      updateStyle(temp);
+      updateStyle(currentStyle.name, temp, getCSSText);
       return temp;
     });
   };
 
-  const updateStyle = (styleBlocks) => {
-    let stylesheet = document
-      .getElementById("iframe-view")
-      .contentDocument.getElementById(currentStyle.name + "-stylesheet");
+  const checkSelector = (selector, order) => {
+    if (selector.trim() === "") return false;
+    let findSelector = styleBlocks.find(
+      (item) => item.selector === selector && item.order !== order
+    );
+    // Style doesn't change immediately when a similar selector is found
+    if (findSelector) return false;
+    return true;
+  };
 
-    if (stylesheet) stylesheet.innerHTML = getCSSText(styleBlocks);
+  const addProperty = (e, styleBlock) => {
+    if (e.keyCode === 13 && styleBlock.style.length === 0) {
+      let newProperty = {
+        name: "",
+        value: "",
+        isValid: false,
+        order: styleBlock.style.length,
+      };
+
+      setStyleBlocks((prev) => {
+        let temp = prev.map((item, i) => {
+          if (item.order === styleBlock.order) {
+            styleBlock.style.push(newProperty);
+            return styleBlock;
+          }
+          return item;
+        });
+        return temp;
+      });
+    }
+  };
+
+  const pasteStyle = async () => {
+    // let pasteData = await navigator.clipboard.readText();
+    // let cssArray = getCSSArray(pasteData);
+    // if (cssArray) {
+    //   cssArray.forEach((element) => {
+    //     // do work here
+    //   });
+    // }
   };
 
   return styleBlocks ? (
     <StyleContainer id="style-container">
       <StyleBlockList>
         {styleBlocks.map((styleBlock) => (
-          <StyleBlock
-            data={styleBlock}
-            key={styleBlock.order}
-            handleStyleBlock={handleStyleBlock}
-            deleteBlock={deleteBlock}
-            selectorList={styleBlocks.map((item) => item.selector)}
-          />
+          <BlockContainer key={styleBlock.order}>
+            <StyleHead>
+              <StyleInput
+                key={styleBlock.selector}
+                defaultValue={styleBlock.selector}
+                onBlur={(e) => handleStyleBlock(e, styleBlock)}
+                placeholder="Enter selector"
+                onKeyDown={(e) => addProperty(e, styleBlock)}
+              />
+              <PasteButton onClick={(e) => pasteStyle()}>
+                <PasteIcon />
+              </PasteButton>
+              <CloseButton onClick={(e) => deleteBlock(styleBlock.order)}>
+                <CloseIcon />
+              </CloseButton>
+            </StyleHead>
+            <StyleBlock data={styleBlock} />
+            <PropertiesDataList id="properties-data-list">
+              {properties.map((item, i) => (
+                <option value={item} key={i} />
+              ))}
+            </PropertiesDataList>
+          </BlockContainer>
         ))}
       </StyleBlockList>
       <AddNewStyle onClick={addNewStyle}>Add New Style</AddNewStyle>
@@ -99,3 +158,40 @@ const AddNewStyle = styled.button`
   background-color: #34495e;
   color: #eee;
 `;
+
+/*  */
+
+const BlockContainer = styled.div`
+  border-bottom: 1px solid #bdc3c7;
+  padding: 10px;
+
+  &.selected-block {
+    background-color: #ecf0f1;
+  }
+`;
+
+const StyleHead = styled.div`
+  display: flex;
+  border-bottom: 1px solid #bdc3c7;
+`;
+
+const CloseButton = styled.div`
+  cursor: pointer;
+`;
+
+const PasteButton = styled.div`
+  margin-right: 10px;
+  cursor: pointer;
+`;
+
+const StyleInput = styled.input`
+  padding: 5px;
+  border: 1px solid #bdc3c7;
+  border-bottom: none;
+  outline: none;
+  border-radius: 0;
+  width: 170px;
+  margin-right: auto;
+`;
+
+const PropertiesDataList = styled.datalist``;
