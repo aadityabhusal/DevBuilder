@@ -5,6 +5,11 @@ import { StyleBlock } from "./StyleBlock";
 import { properties } from "../../lists/properties";
 import { CloseIcon, PasteIcon } from "../Icons";
 
+/* 
+  Make the styles inside every style block as object so that the properties pasted could be over-writter
+  or find another way to perform it
+*/
+
 export function StyleEditor({ currentStyle }) {
   const [styleBlocks, setStyleBlocks] = useState();
 
@@ -138,7 +143,7 @@ export function StyleEditor({ currentStyle }) {
                 <CloseIcon />
               </CloseButton>
             </StyleHead>
-            <StyleBlock data={styleBlock} />
+            <StyleBlock data={styleBlock} currentStyle={currentStyle} />
             <PropertiesDataList id="properties-data-list">
               {properties.map((item, i) => (
                 <option value={item} key={i} />

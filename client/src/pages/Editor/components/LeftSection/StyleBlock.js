@@ -2,70 +2,63 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { properties } from "../../lists/properties";
 import { CloseIcon } from "../Icons";
+import { getCSSText, updateStyle } from "../../../../utils";
 
 /* 
   Stop sending updates to the parent element for updates related to properties and values
   Handle them here and update the tree with pass by reference
 */
 
-export function StyleBlock({ data }) {
+export function StyleBlock({ data, currentStyle }) {
   const [propertyList, setPropertyList] = useState();
-  const [currentProperty, setCurrentProperty] = useState({});
 
   useEffect(() => {
     setPropertyList((prev) => data.style);
   }, [data]);
 
-  const handleCurrentProperty = (item) => {
-    if (currentProperty.name !== item.name) {
-      setCurrentProperty(item);
-    }
-  };
-
-  const checkProperty = (e) => {
-    e.target.style.borderTop = "none";
-    e.target.style.borderColor = "#bdc3c7";
-
-    if (!properties.includes(e.target.value))
-      e.target.style.border = "1px solid #e74c3c";
-
+  const handleProperty = (e, currentProperty) => {
+    let isValid = checkProperty(e.target.value, currentProperty.order);
+    if (!isValid) e.target.style.border = "1px solid #e74c3c";
     if (currentProperty.name === e.target.value) return;
 
     setPropertyList((prev) => {
-      let temp = [...prev];
-      let update = temp.map((item, i) => {
+      let update = prev.map((item, i) => {
         if (item.name === currentProperty.name) {
-          let foundSame = temp.findIndex(
-            (item) => item.name === e.target.value
-          );
-          if (foundSame !== -1 && foundSame !== currentProperty.order) {
+          if (!isValid) {
             let val = e.target.value.slice(0, -1);
             item.name = val;
-            item.isValid = false;
             e.target.value = val;
           } else {
             item.name = e.target.value;
-            item.isValid = true;
-            data.style[item.order] = item;
+            data.style[i] = item;
           }
+          item.isValid = isValid;
         }
-        if (!properties.includes(item.name)) {
-          item.isValid = false;
-          e.target.style.border = "1px solid #e74c3c";
-        }
+        updateStyle(currentStyle.name, currentStyle.styles, getCSSText);
         return item;
       });
       return update;
     });
   };
 
-  const updateValue = (e) => {
+  const checkProperty = (value, order) => {
+    if (!properties.includes(value)) return false;
+    let foundSame = propertyList.find(
+      (item) => item.name === value && item.order !== order
+    );
+    if (foundSame) return false;
+    return true;
+  };
+
+  const updateValue = (e, currentProperty) => {
     setPropertyList((prev) => {
       let temp = [...prev];
-      let update = temp.map((item) => {
+      let update = temp.map((item, i) => {
         if (item.name === currentProperty.name) {
           item.value = e.target.value;
+          data.style[i] = currentProperty;
         }
+        updateStyle(currentStyle.name, currentStyle.styles, getCSSText);
         return item;
       });
       return update;
@@ -93,17 +86,13 @@ export function StyleBlock({ data }) {
   };
 
   const deleteProperty = (order) => {
+    console.log("OK");
     setPropertyList((prev) => {
-      let temp = [...prev];
-      temp.filter((item) => item.order !== order);
+      let temp = prev.filter((item) => item.order !== order);
       data.style = temp;
+      updateStyle(currentStyle.name, currentStyle.styles, getCSSText);
       return temp;
     });
-    // handleStyleBlock({
-    //   ...data,
-    //   prev: data.selector,
-    //   style: propertyList.filter((item) => item.order !== order),
-    // });
   };
 
   return propertyList ? (
@@ -114,8 +103,7 @@ export function StyleBlock({ data }) {
             list="properties-data-list"
             key={item.name}
             defaultValue={item.name}
-            onFocus={(e) => handleCurrentProperty(item)}
-            onBlur={checkProperty}
+            onBlur={(e) => handleProperty(e, item)}
             autocomplete="off"
             placeholder="Enter property name"
             autoFocus={item.isValid === false ? true : false}
@@ -123,8 +111,7 @@ export function StyleBlock({ data }) {
           <StyleInput
             className="value-input"
             value={item.value}
-            onFocus={(e) => handleCurrentProperty(item)}
-            onChange={updateValue}
+            onChange={(e) => updateValue(e, item)}
             placeholder="Enter property value"
             onKeyUp={(e) => addProperty(e, item.order)}
           />
