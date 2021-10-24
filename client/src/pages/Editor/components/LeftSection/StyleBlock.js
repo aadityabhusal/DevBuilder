@@ -4,11 +4,6 @@ import { properties } from "../../lists/properties";
 import { CloseIcon } from "../Icons";
 import { getCSSText, updateStyle } from "../../../../utils";
 
-/* 
-  Stop sending updates to the parent element for updates related to properties and values
-  Handle them here and update the tree with pass by reference
-*/
-
 export function StyleBlock({ data, currentStyle }) {
   const [propertyList, setPropertyList] = useState();
 
@@ -16,37 +11,35 @@ export function StyleBlock({ data, currentStyle }) {
     setPropertyList((prev) => data.style);
   }, [data]);
 
-  const handleProperty = (e, currentProperty) => {
-    let isValid = checkProperty(e.target.value, currentProperty.order);
+  const handleProperty = (e, currentProperty, index) => {
+    let isValid = checkProperty(e.target.value, index);
     if (!isValid) e.target.style.border = "1px solid #e74c3c";
     if (currentProperty.name === e.target.value) return;
 
     setPropertyList((prev) => {
       let update = prev.map((item, i) => {
         if (item.name === currentProperty.name) {
-          if (!isValid) {
-            let val = e.target.value.slice(0, -1);
-            item.name = val;
-            e.target.value = val;
+          if (isValid === 0) {
+            item.name = e.target.value.slice(0, -1);
           } else {
             item.name = e.target.value;
             data.style[i] = item;
           }
-          item.isValid = isValid;
+          item.isValid = Boolean(isValid);
         }
-        updateStyle(currentStyle.name, currentStyle.styles, getCSSText);
         return item;
       });
       return update;
     });
   };
 
-  const checkProperty = (value, order) => {
+  const checkProperty = (value, index) => {
     if (!properties.includes(value)) return false;
     let foundSame = propertyList.find(
-      (item) => item.name === value && item.order !== order
+      (item, i) => item.name === value && i !== index
     );
-    if (foundSame) return false;
+    console.log(value, index, foundSame);
+    if (foundSame) return 0;
     return true;
   };
 
@@ -65,30 +58,25 @@ export function StyleBlock({ data, currentStyle }) {
     });
   };
 
-  const addProperty = (e, index) => {
+  const addProperty = (e) => {
     let foundInvalid = propertyList.findIndex((item) => item.isValid === false);
-    if (
-      e.keyCode === 13 &&
-      foundInvalid === -1 &&
-      index === propertyList.length - 1
-    ) {
+    if (e.keyCode === 13 && foundInvalid === -1) {
       setPropertyList((prev) => {
         let temp = [...prev];
         temp.push({
           name: "",
           value: "",
           isValid: false,
-          order: prev.length,
+          order: temp.length,
         });
         return temp;
       });
     }
   };
 
-  const deleteProperty = (order) => {
-    console.log("OK");
+  const deleteProperty = (propertyName) => {
     setPropertyList((prev) => {
-      let temp = prev.filter((item) => item.order !== order);
+      let temp = prev.filter((item) => item.name !== propertyName);
       data.style = temp;
       updateStyle(currentStyle.name, currentStyle.styles, getCSSText);
       return temp;
@@ -97,13 +85,13 @@ export function StyleBlock({ data, currentStyle }) {
 
   return propertyList ? (
     <StyleList>
-      {propertyList.map((item) => (
-        <StyleListItem key={item.order}>
+      {propertyList.map((item, i) => (
+        <StyleListItem key={item.name}>
           <StyleInput
             list="properties-data-list"
             key={item.name}
             defaultValue={item.name}
-            onBlur={(e) => handleProperty(e, item)}
+            onBlur={(e) => handleProperty(e, item, i)}
             autocomplete="off"
             placeholder="Enter property name"
             autoFocus={item.isValid === false ? true : false}
@@ -113,9 +101,12 @@ export function StyleBlock({ data, currentStyle }) {
             value={item.value}
             onChange={(e) => updateValue(e, item)}
             placeholder="Enter property value"
-            onKeyUp={(e) => addProperty(e, item.order)}
+            onKeyUp={addProperty}
+            autoFocus={
+              item.name && i + 1 === propertyList.length ? true : false
+            }
           />
-          <CloseButton onClick={(e) => deleteProperty(item.order)} type="prop">
+          <CloseButton onClick={(e) => deleteProperty(item.name)} type="prop">
             <CloseIcon />
           </CloseButton>
         </StyleListItem>
