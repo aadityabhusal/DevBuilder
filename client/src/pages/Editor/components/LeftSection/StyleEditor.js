@@ -108,7 +108,10 @@ export function StyleEditor({ currentStyle }) {
                 placeholder="Enter selector"
                 onKeyDown={(e) => addProperty(e, styleBlock)}
               />
-              <CloseButton onClick={(e) => deleteBlock(styleBlock.order)}>
+              <CloseButton
+                onClick={(e) => deleteBlock(styleBlock.order)}
+                title="Delete Style Block"
+              >
                 <CloseIcon />
               </CloseButton>
             </StyleHead>

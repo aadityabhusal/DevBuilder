@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { properties } from "../../lists/properties";
-import { CloseIcon, PasteIcon } from "../Icons";
+import { CloseIcon, CopyIcon, PasteIcon } from "../Icons";
 import { getCSSArray, updateStyle } from "../../../../utils";
 
 export function StyleBlock({ data, currentStyle }) {
@@ -108,11 +108,21 @@ export function StyleBlock({ data, currentStyle }) {
     }
   };
 
+  const copyStyle = async () => {
+    let styleText = propertyList.map((item) => {
+      return `${item.name}:${item.value};`;
+    });
+    await navigator.clipboard.writeText(styleText.join(""));
+  };
+
   return propertyList ? (
     <StyleList>
-      <PasteButton onClick={pasteStyle}>
+      <PasteButton onClick={pasteStyle} title="Paste Style">
         <PasteIcon />
       </PasteButton>
+      <CopyButton onClick={copyStyle} title="Copy Style">
+        <CopyIcon />
+      </CopyButton>
       {propertyList.map((item, i) => (
         <StyleListItem key={item.name}>
           <StyleInput
@@ -134,7 +144,11 @@ export function StyleBlock({ data, currentStyle }) {
               item.name && i + 1 === propertyList.length ? true : false
             }
           />
-          <CloseButton onClick={(e) => deleteProperty(item.name)} type="prop">
+          <CloseButton
+            title="Delete Property"
+            onClick={(e) => deleteProperty(item.name)}
+            type="prop"
+          >
             <CloseIcon />
           </CloseButton>
         </StyleListItem>
@@ -155,6 +169,10 @@ const PasteButton = styled.div`
     height: 20px;
     vertical-align: middle;
   }
+`;
+
+const CopyButton = styled(PasteButton)`
+  right: 50px;
 `;
 
 const CloseButton = styled.div`
