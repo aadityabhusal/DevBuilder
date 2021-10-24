@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getCSSArray, updateStyle } from "../../../../utils";
+import { updateStyle } from "../../../../utils";
 import { StyleBlock } from "./StyleBlock";
 import { properties } from "../../lists/properties";
-import { CloseIcon, PasteIcon } from "../Icons";
+import { CloseIcon } from "../Icons";
 
 /* 
   Make the styles inside every style block as object so that the properties pasted could be over-writter
@@ -95,34 +95,6 @@ export function StyleEditor({ currentStyle }) {
     }
   };
 
-  const pasteStyle = async (e, styleBlock) => {
-    let pasteData = await navigator.clipboard.readText();
-    let cssArray = getCSSArray(pasteData);
-    if (cssArray) {
-      setStyleBlocks((prev) => {
-        let temp = prev.map((item, i) => {
-          if (item.order === styleBlock.order) {
-            cssArray.forEach((element, j) => {
-              let order = styleBlock.style.length
-                ? styleBlock.style[styleBlock.style.length - 1].order + 1
-                : 0;
-              styleBlock.style.push({
-                name: element[0],
-                value: element[1],
-                isValid: true,
-                order: order + i,
-              });
-              currentStyle.styles[i] = styleBlock;
-              return styleBlock;
-            });
-          }
-          return item;
-        });
-        return temp;
-      });
-    }
-  };
-
   return styleBlocks ? (
     <StyleContainer id="style-container">
       <StyleBlockList>
@@ -136,9 +108,6 @@ export function StyleEditor({ currentStyle }) {
                 placeholder="Enter selector"
                 onKeyDown={(e) => addProperty(e, styleBlock)}
               />
-              <PasteButton onClick={(e) => pasteStyle(e, styleBlock)}>
-                <PasteIcon />
-              </PasteButton>
               <CloseButton onClick={(e) => deleteBlock(styleBlock.order)}>
                 <CloseIcon />
               </CloseButton>
@@ -199,11 +168,6 @@ const StyleHead = styled.div`
 `;
 
 const CloseButton = styled.div`
-  cursor: pointer;
-`;
-
-const PasteButton = styled.div`
-  margin-right: 10px;
   cursor: pointer;
 `;
 

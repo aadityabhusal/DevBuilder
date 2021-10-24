@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { properties } from "../../lists/properties";
-import { CloseIcon } from "../Icons";
-import { updateStyle } from "../../../../utils";
+import { CloseIcon, PasteIcon } from "../Icons";
+import { getCSSArray, updateStyle } from "../../../../utils";
 
 export function StyleBlock({ data, currentStyle }) {
   const [propertyList, setPropertyList] = useState();
@@ -38,7 +38,6 @@ export function StyleBlock({ data, currentStyle }) {
     let foundSame = propertyList.find(
       (item, i) => item.name === value && i !== index
     );
-    console.log(value, index, foundSame);
     if (foundSame) return 0;
     return true;
   };
@@ -67,7 +66,6 @@ export function StyleBlock({ data, currentStyle }) {
           name: "",
           value: "",
           isValid: false,
-          order: temp.length,
         });
         return temp;
       });
@@ -83,8 +81,38 @@ export function StyleBlock({ data, currentStyle }) {
     });
   };
 
+  const pasteStyle = async () => {
+    let pasteData = await navigator.clipboard.readText();
+    let cssArray = getCSSArray(pasteData);
+    if (cssArray) {
+      setPropertyList((prev) => {
+        let temp = [...prev];
+        cssArray.forEach((element, j) => {
+          let isValid = checkProperty(element[0], -1);
+          if (isValid === false) return;
+          if (isValid === 0) {
+            let index = temp.findIndex((item) => item.name === element[0]);
+            console.log(element[0], index);
+            temp[index].value = element[1];
+            return;
+          }
+          temp.push({
+            name: element[0],
+            value: element[1],
+            isValid: true,
+          });
+        });
+        data.style = temp;
+        return temp;
+      });
+    }
+  };
+
   return propertyList ? (
     <StyleList>
+      <PasteButton onClick={pasteStyle}>
+        <PasteIcon />
+      </PasteButton>
       {propertyList.map((item, i) => (
         <StyleListItem key={item.name}>
           <StyleInput
@@ -114,6 +142,20 @@ export function StyleBlock({ data, currentStyle }) {
     </StyleList>
   ) : null;
 }
+
+const PasteButton = styled.div`
+  margin-right: 10px;
+  cursor: pointer;
+  position: absolute;
+  top: -30px;
+  right: 20px;
+
+  & > svg {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+  }
+`;
 
 const CloseButton = styled.div`
   cursor: pointer;
@@ -148,6 +190,7 @@ const StyleList = styled.ul`
   flex-direction: column;
   padding: 0;
   margin: 0;
+  position: relative;
 `;
 
 const StyleListItem = styled.li`
