@@ -1,4 +1,6 @@
-export function updateStyle(styleName, styleBlocks, getCSSText) {
+import { getCSSText } from ".";
+
+export function updateStyle(styleName, styleBlocks) {
   let stylesheet = document
     .getElementById("iframe-view")
     .contentDocument.getElementById(styleName + "-stylesheet");

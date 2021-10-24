@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { properties } from "../../lists/properties";
 import { CloseIcon } from "../Icons";
-import { getCSSText, updateStyle } from "../../../../utils";
+import { updateStyle } from "../../../../utils";
 
 export function StyleBlock({ data, currentStyle }) {
   const [propertyList, setPropertyList] = useState();
@@ -51,7 +51,7 @@ export function StyleBlock({ data, currentStyle }) {
           item.value = e.target.value;
           data.style[i] = currentProperty;
         }
-        updateStyle(currentStyle.name, currentStyle.styles, getCSSText);
+        updateStyle(currentStyle.name, currentStyle.styles);
         return item;
       });
       return update;
@@ -78,7 +78,7 @@ export function StyleBlock({ data, currentStyle }) {
     setPropertyList((prev) => {
       let temp = prev.filter((item) => item.name !== propertyName);
       data.style = temp;
-      updateStyle(currentStyle.name, currentStyle.styles, getCSSText);
+      updateStyle(currentStyle.name, currentStyle.styles);
       return temp;
     });
   };

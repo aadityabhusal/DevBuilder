@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getCSSArray, getCSSText, updateStyle } from "../../../../utils";
+import { getCSSArray, updateStyle } from "../../../../utils";
 import { StyleBlock } from "./StyleBlock";
 import { properties } from "../../lists/properties";
 import { CloseIcon, PasteIcon } from "../Icons";
@@ -58,7 +58,7 @@ export function StyleEditor({ currentStyle }) {
     setStyleBlocks((prev) => {
       let temp = prev.filter((item) => item.order !== order);
       currentStyle.styles = temp;
-      updateStyle(currentStyle.name, temp, getCSSText);
+      updateStyle(currentStyle.name, temp);
       return temp;
     });
   };
