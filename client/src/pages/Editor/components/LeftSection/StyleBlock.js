@@ -80,26 +80,26 @@ export function StyleBlock({ data, currentStyle }) {
     let pasteData = await navigator.clipboard.readText();
     let cssArray = getCSSArray(pasteData);
     if (cssArray) {
-      setPropertyList((prev) => {
-        let temp = [...prev];
-        cssArray.forEach((element, j) => {
-          let isValid = checkProperty(element[0], -1);
-          if (isValid === false) return;
-          if (isValid === 0) {
-            let index = temp.findIndex((item) => item.name === element[0]);
-            console.log(element[0], index);
-            temp[index].value = element[1];
-            return;
-          }
-          temp.push({
-            name: element[0],
-            value: element[1],
-            isValid: true,
-          });
+      let update = { ...propertyList };
+      cssArray.forEach((element, j) => {
+        let isValid = checkProperty(element[0], -1);
+        if (isValid === false) return;
+        if (isValid === 0) {
+          let index = update.style.findIndex(
+            (item) => item.name === element[0]
+          );
+          console.log(element[0], index);
+          update.style[index].value = element[1];
+          return;
+        }
+        update.style.push({
+          name: element[0],
+          value: element[1],
+          isValid: true,
         });
-        data.style = temp;
-        return temp;
       });
+
+      setPropertyList((prev) => update);
     }
   };
 
