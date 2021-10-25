@@ -4,7 +4,7 @@ import {
   getDragAfterElement,
   nestingValidation,
 } from "../../../../utils";
-// import { CommandContext } from "../../../../contexts/CommandContext";
+import { CommandContext } from "../../../../contexts/CommandContext";
 import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
 const nonClosingTags = ["img", "video", "input", "hr", "br"];
 
@@ -23,7 +23,7 @@ export function IframeElement({
   const [element, setElement] = useState();
   const elementRef = useRef();
   const { setSelectedElement } = useContext(SelectedElementContext);
-  // const { addCommand } = useContext(CommandContext);
+  const { addCommand } = useContext(CommandContext);
 
   const HTMLTag = `${data.tagName}`;
   let elemAttributes = Object.assign({}, data.attributes);
@@ -115,14 +115,13 @@ export function IframeElement({
     update.children_order.splice(index, 1);
     delete update.children[child._id];
 
-    setElement((prev) => update);
-
-    /*     addCommand({
+    addCommand({
       action: "drag",
       element: { ...child },
       parent: { ...element },
       index: element.children_order.indexOf(child._id),
-    }); */
+    });
+    // setElement((prev) => update);
   };
 
   const insertElement = (child, afterElement) => {
@@ -134,14 +133,14 @@ export function IframeElement({
       update.children_order.splice(index, 0, child._id);
     }
     update.children[child._id] = child;
-    setElement((prev) => update);
 
-    /*     addCommand({
+    addCommand({
       action: "drop",
       element: { ...child },
       parent: { ...element },
       index: element.children_order.indexOf(child._id),
-    }); */
+    });
+    // setElement((prev) => update);
   };
 
   const showHoverBox = (e, color = "#3498db") => {

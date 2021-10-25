@@ -6,87 +6,65 @@ export const CommandProvider = (props) => {
   const [history, setHistory] = useState({ current: -1, commands: [] });
 
   /* 
-  WARNING: The value of elements and parents in the commands are taken by reference
+  - Undo and redo cannot place the element in the same position of the children list of the parent element instead place the element at the end.
 
-  Undo and redo cannot place the element in the same position of the children list of the parent element instead place the element at the end.
-*/
-
-  /* 
-  PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM
-
-  THE CHILDREN_ORDER LIST IS NOT UPDATED HERE
-  THE COMMAND MIGHT ALSO NEED TO STORE THE ORDERING OF THE LIST OR THE POSITION OF THE ELEMENT REMOVED
-
-
+  - The children_order list is not updated here; The command might also need to store the ordering of the list or the position of the element removed'
 */
 
   const addCommand = (command) => {
-    setHistory((prev) => {
-      if (prev.current < prev.commands.length - 1) {
-        prev.commands.length = prev.current + 1;
-      }
-      prev.current = prev.commands.length;
-      prev.commands.push(command);
-      return prev;
-    });
-    console.log(history);
+    let update = { ...history };
+    if (update.current < update.commands.length - 1) {
+      update.commands.length = update.current + 1;
+    }
+    update.current = update.commands.length;
+    update.commands.push(command);
+    console.log(update);
+    setHistory((prev) => update);
   };
 
   const undo = () => {
-    console.log(history);
     if (history.current >= 0) {
-      let command = history.commands[history.current];
+      let cmd = history.commands[history.current];
 
-      if (command.action === "drag") {
-        command.parent.children_order.splice(
-          command.index,
-          0,
-          command.element._id
-        );
-        command.parent.children[command.element._id] = command.element;
+      if (cmd.action === "drag") {
+        cmd.parent.children_order.splice(cmd.index, 0, cmd.element._id);
+        cmd.parent.children[cmd.element._id] = cmd.element;
       }
 
-      if (command.action === "drop") {
-        command.parent.children_order.splice(command.index, 1);
-        delete command.parent.children[command.element._id];
+      if (cmd.action === "drop") {
+        cmd.parent.children_order.splice(cmd.index, 1);
+        delete cmd.parent.children[cmd.element._id];
       }
 
-      setHistory((prev) => {
-        let temp = { ...prev };
-        temp.current = temp.current >= 1 ? temp.current - 1 : temp.current;
-        return temp;
-      });
+      let update = { ...history };
+      update.current =
+        update.current >= 0 ? update.current - 1 : update.current;
+      console.log(update);
+      setHistory((prev) => update);
     }
   };
 
   const redo = () => {
-    if (history.commands.length > history.current) {
-      let command = history.commands[history.current];
-
-      if (command.action === "drag") {
-        command.parent.children_order.splice(command.index, 1);
-        delete command.parent.children[command.element._id];
+    if (history.current < history.commands.length - 1) {
+      let cmd = history.commands[history.current + 1];
+      if (cmd.action === "drag") {
+        cmd.parent.children_order.splice(cmd.index, 1);
+        delete cmd.parent.children[cmd.element._id];
       }
 
-      if (command.action === "drop") {
-        command.parent.children_order.splice(
-          command.index,
-          0,
-          command.element._id
-        );
-        command.parent.children[command.element._id] = command.element;
+      if (cmd.action === "drop") {
+        cmd.parent.children_order.splice(cmd.index, 0, cmd.element._id);
+        cmd.parent.children[cmd.element._id] = cmd.element;
       }
 
-      setHistory((prev) => {
-        let temp = { ...prev };
-        temp.current =
-          temp.current < temp.commands.length - 1
-            ? temp.current + 1
-            : temp.current;
-        return temp;
-      });
+      let update = { ...history };
+      update.current =
+        update.current < update.commands.length - 1
+          ? update.current + 1
+          : update.current;
+      console.log(update);
+      setHistory((prev) => update);
     }
-    console.log(history);
   };
 
   return (
