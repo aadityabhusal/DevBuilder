@@ -14,89 +14,79 @@ export function StyleEditor({ currentStyle }) {
   const [styleBlocks, setStyleBlocks] = useState();
 
   useEffect(() => {
-    setStyleBlocks((prev) => currentStyle.styles);
+    setStyleBlocks((prev) => currentStyle);
   }, [currentStyle]);
 
   const addNewStyle = () => {
-    let foundInvalid = styleBlocks.findIndex((item) => item.isValid === false);
+    console.log(styleBlocks.styles);
+    let foundInvalid = styleBlocks.styles.findIndex(
+      (item) => item.isValid === false
+    );
     if (foundInvalid === -1) {
-      setStyleBlocks((blocks) => {
-        let temp = [...blocks];
-        let newBlock = {
-          selector: "",
-          style: [],
-          isValid: false,
-        };
-        temp.push(newBlock);
-        return temp;
+      let update = { ...styleBlocks };
+      update.styles.push({
+        selector: "",
+        style: [],
+        isValid: false,
       });
+      setStyleBlocks((blocks) => update);
     }
   };
 
   const handleStyleBlock = (e, styleBlock, index) => {
     let isValid = checkSelector(e.target.value, index);
     if (!isValid) e.target.style.border = "1px solid #e74c3c";
-    styleBlock.isValid = isValid;
-    styleBlock.selector = e.target.value;
 
-    setStyleBlocks((prev) => {
-      let temp = prev.map((item, i) => {
-        if (item.selector === styleBlock.selector) {
-          // this doesn't work when new styles are created immediately after creating a new style
-          currentStyle.styles[i] = styleBlock;
-          return styleBlock;
-        }
-        return item;
-      });
-      return temp;
+    let update = { ...styleBlocks };
+    update.styles.forEach((item, i) => {
+      if (item.selector === styleBlock.selector) {
+        item.selector = e.target.value;
+        item.isValid = Boolean(isValid);
+      }
     });
+
+    setStyleBlocks((prev) => update);
   };
 
   const checkSelector = (selector, index) => {
     if (selector.trim() === "") return false;
-    let findSelector = styleBlocks.find(
+    let findSelector = styleBlocks.styles.find(
       (item, i) => item.selector === selector && i !== index
     );
-    // Style doesn't change immediately when a similar selector is found
-    if (findSelector) return false;
+    if (findSelector) return 0;
     return true;
   };
 
   const deleteBlock = (selector) => {
-    setStyleBlocks((prev) => {
-      let temp = prev.filter((item) => item.selector !== selector);
-      currentStyle.styles = temp;
-      updateStyle(currentStyle.name, temp);
-      return temp;
-    });
+    let update = { ...styleBlocks };
+    let index = update.styles.findIndex((item) => item.selector === selector);
+    update.styles.splice(index, 1);
+    updateStyle(currentStyle.name, update);
+
+    setStyleBlocks((prev) => update);
   };
 
   const addProperty = (e, styleBlock) => {
     if (e.keyCode === 13 && styleBlock.style.length === 0) {
-      let newProperty = {
-        name: "",
-        value: "",
-        isValid: false,
-      };
-
-      setStyleBlocks((prev) => {
-        let temp = prev.map((item, i) => {
-          if (item.selector === styleBlock.selector) {
-            styleBlock.style.push(newProperty);
-            return styleBlock;
-          }
-          return item;
-        });
-        return temp;
+      let update = { ...styleBlocks };
+      update.styles.forEach((item, i) => {
+        if (item.selector === styleBlock.selector) {
+          item.style.push({
+            name: "",
+            value: "",
+            isValid: false,
+          });
+        }
       });
+      setStyleBlocks((prev) => update);
     }
   };
 
   return styleBlocks ? (
     <StyleContainer id="style-container">
       <StyleBlockList>
-        {styleBlocks.map((styleBlock, i) => (
-          <BlockContainer key={styleBlock.selector}>
+        {styleBlocks.styles.map((styleBlock, i) => (
+          <BlockContainer key={`${styleBlock.selector}${i}`}>
             <StyleHead>
               <StyleInput
                 key={styleBlock.selector}
@@ -104,6 +94,7 @@ export function StyleEditor({ currentStyle }) {
                 onBlur={(e) => handleStyleBlock(e, styleBlock, i)}
                 placeholder="Enter selector"
                 onKeyDown={(e) => addProperty(e, styleBlock)}
+                autoFocus={i + 1 === styleBlocks.styles.length ? true : false}
               />
               <CloseButton
                 onClick={(e) => deleteBlock(styleBlock.selector)}
