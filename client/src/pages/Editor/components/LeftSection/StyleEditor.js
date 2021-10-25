@@ -22,12 +22,10 @@ export function StyleEditor({ currentStyle }) {
     if (foundInvalid === -1) {
       setStyleBlocks((blocks) => {
         let temp = [...blocks];
-        let order = temp.length ? temp[temp.length - 1].order + 1 : 0;
         let newBlock = {
           selector: "",
           style: [],
           isValid: false,
-          order,
         };
         temp.push(newBlock);
         return temp;
@@ -35,15 +33,15 @@ export function StyleEditor({ currentStyle }) {
     }
   };
 
-  const handleStyleBlock = (e, styleBlock) => {
-    let isValid = checkSelector(e.target.value, styleBlock.order);
+  const handleStyleBlock = (e, styleBlock, index) => {
+    let isValid = checkSelector(e.target.value, index);
     if (!isValid) e.target.style.border = "1px solid #e74c3c";
     styleBlock.isValid = isValid;
     styleBlock.selector = e.target.value;
 
     setStyleBlocks((prev) => {
       let temp = prev.map((item, i) => {
-        if (item.order === styleBlock.order) {
+        if (item.selector === styleBlock.selector) {
           // this doesn't work when new styles are created immediately after creating a new style
           currentStyle.styles[i] = styleBlock;
           return styleBlock;
@@ -54,23 +52,23 @@ export function StyleEditor({ currentStyle }) {
     });
   };
 
-  const deleteBlock = (order) => {
-    setStyleBlocks((prev) => {
-      let temp = prev.filter((item) => item.order !== order);
-      currentStyle.styles = temp;
-      updateStyle(currentStyle.name, temp);
-      return temp;
-    });
-  };
-
-  const checkSelector = (selector, order) => {
+  const checkSelector = (selector, index) => {
     if (selector.trim() === "") return false;
     let findSelector = styleBlocks.find(
-      (item) => item.selector === selector && item.order !== order
+      (item, i) => item.selector === selector && i !== index
     );
     // Style doesn't change immediately when a similar selector is found
     if (findSelector) return false;
     return true;
+  };
+
+  const deleteBlock = (selector) => {
+    setStyleBlocks((prev) => {
+      let temp = prev.filter((item) => item.selector !== selector);
+      currentStyle.styles = temp;
+      updateStyle(currentStyle.name, temp);
+      return temp;
+    });
   };
 
   const addProperty = (e, styleBlock) => {
@@ -79,12 +77,11 @@ export function StyleEditor({ currentStyle }) {
         name: "",
         value: "",
         isValid: false,
-        order: styleBlock.style.length,
       };
 
       setStyleBlocks((prev) => {
         let temp = prev.map((item, i) => {
-          if (item.order === styleBlock.order) {
+          if (item.selector === styleBlock.selector) {
             styleBlock.style.push(newProperty);
             return styleBlock;
           }
@@ -98,18 +95,18 @@ export function StyleEditor({ currentStyle }) {
   return styleBlocks ? (
     <StyleContainer id="style-container">
       <StyleBlockList>
-        {styleBlocks.map((styleBlock) => (
-          <BlockContainer key={styleBlock.order}>
+        {styleBlocks.map((styleBlock, i) => (
+          <BlockContainer key={styleBlock.selector}>
             <StyleHead>
               <StyleInput
                 key={styleBlock.selector}
                 defaultValue={styleBlock.selector}
-                onBlur={(e) => handleStyleBlock(e, styleBlock)}
+                onBlur={(e) => handleStyleBlock(e, styleBlock, i)}
                 placeholder="Enter selector"
                 onKeyDown={(e) => addProperty(e, styleBlock)}
               />
               <CloseButton
-                onClick={(e) => deleteBlock(styleBlock.order)}
+                onClick={(e) => deleteBlock(styleBlock.selector)}
                 title="Delete Style Block"
               >
                 <CloseIcon />
