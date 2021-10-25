@@ -8,7 +8,7 @@ export function StyleBlock({ data, currentStyle }) {
   const [propertyList, setPropertyList] = useState();
 
   useEffect(() => {
-    setPropertyList((prev) => data.style);
+    setPropertyList((prev) => data);
   }, [data]);
 
   const handleProperty = (e, currentProperty, index) => {
@@ -16,26 +16,24 @@ export function StyleBlock({ data, currentStyle }) {
     if (!isValid) e.target.style.border = "1px solid #e74c3c";
     if (currentProperty.name === e.target.value) return;
 
-    setPropertyList((prev) => {
-      let update = prev.map((item, i) => {
-        if (item.name === currentProperty.name) {
-          if (isValid === 0) {
-            item.name = e.target.value.slice(0, -1);
-          } else {
-            item.name = e.target.value;
-            data.style[i] = item;
-          }
-          item.isValid = Boolean(isValid);
+    let update = { ...propertyList };
+    update.style.forEach((item, i) => {
+      if (item.name === currentProperty.name) {
+        if (isValid === 0) {
+          item.name = e.target.value.slice(0, -1);
+        } else {
+          item.name = e.target.value;
         }
-        return item;
-      });
-      return update;
+        item.isValid = Boolean(isValid);
+      }
     });
+
+    setPropertyList((prev) => update);
   };
 
   const checkProperty = (value, index) => {
     if (!properties.includes(value)) return false;
-    let foundSame = propertyList.find(
+    let foundSame = propertyList.style.find(
       (item, i) => item.name === value && i !== index
     );
     if (foundSame) return 0;
@@ -43,42 +41,39 @@ export function StyleBlock({ data, currentStyle }) {
   };
 
   const updateValue = (e, currentProperty) => {
-    setPropertyList((prev) => {
-      let temp = [...prev];
-      let update = temp.map((item, i) => {
-        if (item.name === currentProperty.name) {
-          item.value = e.target.value;
-          data.style[i] = currentProperty;
-        }
-        updateStyle(currentStyle.name, currentStyle.styles);
-        return item;
-      });
-      return update;
+    let update = { ...propertyList };
+    update.style.forEach((item, i) => {
+      if (item.name === currentProperty.name) {
+        item.value = e.target.value;
+      }
+      updateStyle(currentStyle.name, currentStyle.styles);
     });
+    setPropertyList((prev) => update);
   };
 
   const addProperty = (e) => {
-    let foundInvalid = propertyList.findIndex((item) => item.isValid === false);
+    let foundInvalid = propertyList.style.findIndex(
+      (item) => item.isValid === false
+    );
     if (e.keyCode === 13 && foundInvalid === -1) {
-      setPropertyList((prev) => {
-        let temp = [...prev];
-        temp.push({
-          name: "",
-          value: "",
-          isValid: false,
-        });
-        return temp;
+      let update = { ...propertyList };
+      update.style.push({
+        name: "",
+        value: "",
+        isValid: false,
       });
+
+      setPropertyList((prev) => update);
     }
   };
 
   const deleteProperty = (propertyName) => {
-    setPropertyList((prev) => {
-      let temp = prev.filter((item) => item.name !== propertyName);
-      data.style = temp;
-      updateStyle(currentStyle.name, currentStyle.styles);
-      return temp;
-    });
+    let update = { ...propertyList };
+    let index = update.style.findIndex((item) => item.name === propertyName);
+    update.style.splice(index, 1);
+    updateStyle(currentStyle.name, currentStyle.styles);
+
+    setPropertyList((prev) => update);
   };
 
   const pasteStyle = async () => {
@@ -109,7 +104,7 @@ export function StyleBlock({ data, currentStyle }) {
   };
 
   const copyStyle = async () => {
-    let styleText = propertyList.map((item) => {
+    let styleText = propertyList.style.map((item) => {
       return `${item.name}:${item.value};`;
     });
     await navigator.clipboard.writeText(styleText.join(""));
@@ -123,7 +118,7 @@ export function StyleBlock({ data, currentStyle }) {
       <CopyButton onClick={copyStyle} title="Copy Style">
         <CopyIcon />
       </CopyButton>
-      {propertyList.map((item, i) => (
+      {propertyList.style.map((item, i) => (
         <StyleListItem key={item.name}>
           <StyleInput
             list="properties-data-list"
@@ -141,7 +136,7 @@ export function StyleBlock({ data, currentStyle }) {
             placeholder="Enter property value"
             onKeyUp={addProperty}
             autoFocus={
-              item.name && i + 1 === propertyList.length ? true : false
+              item.name && i + 1 === propertyList.style.length ? true : false
             }
           />
           <CloseButton

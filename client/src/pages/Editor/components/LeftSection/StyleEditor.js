@@ -6,8 +6,8 @@ import { properties } from "../../lists/properties";
 import { CloseIcon } from "../Icons";
 
 /* 
-  Make the styles inside every style block as object so that the properties pasted could be over-writter
-  or find another way to perform it
+  ERROR: When a selector value is left empty and then added and enter key is pressed, two properties are created at once
+  Possible Reason: Double Events Attached
 */
 
 export function StyleEditor({ currentStyle }) {
