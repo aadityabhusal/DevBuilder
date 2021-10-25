@@ -62,7 +62,7 @@ export function StyleEditor({ currentStyle }) {
     let update = { ...styleBlocks };
     let index = update.styles.findIndex((item) => item._id === _id);
     update.styles.splice(index, 1);
-    updateStyle(currentStyle.name, update);
+    updateStyle(currentStyle.name, update.styles);
 
     setStyleBlocks((prev) => update);
   };
