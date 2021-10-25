@@ -5,11 +5,6 @@ import { StyleBlock } from "./StyleBlock";
 import { properties } from "../../lists/properties";
 import { CloseIcon } from "../Icons";
 
-/* 
-  ERROR: When a selector value is left empty and then added and enter key is pressed, two properties are created at once
-  Possible Reason: Double Events Attached
-*/
-
 export function StyleEditor({ currentStyle }) {
   const [styleBlocks, setStyleBlocks] = useState();
 
@@ -18,13 +13,14 @@ export function StyleEditor({ currentStyle }) {
   }, [currentStyle]);
 
   const addNewStyle = () => {
-    console.log(styleBlocks.styles);
     let foundInvalid = styleBlocks.styles.findIndex(
       (item) => item.isValid === false
     );
     if (foundInvalid === -1) {
       let update = { ...styleBlocks };
+      let _id = performance.now().toString(36).replace(/\./g, "");
       update.styles.push({
+        _id,
         selector: "",
         style: [],
         isValid: false,
@@ -33,13 +29,18 @@ export function StyleEditor({ currentStyle }) {
     }
   };
 
-  const handleStyleBlock = (e, styleBlock, index) => {
-    let isValid = checkSelector(e.target.value, index);
+  const handleStyleBlock = (e, styleBlock) => {
+    let isValid = checkSelector(e.target.value, styleBlock._id);
+    console.log(isValid);
     if (!isValid) e.target.style.border = "1px solid #e74c3c";
+    else {
+      e.target.style.borderColor = "#bdc3c7";
+      e.target.style.borderBottom = "none";
+    }
 
     let update = { ...styleBlocks };
     update.styles.forEach((item, i) => {
-      if (item.selector === styleBlock.selector) {
+      if (item._id === styleBlock._id) {
         item.selector = e.target.value;
         item.isValid = Boolean(isValid);
       }
@@ -48,18 +49,18 @@ export function StyleEditor({ currentStyle }) {
     setStyleBlocks((prev) => update);
   };
 
-  const checkSelector = (selector, index) => {
+  const checkSelector = (selector, _id) => {
     if (selector.trim() === "") return false;
     let findSelector = styleBlocks.styles.find(
-      (item, i) => item.selector === selector && i !== index
+      (item) => item.selector === selector && item._id !== _id
     );
     if (findSelector) return 0;
     return true;
   };
 
-  const deleteBlock = (selector) => {
+  const deleteBlock = (_id) => {
     let update = { ...styleBlocks };
-    let index = update.styles.findIndex((item) => item.selector === selector);
+    let index = update.styles.findIndex((item) => item._id === _id);
     update.styles.splice(index, 1);
     updateStyle(currentStyle.name, update);
 
@@ -70,7 +71,7 @@ export function StyleEditor({ currentStyle }) {
     if (e.keyCode === 13 && styleBlock.style.length === 0) {
       let update = { ...styleBlocks };
       update.styles.forEach((item, i) => {
-        if (item.selector === styleBlock.selector) {
+        if (item._id === styleBlock._id) {
           item.style.push({
             name: "",
             value: "",
@@ -86,18 +87,17 @@ export function StyleEditor({ currentStyle }) {
     <StyleContainer id="style-container">
       <StyleBlockList>
         {styleBlocks.styles.map((styleBlock, i) => (
-          <BlockContainer key={`${styleBlock.selector}${i}`}>
+          <BlockContainer key={styleBlock._id}>
             <StyleHead>
               <StyleInput
-                key={styleBlock.selector}
                 defaultValue={styleBlock.selector}
-                onBlur={(e) => handleStyleBlock(e, styleBlock, i)}
+                onBlur={(e) => handleStyleBlock(e, styleBlock)}
                 placeholder="Enter selector"
                 onKeyDown={(e) => addProperty(e, styleBlock)}
                 autoFocus={i + 1 === styleBlocks.styles.length ? true : false}
               />
               <CloseButton
-                onClick={(e) => deleteBlock(styleBlock.selector)}
+                onClick={(e) => deleteBlock(styleBlock._id)}
                 title="Delete Style Block"
               >
                 <CloseIcon />
