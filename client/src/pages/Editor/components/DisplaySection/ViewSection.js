@@ -23,11 +23,11 @@ html {
   margin: 0 !important;
 }
 
-#vertical-dragging {
+.vertical-dragging {
   margin-top: 20px;
 }
 
-#horizontal-dragging {
+.horizontal-dragging {
   margin-left: 20px;
 }
 
