@@ -118,10 +118,9 @@ export function IframeElement({
     addCommand({
       action: "drag",
       element: { ...child },
-      parent: { ...element },
-      index: element.children_order.indexOf(child._id),
+      parent: { ...update },
+      index: update.children_order.indexOf(child._id),
     });
-    // setElement((prev) => update);
   };
 
   const insertElement = (child, afterElement) => {
@@ -137,10 +136,9 @@ export function IframeElement({
     addCommand({
       action: "drop",
       element: { ...child },
-      parent: { ...element },
-      index: element.children_order.indexOf(child._id),
+      parent: { ...update },
+      index: update.children_order.indexOf(child._id),
     });
-    // setElement((prev) => update);
   };
 
   const showHoverBox = (e, color = "#3498db") => {
