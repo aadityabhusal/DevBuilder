@@ -7,8 +7,7 @@ export const CommandProvider = (props) => {
 
   /* 
   - Undo and redo cannot place the element in the same position of the children list of the parent element instead place the element at the end.
-
-  - The children_order list is not updated here; The command might also need to store the ordering of the list or the position of the element removed'
+  - Problem while setting path of element's children in IframeElement while undoing
 */
 
   const addCommand = (command) => {

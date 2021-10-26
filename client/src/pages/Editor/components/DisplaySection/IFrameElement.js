@@ -10,8 +10,6 @@ const nonClosingTags = ["img", "video", "input", "hr", "br"];
 
 /* 
   - See if I could use translate in showHoverBox function
-
-  - Cannot keep addCommand inside these function because these functions will be called while doing undo and redo causing the command to be added to the history again
 */
 
 export function IframeElement({

@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { properties } from "../../lists/properties";
 import { CloseIcon, CopyIcon, PasteIcon } from "../Icons";
-import { getCSSArray, updateStyle } from "../../../../utils";
+import {
+  getCSSArray,
+  updateStyle,
+  getStylePropertyName,
+} from "../../../../utils";
 
 export function StyleBlock({ data, currentStyle }) {
   const [propertyList, setPropertyList] = useState();
@@ -46,7 +50,12 @@ export function StyleBlock({ data, currentStyle }) {
       if (item.name === currentProperty.name) {
         item.value = e.target.value;
       }
-      updateStyle(currentStyle.name, currentStyle.styles);
+      let element = document.createElement("div");
+      element.style[getStylePropertyName(currentProperty.name)] =
+        e.target.value;
+      if (element.style[getStylePropertyName(currentProperty.name)]) {
+        updateStyle(currentStyle.name, currentStyle.styles);
+      }
     });
     setPropertyList((prev) => update);
   };
