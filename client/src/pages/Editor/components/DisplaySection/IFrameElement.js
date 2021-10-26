@@ -121,6 +121,7 @@ export function IframeElement({
       parent: { ...update },
       index: update.children_order.indexOf(child._id),
     });
+    setElement((prev) => update);
   };
 
   const insertElement = (child, afterElement) => {
@@ -139,6 +140,7 @@ export function IframeElement({
       parent: { ...update },
       index: update.children_order.indexOf(child._id),
     });
+    setElement((prev) => update);
   };
 
   const showHoverBox = (e, color = "#3498db") => {

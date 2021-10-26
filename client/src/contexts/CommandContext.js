@@ -12,14 +12,12 @@ export const CommandProvider = (props) => {
 */
 
   const addCommand = (command) => {
-    let update = { ...history };
-    if (update.current < update.commands.length - 1) {
-      update.commands.length = update.current + 1;
+    if (history.current < history.commands.length - 1) {
+      history.commands.length = history.current + 1;
     }
-    update.current = update.commands.length;
-    update.commands.push(command);
-    console.log(update);
-    setHistory((prev) => update);
+    history.current = history.commands.length;
+    history.commands.push(command);
+    console.log(history);
   };
 
   const undo = () => {
