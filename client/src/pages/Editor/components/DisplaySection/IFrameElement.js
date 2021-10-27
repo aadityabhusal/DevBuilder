@@ -158,20 +158,19 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
         {...elemAttributes}
       >
         {element.text.join("")}
-        {element.children_order.length
-          ? element.children_order.map((elem) => {
-              //maybe undo is not happening because of this
-              element.children[elem].path = [...element.path, element._id];
-              return (
-                <IframeElement
-                  key={element.children[elem]._id}
-                  contextMenu={contextMenu}
-                  data={element.children[elem]}
-                  removeFromParent={removeElementFromParent}
-                ></IframeElement>
-              );
-            })
-          : null}
+        {element.children_order.map((elem) => {
+          //maybe undo is not happening because of this
+          //up - can use JSON.stringify to copy children
+          element.children[elem].path = [...element.path, element._id];
+          return (
+            <IframeElement
+              key={element.children[elem]._id}
+              contextMenu={contextMenu}
+              data={element.children[elem]}
+              removeFromParent={removeElementFromParent}
+            ></IframeElement>
+          );
+        })}
       </HTMLTag>
     ) : (
       <HTMLTag

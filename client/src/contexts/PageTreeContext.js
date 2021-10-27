@@ -4,7 +4,7 @@ export const PageTreeContext = createContext();
 
 export const PageTreeProvider = (props) => {
   const [pageTree, setPageTree] = useState(props.value);
-
+  console.log(pageTree);
   function updateTree(
     element,
     action = "",

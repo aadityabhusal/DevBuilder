@@ -37,6 +37,7 @@ const PageSchema = new mongoose.Schema(
           id: "",
           class: "",
         },
+        children_order: [elementId],
         children: {
           [elementId]: {
             _id: elementId,

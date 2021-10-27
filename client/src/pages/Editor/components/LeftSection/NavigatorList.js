@@ -2,13 +2,16 @@ import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
 import { showHoverBox } from "../../../../utils";
+const nonClosingTags = ["img", "video", "input", "hr", "br"];
 
 export function NavigatorList({ data }) {
-  const [element, setNavigatorItem] = useState();
+  const [element, setElement] = useState();
   const { setSelectedElement } = useContext(SelectedElementContext);
 
   useEffect(() => {
-    setNavigatorItem(data);
+    if (data) {
+      setElement((prev) => data);
+    }
   }, [data]);
 
   const handleHover = (e) => {
@@ -25,18 +28,15 @@ export function NavigatorList({ data }) {
 
   return element ? (
     <NavigatorListContainer>
-      <NavigatorListItem
-        length={element.path.length}
-        onMouseOver={handleHover}
-        onClick={handleClick}
-      >
+      <NavigatorListItem onMouseOver={handleHover} onClick={handleClick}>
         {element.path.map((item, i) => (
           <VerticalLines key={i} />
         ))}
         <NavigatorItemName>{element.tagName}</NavigatorItemName>
       </NavigatorListItem>
-      {element.children_order.length
+      {!nonClosingTags.includes(element.tagName)
         ? element.children_order.map((elem) => {
+            element.children[elem].path = [...element.path, element._id];
             return (
               <NavigatorList
                 key={element.children[elem]._id}
