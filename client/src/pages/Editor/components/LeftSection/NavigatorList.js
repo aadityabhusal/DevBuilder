@@ -39,7 +39,8 @@ export function NavigatorList({ data, firstDrop }) {
         {element.path.map((item, i) => (
           <VerticalLines key={i} />
         ))}
-        {element.children_order.length ? (
+        {!nonClosingTags.includes(element.tagName) &&
+        element.children_order.length ? (
           <DropDownArrow isDropped={isDropped} onClick={handleDrop}>
             <DropDownIcon />
           </DropDownArrow>

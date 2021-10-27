@@ -153,7 +153,7 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
       >
         {element.text.join("")}
         {element.children_order.map((elem) => {
-          // element.children[elem].path = [...element.path, element._id];
+          element.children[elem].path = [...element.path, element._id];
           return (
             <IframeElement
               key={element.children[elem]._id}
