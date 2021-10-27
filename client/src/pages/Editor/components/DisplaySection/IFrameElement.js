@@ -114,7 +114,6 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
       action: "drag",
       element: { ...child },
       parent: { ...update },
-      index: update.children_order.indexOf(child._id),
     });
     setElement((prev) => update);
   };
@@ -133,7 +132,7 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
       action: "drop",
       element: { ...child },
       parent: { ...update },
-      index: update.children_order.indexOf(child._id),
+      afterElement: afterElement,
     });
     setElement((prev) => update);
   };
@@ -161,7 +160,7 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
         {element.children_order.map((elem) => {
           //maybe undo is not happening because of this
           //up - can use JSON.stringify to copy children
-          element.children[elem].path = [...element.path, element._id];
+          // element.children[elem].path = [...element.path, element._id];
           return (
             <IframeElement
               key={element.children[elem]._id}

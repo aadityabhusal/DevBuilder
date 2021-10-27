@@ -24,19 +24,20 @@ export const CommandProvider = (props) => {
       let cmd = history.commands[history.current];
 
       if (cmd.action === "drag") {
-        cmd.parent.children_order.splice(cmd.index, 0, cmd.element._id);
+        let index = cmd.parent.children_order.indexOf(cmd.element._id);
+        cmd.parent.children_order.splice(index, 0, cmd.element._id);
         cmd.parent.children[cmd.element._id] = cmd.element;
       }
 
       if (cmd.action === "drop") {
-        cmd.parent.children_order.splice(cmd.index, 1);
+        let index = cmd.parent.children_order.indexOf(cmd.element._id);
+        cmd.parent.children_order.splice(index, 1);
         delete cmd.parent.children[cmd.element._id];
       }
 
       let update = { ...history };
       update.current =
         update.current >= 0 ? update.current - 1 : update.current;
-      console.log(update);
       setHistory((prev) => update);
     }
   };
@@ -44,13 +45,16 @@ export const CommandProvider = (props) => {
   const redo = () => {
     if (history.current < history.commands.length - 1) {
       let cmd = history.commands[history.current + 1];
+
       if (cmd.action === "drag") {
-        cmd.parent.children_order.splice(cmd.index, 1);
+        let index = cmd.parent.children_order.indexOf(cmd.element._id);
+        cmd.parent.children_order.splice(index, 1);
         delete cmd.parent.children[cmd.element._id];
       }
 
       if (cmd.action === "drop") {
-        cmd.parent.children_order.splice(cmd.index, 0, cmd.element._id);
+        let index = cmd.parent.children_order.indexOf(cmd.element._id);
+        cmd.parent.children_order.splice(index, 0, cmd.element._id);
         cmd.parent.children[cmd.element._id] = cmd.element;
       }
 
@@ -59,7 +63,7 @@ export const CommandProvider = (props) => {
         update.current < update.commands.length - 1
           ? update.current + 1
           : update.current;
-      console.log(update);
+      // console.log(update);
       setHistory((prev) => update);
     }
   };
