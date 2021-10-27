@@ -1,8 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { SelectedElementContext } from "../../../contexts/SelectedElementContext";
-import { PageTreeContext } from "../../../contexts/PageTreeContext";
-import { CommandContext } from "../../../contexts/CommandContext";
 
 const StyledContextMenuItem = styled.li`
   padding: 5px 15px;
@@ -32,12 +30,15 @@ const StyledContextMenu = styled.ul`
   position: absolute;
 `;
 
+/* 
+  - When Copying section, the same ids of the elements get used again. So, when the elements are hovered in Navigator section the previous item is highlighted
+  - The above issue could cause problems if querySelector(data._id) will be used to make changes to the element
+*/
+
 function ContextMenu({}, ref) {
   const { selectedElement, insertPasteElement } = useContext(
     SelectedElementContext
   );
-  const { updateTree } = useContext(PageTreeContext);
-  const { addCommand } = useContext(CommandContext);
 
   async function handleCopy(e) {
     await navigator.clipboard.writeText(JSON.stringify(selectedElement));
@@ -50,8 +51,6 @@ function ContextMenu({}, ref) {
       pasteData._id = performance.now().toString(36).replace(/\./g, "");
       pasteData.path = [...selectedElement.path, selectedElement._id];
       insertPasteElement(pasteData);
-      // updateTree(pasteData);
-      // addCommand({});
     }
   }
 

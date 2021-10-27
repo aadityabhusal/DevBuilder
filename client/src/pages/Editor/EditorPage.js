@@ -78,13 +78,13 @@ export function EditorPage({ history }) {
       <SiteTreeProvider value={site}>
         {page ? (
           <PageTreeProvider value={page}>
-            <SelectedElementProvider>
-              <CommandProvider>
+            <CommandProvider>
+              <SelectedElementProvider>
                 <LeftSection ref={dragRef} />
                 <DragLeftSection onMouseDown={handleResize}></DragLeftSection>
                 <DisplaySection />
-              </CommandProvider>
-            </SelectedElementProvider>
+              </SelectedElementProvider>
+            </CommandProvider>
           </PageTreeProvider>
         ) : null}
       </SiteTreeProvider>
