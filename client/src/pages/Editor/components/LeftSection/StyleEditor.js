@@ -5,6 +5,10 @@ import { StyleBlock } from "./StyleBlock";
 import { properties } from "../../lists/properties";
 import { CloseIcon } from "../Icons";
 
+/* 
+  - StyleBlocks that are added in a newly created style are not saved in pageTree context 
+*/
+
 export function StyleEditor({ currentStyle }) {
   const [styleBlocks, setStyleBlocks] = useState();
 

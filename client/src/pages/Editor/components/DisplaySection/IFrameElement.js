@@ -2,7 +2,9 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   closeContextMenu,
   getDragAfterElement,
+  hideHoverBox,
   nestingValidation,
+  showHoverBox,
 } from "../../../../utils";
 import { CommandContext } from "../../../../contexts/CommandContext";
 import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
@@ -12,12 +14,7 @@ const nonClosingTags = ["img", "video", "input", "hr", "br"];
   - See if I could use translate in showHoverBox function
 */
 
-export function IframeElement({
-  data,
-  removeFromParent,
-  contextMenu,
-  outlineBox,
-}) {
+export function IframeElement({ data, removeFromParent, contextMenu }) {
   const [element, setElement] = useState();
   const elementRef = useRef();
   const { setSelectedElement } = useContext(SelectedElementContext);
@@ -95,9 +92,9 @@ export function IframeElement({
         nonClosingTags
       )
     ) {
-      showHoverBox(e);
+      showHoverBox(e.target);
     } else {
-      showHoverBox(e, "#e74c3c");
+      showHoverBox(e.target, "#e74c3c");
     }
   };
 
@@ -141,22 +138,6 @@ export function IframeElement({
     setElement((prev) => update);
   };
 
-  const showHoverBox = (e, color = "#3498db") => {
-    e.stopPropagation();
-    let { top, left, width, height } = e.target.getBoundingClientRect();
-    outlineBox.current.style.top = top - 1 + "px";
-    outlineBox.current.style.left = left - 1 + "px";
-    outlineBox.current.style.width = width + "px";
-    outlineBox.current.style.height = height + "px";
-    outlineBox.current.style.border = "1px solid" + color;
-    outlineBox.current.style.display = "block";
-  };
-
-  const hideHoverBox = (e) => {
-    e.stopPropagation();
-    outlineBox.current.style.display = "none";
-  };
-
   return element ? (
     !nonClosingTags.includes(HTMLTag) ? (
       <HTMLTag
@@ -169,7 +150,7 @@ export function IframeElement({
         onDragOver={handleDragOver}
         onDragLeave={(e) => hideHoverBox(e)}
         onDragStart={handleDragStart}
-        onMouseOver={(e) => showHoverBox(e)}
+        onMouseOver={(e) => showHoverBox(e.target)}
         onMouseOut={(e) => hideHoverBox(e)}
         onContextMenu={(e) => openContextMenu(e, contextMenu)}
         className={"frame-element " + element.attributes["class"]}
@@ -179,12 +160,12 @@ export function IframeElement({
         {element.text.join("")}
         {element.children_order.length
           ? element.children_order.map((elem) => {
+              //maybe undo is not happening because of this
               element.children[elem].path = [...element.path, element._id];
               return (
                 <IframeElement
                   key={element.children[elem]._id}
                   contextMenu={contextMenu}
-                  outlineBox={outlineBox}
                   data={element.children[elem]}
                   removeFromParent={removeElementFromParent}
                 ></IframeElement>
@@ -203,7 +184,7 @@ export function IframeElement({
         onDragLeave={(e) => hideHoverBox(e)}
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
-        onMouseOver={(e) => showHoverBox(e)}
+        onMouseOver={(e) => showHoverBox(e.target)}
         onMouseOut={(e) => hideHoverBox(e)}
         onContextMenu={(e) => openContextMenu(e, contextMenu)}
         className={"frame-element " + element.attributes["class"]}

@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Frame, { FrameContextConsumer } from "react-frame-component";
-import { StyleSheetManager } from "styled-components";
+import styled, { StyleSheetManager } from "styled-components";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 import { getCSSText } from "../../../../utils/getCSSText";
 import { ContextMenuFR } from "../ContextMenu";
 import { IframeElement } from "./IFrameElement";
-import { OutlineElement } from "./OutlineBox";
 
 const coreStyle = `
 * {
@@ -33,11 +32,18 @@ html {
 
 `;
 
+const OutlineBox = styled.div`
+  position: absolute;
+  display: none;
+  z-index: 100;
+  pointer-events: none;
+  user-select: none;
+`;
+
 export function ViewSection() {
   const contextRef = useRef();
-  const outlineRef = useRef();
   const [contextMenu, setContextMenu] = useState();
-  const { pageTree, navigatorTree } = useContext(PageTreeContext);
+  const { pageTree } = useContext(PageTreeContext);
 
   useEffect(() => {
     if (pageTree) {
@@ -48,7 +54,7 @@ export function ViewSection() {
   return pageTree ? (
     <>
       <ContextMenuFR ref={contextRef} />
-      <OutlineElement ref={outlineRef}></OutlineElement>
+      <OutlineBox id="outlineBox"></OutlineBox>
       <Frame
         id="iframe-view"
         style={{ flex: 1, border: "none" }}
@@ -69,8 +75,6 @@ export function ViewSection() {
               <>
                 <IframeElement
                   contextMenu={contextMenu}
-                  outlineBox={outlineRef}
-                  navigator={navigatorTree}
                   data={
                     pageTree.body.children[
                       Object.keys(pageTree.body.children)[0]
