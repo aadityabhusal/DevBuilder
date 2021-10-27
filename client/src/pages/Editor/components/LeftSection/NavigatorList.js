@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
-import { showHoverBox } from "../../../../utils";
+import { hideHoverBox, showHoverBox } from "../../../../utils";
 import { DropDownIcon } from "../Icons";
 const nonClosingTags = ["img", "video", "input", "hr", "br"];
 
@@ -23,6 +23,13 @@ export function NavigatorList({ data, firstDrop }) {
     showHoverBox(item);
   };
 
+  const handleMouseOut = (e) => {
+    let item = document
+      .getElementById("iframe-view")
+      .contentDocument.querySelector(`[data-_id='${element._id}']`);
+    hideHoverBox(item);
+  };
+
   const handleClick = (e) => {
     e.stopPropagation();
     setSelectedElement(element);
@@ -35,7 +42,11 @@ export function NavigatorList({ data, firstDrop }) {
 
   return element ? (
     <NavigatorListContainer>
-      <NavigatorListItem onMouseOver={handleHover} onClick={handleClick}>
+      <NavigatorListItem
+        onMouseOver={handleHover}
+        onMouseOut={handleMouseOut}
+        onClick={handleClick}
+      >
         {element.path.map((item, i) => (
           <VerticalLines key={i} />
         ))}
@@ -49,7 +60,6 @@ export function NavigatorList({ data, firstDrop }) {
       </NavigatorListItem>
       {isDropped && !nonClosingTags.includes(element.tagName)
         ? element.children_order.map((elem) => {
-            element.children[elem].path = [...element.path, element._id];
             return (
               <NavigatorList
                 key={element.children[elem]._id}
