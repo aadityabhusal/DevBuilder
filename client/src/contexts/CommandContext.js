@@ -16,7 +16,6 @@ export const CommandProvider = (props) => {
     }
     history.current = history.commands.length;
     history.commands.push(command);
-    console.log(history);
   };
 
   const undo = () => {
@@ -24,6 +23,15 @@ export const CommandProvider = (props) => {
       let cmd = history.commands[history.current];
 
       if (cmd.action === "drag") {
+        // let prev = history.commands[history.current + 1];
+        // if (!prev.afterElement) {
+        //   cmd.parent.children_order.push(cmd.element._id);
+        // } else {
+        //   let index = cmd.parent.children_order.indexOf(prev.afterElement);
+        //   cmd.parent.children_order.splice(index, 0, cmd.element._id);
+        // }
+        // cmd.parent.children[cmd.element._id] = cmd.element;
+
         let index = cmd.parent.children_order.indexOf(cmd.element._id);
         cmd.parent.children_order.splice(index, 0, cmd.element._id);
         cmd.parent.children[cmd.element._id] = cmd.element;
@@ -63,7 +71,6 @@ export const CommandProvider = (props) => {
         update.current < update.commands.length - 1
           ? update.current + 1
           : update.current;
-      // console.log(update);
       setHistory((prev) => update);
     }
   };
@@ -78,13 +85,11 @@ export const CommandProvider = (props) => {
 /*   document.addEventListener("keydown", (e) => {
     if (e.ctrlKey && e.key === "z") {
       e.preventDefault();
-      console.log("undo");
       undo();
       return;
     }
     if (e.ctrlKey && e.key === "y") {
       e.preventDefault();
-      console.log("redo");
       redo();
       return;
     }

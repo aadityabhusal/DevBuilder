@@ -2,10 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
 import { showHoverBox } from "../../../../utils";
+import { DropDownIcon } from "../Icons";
 const nonClosingTags = ["img", "video", "input", "hr", "br"];
 
-export function NavigatorList({ data }) {
+export function NavigatorList({ data, firstDrop }) {
   const [element, setElement] = useState();
+  const [isDropped, setIsDropped] = useState(firstDrop || false);
   const { setSelectedElement } = useContext(SelectedElementContext);
 
   useEffect(() => {
@@ -26,15 +28,25 @@ export function NavigatorList({ data }) {
     setSelectedElement(element);
   };
 
+  const handleDrop = (e) => {
+    e.stopPropagation();
+    setIsDropped((prev) => !prev);
+  };
+
   return element ? (
     <NavigatorListContainer>
       <NavigatorListItem onMouseOver={handleHover} onClick={handleClick}>
         {element.path.map((item, i) => (
           <VerticalLines key={i} />
         ))}
+        {element.children_order.length ? (
+          <DropDownArrow isDropped={isDropped} onClick={handleDrop}>
+            <DropDownIcon />
+          </DropDownArrow>
+        ) : null}
         <NavigatorItemName>{element.tagName}</NavigatorItemName>
       </NavigatorListItem>
-      {!nonClosingTags.includes(element.tagName)
+      {isDropped && !nonClosingTags.includes(element.tagName)
         ? element.children_order.map((elem) => {
             element.children[elem].path = [...element.path, element._id];
             return (
@@ -51,7 +63,23 @@ export function NavigatorList({ data }) {
 
 const NavigatorListContainer = styled.div`
   background-color: #fff;
+`;
+
+const DropDownArrow = styled.div`
+  align-self: stretch;
   cursor: pointer;
+  ${({ isDropped }) => !isDropped && `transform: rotate(-90deg);`}
+
+  svg {
+    fill: #7f8c8d;
+    height: 20px;
+    width: 20px;
+    vertical-align: middle;
+  }
+
+  :hover svg {
+    fill: #000;
+  }
 `;
 
 const NavigatorListItem = styled.div`
@@ -69,7 +97,7 @@ const NavigatorItemName = styled.div`
 `;
 
 const VerticalLines = styled.div`
-  margin-left: 8px;
+  margin-left: 10px;
   border: none;
   border-left: 1px solid #bdc3c7;
 `;

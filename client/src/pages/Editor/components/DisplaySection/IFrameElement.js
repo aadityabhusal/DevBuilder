@@ -10,10 +10,6 @@ import { CommandContext } from "../../../../contexts/CommandContext";
 import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
 const nonClosingTags = ["img", "video", "input", "hr", "br"];
 
-/* 
-  - See if I could use translate in showHoverBox function
-*/
-
 export function IframeElement({ data, removeFromParent, contextMenu }) {
   const [element, setElement] = useState();
   const elementRef = useRef();
@@ -132,7 +128,6 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
       action: "drop",
       element: { ...child },
       parent: { ...update },
-      afterElement: afterElement,
     });
     setElement((prev) => update);
   };
@@ -158,8 +153,6 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
       >
         {element.text.join("")}
         {element.children_order.map((elem) => {
-          //maybe undo is not happening because of this
-          //up - can use JSON.stringify to copy children
           // element.children[elem].path = [...element.path, element._id];
           return (
             <IframeElement
