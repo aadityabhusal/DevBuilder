@@ -1,4 +1,5 @@
 import React, { createContext, useState } from "react";
+import { updateStyle } from "../utils";
 
 export const CommandContext = createContext();
 
@@ -28,6 +29,12 @@ export const CommandProvider = (props) => {
         delete cmd.parent.children[cmd.element._id];
       }
 
+      if (cmd.action === "styleChange") {
+        let prevStyle = JSON.parse(cmd.prevStyle);
+        cmd.style.styles = prevStyle;
+        updateStyle(cmd.style.name, cmd.style.styles);
+      }
+
       let update = { ...history };
       update.current =
         update.current >= 0 ? update.current - 1 : update.current;
@@ -48,6 +55,12 @@ export const CommandProvider = (props) => {
       if (cmd.action === "drop") {
         cmd.parent.children_order.splice(cmd.index, 0, cmd.element._id);
         cmd.parent.children[cmd.element._id] = cmd.element;
+      }
+
+      if (cmd.action === "styleChange") {
+        let prevStyle = JSON.parse(cmd.prevStyle);
+        cmd.style.styles = prevStyle;
+        updateStyle(cmd.style.name, cmd.style.styles);
       }
 
       let update = { ...history };

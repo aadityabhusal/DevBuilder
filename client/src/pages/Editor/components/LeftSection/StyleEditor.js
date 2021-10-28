@@ -35,7 +35,6 @@ export function StyleEditor({ currentStyle }) {
 
   const handleStyleBlock = (e, styleBlock) => {
     let isValid = checkSelector(e.target.value, styleBlock._id);
-    console.log(isValid);
     if (!isValid) e.target.style.border = "1px solid #e74c3c";
     else {
       e.target.style.borderColor = "#bdc3c7";

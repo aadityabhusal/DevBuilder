@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { properties } from "../../lists/properties";
+import { CommandContext } from "../../../../contexts/CommandContext";
 import { CloseIcon, CopyIcon, PasteIcon } from "../Icons";
 import {
   getCSSArray,
@@ -10,6 +11,7 @@ import {
 
 export function StyleBlock({ data, currentStyle }) {
   const [propertyList, setPropertyList] = useState();
+  const { addCommand } = useContext(CommandContext);
 
   useEffect(() => {
     setPropertyList((prev) => data);
@@ -46,15 +48,26 @@ export function StyleBlock({ data, currentStyle }) {
 
   const updateValue = (e, currentProperty) => {
     let update = { ...propertyList };
+    let prevStyle = JSON.stringify(currentStyle.styles);
     update.style.forEach((item, i) => {
       if (item.name === currentProperty.name) {
         item.value = e.target.value;
-      }
-      let element = document.createElement("div");
-      element.style[getStylePropertyName(currentProperty.name)] =
-        e.target.value;
-      if (element.style[getStylePropertyName(currentProperty.name)]) {
-        updateStyle(currentStyle.name, currentStyle.styles);
+
+        let element = document.createElement("div");
+        element.style[getStylePropertyName(currentProperty.name)] =
+          e.target.value;
+
+        if (element.style[getStylePropertyName(currentProperty.name)]) {
+          let newStyle = JSON.stringify(currentStyle.styles);
+          if (newStyle !== prevStyle) {
+            addCommand({
+              action: "styleChange",
+              style: currentStyle,
+              prevStyle,
+            });
+            updateStyle(currentStyle.name, currentStyle.styles);
+          }
+        }
       }
     });
     setPropertyList((prev) => update);
