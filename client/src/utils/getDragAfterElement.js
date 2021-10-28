@@ -13,17 +13,11 @@ export function getDragAfterElement(container, x, y) {
         moveLine(box, "horizontal");
         return { element: child, offset: offsetLeft };
       } else {
-        document.addEventListener("dragend", hideLine);
         return closest;
       }
     },
     { offset: Number.NEGATIVE_INFINITY }
   ).element;
-}
-
-function hideLine() {
-  document.getElementById("after-element-line").style.display = "none";
-  document.removeEventListener("dragend", hideLine);
 }
 
 function moveLine(box, type) {

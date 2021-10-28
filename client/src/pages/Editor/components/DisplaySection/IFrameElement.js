@@ -68,6 +68,9 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
       e.clientX,
       e.clientY
     );
+    if (!afterElement) {
+      document.getElementById("after-element-line").style.display = "none";
+    }
     localStorage.setItem(
       "afterElement",
       afterElement ? afterElement.dataset._id : ""
