@@ -16,7 +16,7 @@ export function NavigatorPanel({ isActive }) {
       <PanelTitle>Navigator</PanelTitle>
       <NavigatorContainer>
         <NavigatorList
-          data={pageTree.body.children[Object.keys(pageTree.body.children)[0]]}
+          data={pageTree.body.children[pageTree.body.children_order[0]]}
           firstDrop={true}
         ></NavigatorList>
       </NavigatorContainer>

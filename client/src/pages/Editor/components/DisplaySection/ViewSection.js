@@ -76,11 +76,7 @@ export function ViewSection() {
               <>
                 <IframeElement
                   contextMenu={contextMenu}
-                  data={
-                    pageTree.body.children[
-                      Object.keys(pageTree.body.children)[0]
-                    ]
-                  }
+                  data={pageTree.body.children[pageTree.body.children_order[0]]}
                   removeFromParent={() => {}} //Changing the tagName from body to div because of frame-component rendering structure
                 ></IframeElement>
               </>
