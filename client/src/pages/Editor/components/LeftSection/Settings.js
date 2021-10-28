@@ -93,9 +93,7 @@ export function SettingsPanel({ isActive }) {
         body: JSON.stringify({ userId: user._id }),
       });
       history.push("/user/" + user._id);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   return (

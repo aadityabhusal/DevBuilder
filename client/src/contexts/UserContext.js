@@ -22,9 +22,7 @@ export const UserProvider = (props) => {
         if (!user.error) {
           setUser(user);
         }
-      } catch (error) {
-        // console.log(error);
-      }
+      } catch (error) {}
     })();
   }, [token]);
 

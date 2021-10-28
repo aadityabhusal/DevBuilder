@@ -134,9 +134,7 @@ export function UserPage(props) {
       let data = await response.json();
       setUser(data);
       setSites(data.sites);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   return user ? (

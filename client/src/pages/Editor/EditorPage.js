@@ -46,9 +46,7 @@ export function EditorPage({ history }) {
         const pageResponse = await (await fetch(`/page/${page.pageId}`)).json();
         setPage(pageResponse);
       }
-    } catch (error) {
-      // console.log(error);
-    }
+    } catch (error) {}
   }
 
   document.addEventListener("mouseup", (e) => {

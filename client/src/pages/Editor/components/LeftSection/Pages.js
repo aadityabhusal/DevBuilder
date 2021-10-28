@@ -49,9 +49,7 @@ export function PagesPanel({ pages, isActive }) {
         });
         let data = await response.json();
         setPageList(data);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
       e.target.value = "";
     }
   };
@@ -60,9 +58,7 @@ export function PagesPanel({ pages, isActive }) {
     try {
       const response = await (await fetch(`/page/${item.pageId}`)).json();
       setPageTree(response);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const deletePage = async (e, item) => {
@@ -78,9 +74,7 @@ export function PagesPanel({ pages, isActive }) {
       });
       let data = await response.json();
       setPageList(data);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   return (

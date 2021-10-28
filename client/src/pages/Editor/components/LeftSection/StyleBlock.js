@@ -110,7 +110,6 @@ export function StyleBlock({ data, currentStyle }) {
           let index = update.style.findIndex(
             (item) => item.name === element[0]
           );
-          console.log(element[0], index);
           update.style[index].value = element[1];
           return;
         }

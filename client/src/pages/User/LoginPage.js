@@ -83,9 +83,7 @@ export function LoginPage(props) {
         props.history.push("/user/" + response.uid);
       }
       throw new Error(response.error);
-    } catch (error) {
-      console.log(error.message);
-    }
+    } catch (error) {}
   };
 
   return !user ? (
