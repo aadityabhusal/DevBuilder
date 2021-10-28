@@ -42,8 +42,5 @@ function moveLine(box, type) {
     afterElementLine.style.width = "1px";
     afterElementLine.style.height = height - 2 + "px";
     afterElementLine.style.borderLeft = "2px solid #2ecc71";
-  } else {
-    afterElementLine.style.width = "0px";
-    afterElementLine.style.height = "0px";
   }
 }
