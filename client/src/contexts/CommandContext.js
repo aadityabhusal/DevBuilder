@@ -5,11 +5,6 @@ export const CommandContext = createContext();
 export const CommandProvider = (props) => {
   const [history, setHistory] = useState({ current: -1, commands: [] });
 
-  /* 
-  - Undo and redo cannot place the element in the same position of the children list of the parent element instead place the element at the end.
-  - Problem while setting path of element's children in IframeElement while undoing
-*/
-
   const addCommand = (command) => {
     if (history.current < history.commands.length - 1) {
       history.commands.length = history.current + 1;
@@ -23,17 +18,7 @@ export const CommandProvider = (props) => {
       let cmd = history.commands[history.current];
 
       if (cmd.action === "drag") {
-        // let prev = history.commands[history.current + 1];
-        // if (!prev.afterElement) {
-        //   cmd.parent.children_order.push(cmd.element._id);
-        // } else {
-        //   let index = cmd.parent.children_order.indexOf(prev.afterElement);
-        //   cmd.parent.children_order.splice(index, 0, cmd.element._id);
-        // }
-        // cmd.parent.children[cmd.element._id] = cmd.element;
-
-        let index = cmd.parent.children_order.indexOf(cmd.element._id);
-        cmd.parent.children_order.splice(index, 0, cmd.element._id);
+        cmd.parent.children_order.splice(cmd.index, 0, cmd.element._id);
         cmd.parent.children[cmd.element._id] = cmd.element;
       }
 
@@ -61,8 +46,7 @@ export const CommandProvider = (props) => {
       }
 
       if (cmd.action === "drop") {
-        let index = cmd.parent.children_order.indexOf(cmd.element._id);
-        cmd.parent.children_order.splice(index, 0, cmd.element._id);
+        cmd.parent.children_order.splice(cmd.index, 0, cmd.element._id);
         cmd.parent.children[cmd.element._id] = cmd.element;
       }
 

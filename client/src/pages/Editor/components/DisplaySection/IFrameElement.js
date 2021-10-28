@@ -103,16 +103,19 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
       action: "drag",
       element: { ...child },
       parent: { ...update },
+      index,
     });
     setElement((prev) => update);
   };
 
   const insertElement = (child, afterElement) => {
     let update = { ...element };
+    let index;
     if (!afterElement) {
+      index = update.children_order.length;
       update.children_order.push(child._id);
     } else {
-      let index = update.children_order.indexOf(afterElement);
+      index = update.children_order.indexOf(afterElement);
       update.children_order.splice(index, 0, child._id);
     }
     update.children[child._id] = child;
@@ -121,6 +124,7 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
       action: "drop",
       element: { ...child },
       parent: { ...update },
+      index,
     });
     setElement((prev) => update);
   };
