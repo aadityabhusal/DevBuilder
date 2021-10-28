@@ -21,18 +21,18 @@ html {
   padding: 0 !important;
   margin: 0 !important;
 }
-
-.vertical-dragging {
-  margin-top: 20px;
-}
-
-.horizontal-dragging {
-  margin-left: 20px;
-}
-
 `;
 
 const OutlineBox = styled.div`
+  position: absolute;
+  display: none;
+  z-index: 100;
+  pointer-events: none;
+  user-select: none;
+`;
+
+const AfterElementLine = styled.div`
+  border-color: #2ecc71;
   position: absolute;
   display: none;
   z-index: 100;
@@ -55,6 +55,7 @@ export function ViewSection() {
     <>
       <ContextMenuFR ref={contextRef} />
       <OutlineBox id="outlineBox"></OutlineBox>
+      <AfterElementLine id="after-element-line"></AfterElementLine>
       <Frame
         id="iframe-view"
         style={{ flex: 1, border: "none" }}

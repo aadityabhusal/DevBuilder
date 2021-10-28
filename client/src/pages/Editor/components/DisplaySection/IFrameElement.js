@@ -57,14 +57,7 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
     insertElement(data, afterElement);
     localStorage.setItem("afterElement", "");
 
-    document
-      .getElementById("iframe-view")
-      .contentDocument.querySelectorAll(
-        ".vertical-dragging, .horizontal-dragging"
-      )
-      .forEach((item) => {
-        item.classList.remove("vertical-dragging", "horizontal-dragging");
-      });
+    document.getElementById("after-element-line").style.display = "none";
   };
 
   const handleDragOver = async (e) => {
