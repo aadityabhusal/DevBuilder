@@ -8,12 +8,14 @@ import {
 } from "../../../../utils";
 import { CommandContext } from "../../../../contexts/CommandContext";
 import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
+import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 const nonClosingTags = ["img", "video", "input", "hr", "br"];
 
-export function IframeElement({ data, removeFromParent, contextMenu }) {
+export function IframeElement({ data, contextMenu }) {
   const [element, setElement] = useState();
   const elementRef = useRef();
-  const { setSelectedElement } = useContext(SelectedElementContext);
+  const { pageTree } = useContext(PageTreeContext);
+  const { setSelectedElement, setCounter } = useContext(SelectedElementContext);
   const { addCommand } = useContext(CommandContext);
 
   const HTMLTag = `${data.tagName}`;
@@ -42,22 +44,22 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
     return false;
   };
 
-  const handleDrag = (e) => {
-    e.stopPropagation();
-    removeFromParent(element);
-  };
-
   const handleDrop = (e) => {
     e.stopPropagation();
-    let data = JSON.parse(e.dataTransfer.getData("draggedElement"));
-    if (!data._id) data._id = performance.now().toString(36).replace(/\./g, "");
-    if (!data.path.length) data.path = [...element.path, element._id];
+    try {
+      let data = JSON.parse(e.dataTransfer.getData("draggedElement"));
+      if (!data._id)
+        data._id = performance.now().toString(36).replace(/\./g, "");
+      if (!data.path.length) data.path = [...element.path, element._id];
+      let afterElement = localStorage.getItem("afterElement");
 
-    let afterElement = localStorage.getItem("afterElement");
-    insertElement(data, afterElement);
-    localStorage.setItem("afterElement", "");
-
-    document.getElementById("after-element-line").style.display = "none";
+      if (!element.path.includes(data._id) && data._id !== element._id) {
+        let removedElement = removeElementFromParent(data, element);
+        insertElement(data, afterElement, removedElement);
+      }
+      localStorage.setItem("afterElement", "");
+      document.getElementById("after-element-line").style.display = "none";
+    } catch (error) {}
   };
 
   const handleDragOver = async (e) => {
@@ -76,44 +78,66 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
       afterElement ? afterElement.dataset._id : ""
     );
 
-    let data = JSON.parse(localStorage.getItem("draggedElement"));
-    if (
-      nestingValidation(
-        elementRef.current.tagName,
-        data.tagName,
-        nonClosingTags
-      )
-    ) {
-      showHoverBox(e.target);
-    } else {
-      showHoverBox(e.target, "#e74c3c");
-    }
+    try {
+      let data = JSON.parse(localStorage.getItem("draggedElement"));
+      if (
+        nestingValidation(
+          elementRef.current.tagName,
+          data.tagName,
+          nonClosingTags
+        )
+      ) {
+        showHoverBox(e.target);
+      } else {
+        showHoverBox(e.target, "#e74c3c");
+      }
+    } catch (error) {}
   };
 
   const handleDragStart = (e) => {
     e.stopPropagation();
+    e.target.style.opacity = "0.6";
     e.dataTransfer.setData("draggedElement", JSON.stringify(element));
     localStorage.setItem("draggedElement", JSON.stringify(element));
+    localStorage.setItem("draggedParent", JSON.stringify(element.path));
   };
 
   const removeElementFromParent = (child) => {
-    let update = { ...element };
-    let index = update.children_order.indexOf(child._id);
-    update.children_order.splice(index, 1);
-    delete update.children[child._id];
+    try {
+      let draggedParent = localStorage.getItem("draggedParent");
+      localStorage.setItem("draggedParent", "");
+      let elementPath = JSON.parse(draggedParent);
+      let parent = pageTree.body;
+      elementPath.forEach((item) => {
+        parent = parent.children[item];
+      });
 
-    addCommand({
-      action: "drag",
-      element: { ...child },
-      parent: { ...update },
-      index,
-    });
-    setElement((prev) => update);
+      let index = parent.children_order.indexOf(child._id);
+      if (index === -1) return false;
+      parent.children_order.splice(index, 1);
+      delete parent.children[child._id];
+      return child;
+    } catch (error) {
+      return false;
+    }
   };
 
-  const insertElement = (child, afterElement) => {
+  const insertElement = (child, afterElement, removedElement) => {
     let update = { ...element };
     let index;
+
+    if (afterElement && afterElement === child._id) return;
+    // cases missing:
+    // dropping last element at last and
+    // dragging and dropping an element just above the element below it
+    /* below code was for the first case
+      if (!afterElement && child._id === removedElement._id) {
+        update.children_order.push(child._id);
+        update.children[child._id] = child;
+        return;
+      }
+    */
+
     if (!afterElement) {
       index = update.children_order.length;
       update.children_order.push(child._id);
@@ -129,7 +153,12 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
       parent: { ...update },
       index,
     });
-    setElement((prev) => update);
+
+    setCounter((prev) => prev + 1);
+  };
+
+  const handleDragend = (e) => {
+    e.target.style.opacity = "";
   };
 
   return element ? (
@@ -139,11 +168,11 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
         ref={elementRef}
         draggable={true}
         onClick={handleClick}
-        onDrag={handleDrag}
-        onDrop={handleDrop}
+        onDragStart={handleDragStart}
         onDragOver={handleDragOver}
         onDragLeave={(e) => hideHoverBox(e)}
-        onDragStart={handleDragStart}
+        onDragEnd={handleDragend}
+        onDrop={handleDrop}
         onMouseOver={(e) => showHoverBox(e.target)}
         onMouseOut={(e) => hideHoverBox(e)}
         onContextMenu={(e) => openContextMenu(e, contextMenu)}
@@ -159,7 +188,7 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
               key={element.children[elem]._id}
               contextMenu={contextMenu}
               data={element.children[elem]}
-              removeFromParent={removeElementFromParent}
+              parentElement={element}
             ></IframeElement>
           );
         })}
@@ -171,10 +200,10 @@ export function IframeElement({ data, removeFromParent, contextMenu }) {
         data-_id={element._id}
         draggable={true}
         onClick={handleClick}
-        onDrag={handleDrag}
-        onDragLeave={(e) => hideHoverBox(e)}
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
+        onDragLeave={(e) => hideHoverBox(e)}
+        onDragEnd={handleDragend}
         onMouseOver={(e) => showHoverBox(e.target)}
         onMouseOut={(e) => hideHoverBox(e)}
         onContextMenu={(e) => openContextMenu(e, contextMenu)}

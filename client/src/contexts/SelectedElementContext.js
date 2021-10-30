@@ -10,6 +10,7 @@ export const SelectedElementContext = createContext();
 
 export const SelectedElementProvider = (props) => {
   const [selectedElement, setSelectedElement] = useState(null);
+  const [counter, setCounter] = useState(0);
   const { addCommand } = useContext(CommandContext);
 
   const insertPasteElement = (child, contextMenu = {}) => {
@@ -28,7 +29,12 @@ export const SelectedElementProvider = (props) => {
 
   return (
     <SelectedElementContext.Provider
-      value={{ selectedElement, setSelectedElement, insertPasteElement }}
+      value={{
+        selectedElement,
+        setSelectedElement,
+        insertPasteElement,
+        setCounter,
+      }}
     >
       {props.children}
     </SelectedElementContext.Provider>
