@@ -54,8 +54,8 @@ export function IframeElement({ data, contextMenu }) {
       let afterElement = localStorage.getItem("afterElement");
 
       if (!element.path.includes(data._id) && data._id !== element._id) {
-        let removedElement = removeElementFromParent(data, element);
-        insertElement(data, afterElement, removedElement);
+        let prevParent = removeElementFromParent(data, element);
+        insertElement(data, afterElement, prevParent);
       }
       localStorage.setItem("afterElement", "");
       document.getElementById("after-element-line").style.display = "none";
@@ -116,13 +116,11 @@ export function IframeElement({ data, contextMenu }) {
       if (index === -1) return false;
       parent.children_order.splice(index, 1);
       delete parent.children[child._id];
-      return child;
-    } catch (error) {
-      return false;
-    }
+      return { parent, index };
+    } catch (error) {}
   };
 
-  const insertElement = (child, afterElement, removedElement) => {
+  const insertElement = (child, afterElement, prevParent) => {
     let update = { ...element };
     let index;
 
@@ -148,10 +146,12 @@ export function IframeElement({ data, contextMenu }) {
     update.children[child._id] = child;
 
     addCommand({
-      action: "drop",
+      action: "moveElement",
       element: { ...child },
       parent: { ...update },
       index,
+      prevParent: prevParent && { ...prevParent.parent },
+      prevIndex: prevParent && prevParent.index,
     });
   };
 
@@ -179,6 +179,7 @@ export function IframeElement({ data, contextMenu }) {
         {...elemAttributes}
       >
         {element.text.join("")}
+        {element._id}
         {element.children_order.map((elem) => {
           element.children[elem].path = [...element.path, element._id];
           return (
