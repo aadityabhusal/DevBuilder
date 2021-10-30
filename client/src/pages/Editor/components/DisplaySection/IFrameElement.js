@@ -15,7 +15,7 @@ export function IframeElement({ data, contextMenu }) {
   const [element, setElement] = useState();
   const elementRef = useRef();
   const { pageTree } = useContext(PageTreeContext);
-  const { setSelectedElement, setCounter } = useContext(SelectedElementContext);
+  const { setSelectedElement } = useContext(SelectedElementContext);
   const { addCommand } = useContext(CommandContext);
 
   const HTMLTag = `${data.tagName}`;
@@ -153,8 +153,6 @@ export function IframeElement({ data, contextMenu }) {
       parent: { ...update },
       index,
     });
-
-    setCounter((prev) => prev + 1);
   };
 
   const handleDragend = (e) => {

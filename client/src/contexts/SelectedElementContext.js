@@ -10,7 +10,6 @@ export const SelectedElementContext = createContext();
 
 export const SelectedElementProvider = (props) => {
   const [selectedElement, setSelectedElement] = useState(null);
-  const [counter, setCounter] = useState(0);
   const { addCommand } = useContext(CommandContext);
 
   const insertPasteElement = (child, contextMenu = {}) => {
@@ -33,7 +32,6 @@ export const SelectedElementProvider = (props) => {
         selectedElement,
         setSelectedElement,
         insertPasteElement,
-        setCounter,
       }}
     >
       {props.children}

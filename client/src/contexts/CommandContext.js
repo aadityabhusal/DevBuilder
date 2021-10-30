@@ -7,11 +7,13 @@ export const CommandProvider = (props) => {
   const [history, setHistory] = useState({ current: -1, commands: [] });
 
   const addCommand = (command) => {
-    if (history.current < history.commands.length - 1) {
-      history.commands.length = history.current + 1;
+    let update = { ...history };
+    if (update.current < update.commands.length - 1) {
+      update.commands.length = update.current + 1;
     }
-    history.current = history.commands.length;
-    history.commands.push(command);
+    update.current = update.commands.length;
+    update.commands.push(command);
+    setHistory((prev) => update);
   };
 
   const undo = () => {
