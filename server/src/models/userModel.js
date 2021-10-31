@@ -18,6 +18,7 @@ const UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
+    minLength: 8,
     required: "Enter your password",
   },
   sites: {
@@ -40,6 +41,14 @@ UserSchema.pre("save", async function (next) {
     next(error);
   }
 });
+
+UserSchema.methods.isValidPassword = async function (password) {
+  try {
+    return await bcrypt.compare(password, this.password);
+  } catch (error) {
+    throw error;
+  }
+};
 
 UserSchema.pre("findOneAndUpdate", function (next) {
   this.options.runValidators = true;
