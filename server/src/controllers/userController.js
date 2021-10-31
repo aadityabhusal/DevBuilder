@@ -1,4 +1,3 @@
-require("dotenv").config({ path: __dirname + "/../.env" });
 const User = require("../models/userModel");
 const Site = require("../models/siteModel");
 const Page = require("../models/pageModel");
