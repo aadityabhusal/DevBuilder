@@ -1,6 +1,7 @@
 const app = require("./app");
 const mongoose = require("mongoose");
-const port = 8000;
+require("dotenv").config({ path: __dirname + "/.env" });
+const PORT = process.env.PORT || 8000;
 
 mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost/WebsiteBuilder", {
@@ -8,4 +9,4 @@ mongoose.connect("mongodb://localhost/WebsiteBuilder", {
   useUnifiedTopology: true,
 });
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+app.listen(PORT, () => console.log(`Listening on port ${PORT}`));

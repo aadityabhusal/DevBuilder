@@ -21,12 +21,13 @@
     "crypto-js": "^4.0.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "http-errors": "^1.8.0",
+    "helmet": "^4.6.0",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
     "jszip": "^3.7.1",
     "mongoose": "^5.12.2",
     "morgan": "^1.10.0",
+    "rate-limiter-flexible": "^2.3.2",
     "redis": "^3.1.2"
   }
 }
