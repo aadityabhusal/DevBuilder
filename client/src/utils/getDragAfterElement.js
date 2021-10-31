@@ -22,12 +22,12 @@ export function getDragAfterElement(container, x, y) {
 
 function moveLine(_id, box, type) {
   try {
-    let draggedElement = JSON.parse(localStorage.getItem("draggedElement"));
-    if (
-      _id === draggedElement._id ||
-      draggedElement.children_order?.includes(_id)
-    )
-      return;
+    let draggedElement = localStorage.getItem("draggedElement");
+    if (draggedElement !== "") {
+      draggedElement = JSON.parse(draggedElement);
+      let includesId = draggedElement.children_order?.includes(_id);
+      if (_id === draggedElement._id || includesId) return;
+    }
 
     let afterElementLine = document.getElementById("after-element-line");
     let { top, left, width, height } = box;

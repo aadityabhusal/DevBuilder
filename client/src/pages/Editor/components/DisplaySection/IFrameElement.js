@@ -11,7 +11,7 @@ import { SelectedElementContext } from "../../../../contexts/SelectedElementCont
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 const nonClosingTags = ["img", "video", "input", "hr", "br"];
 
-export function IframeElement({ data, contextMenu }) {
+export function IframeElement({ data, parentElement, contextMenu }) {
   const [element, setElement] = useState();
   const elementRef = useRef();
   const { pageTree } = useContext(PageTreeContext);
@@ -54,10 +54,11 @@ export function IframeElement({ data, contextMenu }) {
       let afterElement = localStorage.getItem("afterElement");
 
       if (!element.path.includes(data._id) && data._id !== element._id) {
-        let prevParent = removeElementFromParent(data, element);
+        let prevParent = removeElementFromParent(data, afterElement);
         insertElement(data, afterElement, prevParent);
       }
       localStorage.setItem("afterElement", "");
+      localStorage.setItem("draggedElement", "");
       document.getElementById("after-element-line").style.display = "none";
     } catch (error) {}
   };
@@ -65,11 +66,8 @@ export function IframeElement({ data, contextMenu }) {
   const handleDragOver = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const afterElement = getDragAfterElement(
-      elementRef.current,
-      e.clientX,
-      e.clientY
-    );
+    let container = elementRef.current;
+    const afterElement = getDragAfterElement(container, e.clientX, e.clientY);
     if (!afterElement) {
       document.getElementById("after-element-line").style.display = "none";
     }
@@ -78,20 +76,16 @@ export function IframeElement({ data, contextMenu }) {
       afterElement ? afterElement.dataset._id : ""
     );
 
-    try {
-      let data = JSON.parse(localStorage.getItem("draggedElement"));
-      if (
-        nestingValidation(
-          elementRef.current.tagName,
-          data.tagName,
-          nonClosingTags
-        )
-      ) {
+    let draggedElement = localStorage.getItem("draggedElement");
+    if (draggedElement !== "") {
+      let { tagName } = JSON.parse(draggedElement);
+      let parentTag = elementRef.current.tagName;
+      if (nestingValidation(parentTag, tagName, nonClosingTags)) {
         showHoverBox(e.target);
       } else {
         showHoverBox(e.target, "#e74c3c");
       }
-    } catch (error) {}
+    }
   };
 
   const handleDragStart = (e) => {
@@ -99,42 +93,41 @@ export function IframeElement({ data, contextMenu }) {
     e.target.style.opacity = "0.6";
     e.dataTransfer.setData("draggedElement", JSON.stringify(element));
     localStorage.setItem("draggedElement", JSON.stringify(element));
-    localStorage.setItem("draggedParent", JSON.stringify(element.path));
+    localStorage.setItem("draggedParent", JSON.stringify(parentElement));
   };
 
-  const removeElementFromParent = (child) => {
+  const removeElementFromParent = (child, afterElement) => {
     try {
       let draggedParent = localStorage.getItem("draggedParent");
       localStorage.setItem("draggedParent", "");
-      let elementPath = JSON.parse(draggedParent);
-      let parent = pageTree.body;
-      elementPath.forEach((item) => {
-        parent = parent.children[item];
+      draggedParent = JSON.parse(draggedParent);
+
+      if (afterElement && draggedParent._id === element._id) {
+        let prevIndex = draggedParent.children_order.indexOf(child._id);
+        let currentIndex = element.children_order.indexOf(afterElement);
+        if (
+          prevIndex === currentIndex ||
+          draggedParent.children_order[prevIndex + 1] === afterElement
+        )
+          return 0;
+      } else if (element.children_order.slice(-1)[0] === child._id) return 0;
+
+      let prevParent = pageTree.body;
+      child.path.forEach((item) => {
+        prevParent = prevParent.children[item];
       });
 
-      let index = parent.children_order.indexOf(child._id);
-      if (index === -1) return false;
-      parent.children_order.splice(index, 1);
-      delete parent.children[child._id];
-      return { parent, index };
+      let prevIndex = prevParent.children_order.indexOf(child._id);
+      prevParent.children_order.splice(prevIndex, 1);
+      delete prevParent.children[child._id];
+      return { prevParent, prevIndex };
     } catch (error) {}
   };
 
   const insertElement = (child, afterElement, prevParent) => {
     let update = { ...element };
     let index;
-
-    if (afterElement && afterElement === child._id) return;
-    // cases missing:
-    // dropping last element at last and
-    // dragging and dropping an element just above the element below it
-    /* below code was for the first case
-      if (!afterElement && child._id === removedElement._id) {
-        update.children_order.push(child._id);
-        update.children[child._id] = child;
-        return;
-      }
-    */
+    if (prevParent === 0) return;
 
     if (!afterElement) {
       index = update.children_order.length;
@@ -150,8 +143,7 @@ export function IframeElement({ data, contextMenu }) {
       element: { ...child },
       parent: { ...update },
       index,
-      prevParent: prevParent && { ...prevParent.parent },
-      prevIndex: prevParent && prevParent.index,
+      ...prevParent,
     });
   };
 

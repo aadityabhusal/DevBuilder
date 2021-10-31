@@ -1,12 +1,13 @@
 export function showHoverBox(element, color = "#3498db") {
   try {
     let outlineBox = document.getElementById("outlineBox");
-    let draggedElement = JSON.parse(localStorage.getItem("draggedElement"));
-    if (
-      element.dataset._id === draggedElement._id ||
-      draggedElement.children_order?.includes(element.dataset._id)
-    )
-      return;
+    let draggedElement = localStorage.getItem("draggedElement");
+    if (draggedElement !== "") {
+      draggedElement = JSON.parse(draggedElement);
+      let _id = element.dataset._id;
+      let includesId = draggedElement.children_order?.includes(_id);
+      if (_id === draggedElement._id || includesId) return;
+    }
 
     let { top, left, width, height } = element.getBoundingClientRect();
     outlineBox.style.top = top + "px";
