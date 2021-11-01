@@ -1,13 +1,17 @@
 import React, { useContext, useState } from "react";
 import { Redirect } from "react-router";
+import { Link } from "react-router-dom";
+import { Links } from "../../components/auth/Login";
 import { SignupBox, SignupSection } from "../../components/auth/SignUp";
 import { UserContext } from "../../contexts/UserContext";
 
-export function SignupPage(props) {
+export function Signup(props) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
   const { user } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
@@ -31,13 +35,17 @@ export function SignupPage(props) {
         props.history.push("/login");
       }
       throw new Error(response.error);
-    } catch (error) {}
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
-  return !user ? (
+  return (
+    // !user ? (
     <SignupSection>
       <SignupBox>
-        <h1>Signup</h1>
+        <h1>Sign Up</h1>
+        {error && <div>{error}</div>}
         <form onSubmit={handleSubmit} method="POST">
           <input
             type="text"
@@ -63,11 +71,26 @@ export function SignupPage(props) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></input>
-          <button>Signup</button>
+          <input
+            type="password"
+            placeholder="Re-enter your password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          ></input>
+          <button
+            disabled={!email || !password || password !== confirmPassword}
+          >
+            Sign Up
+          </button>
         </form>
+        <Links>
+          <div>Already have an account?</div>
+          <Link to="/login">Log In</Link>
+        </Links>
       </SignupBox>
     </SignupSection>
-  ) : (
-    <Redirect to={`/user/${user._id}`} />
+    // ) : (
+    //   <Redirect to={`/user/${user._id}`} />
+    // );
   );
 }

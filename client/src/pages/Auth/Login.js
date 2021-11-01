@@ -1,12 +1,15 @@
 import React, { useContext, useState } from "react";
 import { Redirect } from "react-router";
-import { LoginBox, LoginSection } from "../../components/auth/Login";
+import { Link, useHistory } from "react-router-dom";
+import { Links, LoginBox, LoginSection } from "../../components/auth/Login";
 import { UserContext } from "../../contexts/UserContext";
 
-export function LoginPage(props) {
+export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const { user, setToken } = useContext(UserContext);
+  const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,16 +34,20 @@ export function LoginPage(props) {
       if (!response.error) {
         localStorage.setItem("token", response.token);
         setToken(response.token);
-        props.history.push("/user/" + response.uid);
+        history.push("/user/" + response.uid);
       }
       throw new Error(response.error);
-    } catch (error) {}
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
-  return !user ? (
+  return (
+    // !user ? (
     <LoginSection>
       <LoginBox>
-        <h1>Login</h1>
+        <h1>Log In</h1>
+        {error && <div>{error}</div>}
         <form onSubmit={handleSubmit} method="POST">
           <input
             type="email"
@@ -54,11 +61,16 @@ export function LoginPage(props) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></input>
-          <button>Login</button>
+          <button disabled={!email || !password}>Log In</button>
         </form>
+        <Links>
+          <Link to="/signup">Create Account</Link>
+          <Link to="/forgot-password">Forgot Password</Link>
+        </Links>
       </LoginBox>
     </LoginSection>
-  ) : (
-    <Redirect to={`/user/${user._id}`} />
+    // ) : (
+    //   <Redirect to={`/user/${user._id}`} />
+    // );
   );
 }
