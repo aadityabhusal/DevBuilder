@@ -1,29 +1,7 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { HeaderContainer } from "../../components/common/Header";
 import { UserContext } from "../../contexts/UserContext";
-import styled from "styled-components";
-
-const HeaderContainer = styled.div`
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  background-color: #34495e;
-  color: #ecf0f1;
-
-  & a {
-    text-decoration: none;
-    margin-left: 20px;
-    color: #ecf0f1;
-  }
-
-  & a:hover {
-    text-decoration: underline;
-  }
-
-  & .is-active {
-    color: #00a8ff;
-  }
-`;
 
 export function Header() {
   const { user, setUser, setToken } = useContext(UserContext);

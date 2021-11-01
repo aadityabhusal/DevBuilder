@@ -1,6 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Frame, { FrameContextConsumer } from "react-frame-component";
-import styled, { StyleSheetManager } from "styled-components";
+import { StyleSheetManager } from "styled-components";
+import {
+  AfterElementLine,
+  OutlineBox,
+} from "../../../../components/editor/DisplaySection";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 import { getCSSText } from "../../../../utils/getCSSText";
 import { ContextMenuFR } from "../ContextMenu";
@@ -21,23 +25,6 @@ html {
   padding: 0 !important;
   margin: 0 !important;
 }
-`;
-
-const OutlineBox = styled.div`
-  position: absolute;
-  display: none;
-  z-index: 100;
-  pointer-events: none;
-  user-select: none;
-`;
-
-const AfterElementLine = styled.div`
-  border-color: #2ecc71;
-  position: absolute;
-  display: none;
-  z-index: 100;
-  pointer-events: none;
-  user-select: none;
 `;
 
 export function ViewSection() {

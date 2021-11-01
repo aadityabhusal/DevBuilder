@@ -1,10 +1,5 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import styled from "styled-components";
-
-import "./App.css";
-
-import { GlobalContainer } from "../../components";
 import { EditorPage, ErrorPage, HomePage } from "../";
 import { LoginPage } from "../User/LoginPage";
 import { SignupPage } from "../User/SignupPage";
@@ -13,8 +8,8 @@ import { UserPage } from "../User/UserPage";
 import { UserProvider } from "../../contexts/UserContext";
 import { Header } from "./Header";
 import { EditUserPage } from "../User/EditUserPage";
-
-const Footer = styled.div``;
+import { Footer } from "../../components/common/Footer";
+import { GlobalContainer } from "../../components/ui/GlobalContainer";
 
 function App() {
   return (

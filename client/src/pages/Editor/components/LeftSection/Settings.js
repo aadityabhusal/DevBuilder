@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import styled from "styled-components";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 import { SiteTreeContext } from "../../../../contexts/SiteTreeContext";
 import { UserContext } from "../../../../contexts/UserContext";
@@ -10,20 +9,17 @@ import {
   PanelLabel,
   PanelInputCheck,
   PanelButton,
-  PanelInputText,
-} from "../Panel";
+} from "../../../../components/editor/Panel";
+import { SettingsInputText } from "../../../../components/editor/LeftSection";
 import {
   DialogAction,
   DialogBox,
   DialogHead,
   DialogOverlay,
   DialogText,
-} from "../DialogBox";
-import { CommandContext } from "../../../../contexts/CommandContext";
+} from "../../../../components/common/DialogBox";
 
-const SettingsInputText = styled(PanelInputText)`
-  margin-top: 10px;
-`;
+import { CommandContext } from "../../../../contexts/CommandContext";
 
 const coreStyle = `
 * {

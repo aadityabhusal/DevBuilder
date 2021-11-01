@@ -1,34 +1,18 @@
 import React, { useContext, useState } from "react";
 import { useParams } from "react-router";
-import styled from "styled-components";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
-import { CloseIcon } from "../Icons";
+import { CloseIcon } from "../../../../components/ui/Icons";
 import {
   Panel,
-  PanelInputText,
-  PanelItem,
   PanelItems,
   PanelTitle,
-} from "../Panel";
-
-const PageList = styled.div`
-  max-height: 200px;
-  overflow: auto;
-`;
-
-const PageInputText = styled(PanelInputText)`
-  flex: 0 1 100%;
-  margin-top: 10px;
-`;
-
-const PageItem = styled(PanelItem)`
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const DeletePage = styled.div``;
+} from "../../../../components/editor/Panel";
+import {
+  DeletePage,
+  PageInputText,
+  PageItem,
+  PageList,
+} from "../../../../components/editor/LeftSection";
 
 export function PagesPanel({ pages, isActive }) {
   const [pageList, setPageList] = useState(pages);

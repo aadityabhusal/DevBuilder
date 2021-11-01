@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
-import styled from "styled-components";
+import { PanelList, Panels } from "../../../../components/editor/Panel";
+import { LeftContainer } from "../../../../components/editor/LeftSection";
 import {
   ElementsIcon,
   LayoutsIcon,
@@ -8,9 +9,8 @@ import {
   NavigatorIcon,
   SettingsIcon,
   StylesIcon,
-} from "../Icons";
+} from "../../../../components/ui/Icons";
 
-import { Panels, PanelList } from "../Panel";
 import { ElementsPanel } from "./Elements";
 import { LayoutsPanel } from "./Layouts";
 import { PagesPanel } from "./Pages";
@@ -22,13 +22,6 @@ import { StylesPanel } from "./Styles";
 import elementList from "../../lists/elements.json";
 import layoutList from "../../lists/layouts.json";
 import { SiteTreeContext } from "../../../../contexts/SiteTreeContext";
-
-const LeftContainer = styled.div`
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  border-right: 1px solid #bdc3c7;
-  flex: 0 0 400px;
-  position: relative;
-`;
 
 export const LeftSection = React.forwardRef(({}, ref) => {
   const [activePanel, setActivePanel] = useState(1);

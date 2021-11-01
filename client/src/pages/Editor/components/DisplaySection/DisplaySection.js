@@ -1,13 +1,7 @@
 import React from "react";
-import styled from "styled-components";
-import { SectionMask } from "../Panel";
+import { DisplayContainer } from "../../../../components/editor/DisplaySection";
+import { SectionMask } from "../../../../components/editor/Panel";
 import { ViewSection } from "./ViewSection";
-
-const DisplayContainer = styled.div`
-  display: flex;
-  flex: 1;
-  position: relative;
-`;
 
 export function DisplaySection() {
   return (

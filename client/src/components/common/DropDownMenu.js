@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { PanelButton } from "./Panel";
+import { PanelButton } from "../editor/Panel";
 
 export const DropDownMenu = styled.div`
   position: relative;

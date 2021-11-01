@@ -9,9 +9,9 @@ const pageRoutes = require("./pageRoutes");
 const router = express.Router();
 
 const routes = () => {
-  router.get("/", verifyAccessToken, (req, res) => {
-    res.send({ message: req.payload });
-  });
+  // router.get("/", verifyAccessToken, (req, res) => {
+  //   res.send({ message: req.payload });
+  // });
   router.use("/auth", authRoutes());
   router.use("/user", userRoutes());
   router.use("/site", siteRoutes());
