@@ -6,7 +6,7 @@ import {
   PanelInputText,
   PanelTextArea,
   PanelLabel,
-} from "../Panel";
+} from "../../../../components/editor/Panel";
 
 export function PropertiesPanel({ isActive }) {
   const { selectedElement, setSelectedElement } = useContext(

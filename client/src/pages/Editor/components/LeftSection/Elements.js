@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { Panel, PanelItems, PanelTitle, PanelItem } from "../Panel";
-
-const ElementsPanelItem = styled(PanelItem)`
-  font-size: 16px;
-  font-weight: 500;
-`;
+import {
+  Panel,
+  PanelItems,
+  PanelTitle,
+} from "../../../../components/editor/Panel";
+import { ElementsPanelItem } from "../../../../components/editor/LeftSection";
 
 export function ElementsPanel({ isActive, elementList }) {
   const [elements, setElements] = useState();

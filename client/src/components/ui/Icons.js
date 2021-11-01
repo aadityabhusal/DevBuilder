@@ -1,5 +1,3 @@
-import React from "react";
-
 /* Left Section Icons */
 
 export function ElementsIcon() {

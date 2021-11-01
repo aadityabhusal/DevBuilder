@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Panel, PanelInputText } from "../Panel";
-import styled from "styled-components";
+import { PanelInputText } from "../../../../components/editor/Panel";
+import { StylePanel } from "../../../../components/editor/LeftSection";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 import {
   DropDownButton,
@@ -11,15 +11,9 @@ import {
   ItemName,
   AddItemBox,
   CloseButton,
-} from "../DropDownMenu";
-import { CloseIcon, DropDownIcon } from "../Icons";
+} from "../../../../components/common/DropDownMenu";
+import { CloseIcon, DropDownIcon } from "../../../../components/ui/Icons";
 import { StyleEditor } from "./StyleEditor";
-
-const StylePanel = styled(Panel)`
-  overflow: initial;
-  padding: 0;
-  height: calc(100vh - 85px);
-`;
 
 export function StylesPanel({ isActive }) {
   const dropDownListRef = useRef();

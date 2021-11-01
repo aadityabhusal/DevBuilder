@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Panel, PanelItem, PanelItems, PanelTitle } from "../Panel";
+import {
+  Panel,
+  PanelItem,
+  PanelItems,
+  PanelTitle,
+} from "../../../../components/editor/Panel";
 
 export function LayoutsPanel({ isActive, layoutList }) {
   const [layouts, setLayouts] = useState();

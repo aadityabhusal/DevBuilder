@@ -1,34 +1,9 @@
 import React, { useContext } from "react";
-import styled from "styled-components";
+import {
+  StyledContextMenu,
+  StyledContextMenuItem,
+} from "../../../components/editor/ContextMenu";
 import { SelectedElementContext } from "../../../contexts/SelectedElementContext";
-
-const StyledContextMenuItem = styled.li`
-  padding: 5px 15px;
-  border: none;
-  margin: 0;
-  border-bottom: 1px solid #bdc3c7;
-  background: #fff;
-  cursor: pointer;
-  &:hover {
-    background: #ecf0f1;
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-`;
-
-const StyledContextMenu = styled.ul`
-  display: none;
-  flex-direction: column;
-  list-style: none;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-  border: 1px solid #bdc3c7;
-  border-radius: 5px;
-  position: absolute;
-`;
 
 /* 
   - When Copying section, the same ids of the elements get used again. So, when the elements are hovered in Navigator section the previous item is highlighted

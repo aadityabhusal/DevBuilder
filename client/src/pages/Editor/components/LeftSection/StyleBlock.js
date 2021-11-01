@@ -1,13 +1,24 @@
 import { useContext, useEffect, useState } from "react";
-import styled from "styled-components";
 import { properties } from "../../lists/properties";
 import { CommandContext } from "../../../../contexts/CommandContext";
-import { CloseIcon, CopyIcon, PasteIcon } from "../Icons";
+import {
+  CloseIcon,
+  CopyIcon,
+  PasteIcon,
+} from "../../../../components/ui/Icons";
 import {
   getCSSArray,
   updateStyle,
   getStylePropertyName,
 } from "../../../../utils";
+import {
+  CloseButton,
+  CopyButton,
+  PasteButton,
+  StyleInput,
+  StyleList,
+  StyleListItem,
+} from "../../../../components/editor/StyleBlock";
 
 export function StyleBlock({ data, currentStyle }) {
   const [propertyList, setPropertyList] = useState();
@@ -172,62 +183,3 @@ export function StyleBlock({ data, currentStyle }) {
     </StyleList>
   ) : null;
 }
-
-const PasteButton = styled.div`
-  margin-right: 10px;
-  cursor: pointer;
-  position: absolute;
-  top: -30px;
-  right: 20px;
-
-  & > svg {
-    width: 20px;
-    height: 20px;
-    vertical-align: middle;
-  }
-`;
-
-const CopyButton = styled(PasteButton)`
-  right: 50px;
-`;
-
-const CloseButton = styled.div`
-  cursor: pointer;
-  border: 1px solid #bdc3c7;
-  border-left: none;
-  border-top: none;
-  align-self: stretch;
-  & > svg {
-    width: 18px;
-    height: 18px;
-    vertical-align: middle;
-  }
-`;
-
-const StyleInput = styled.input`
-  padding: 5px;
-  border: 1px solid #bdc3c7;
-  outline: none;
-  border-radius: 0;
-  width: 170px;
-  border-top: none;
-
-  &.value-input {
-    border-left: none;
-    flex: 1;
-  }
-`;
-
-const StyleList = styled.ul`
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  margin: 0;
-  position: relative;
-`;
-
-const StyleListItem = styled.li`
-  display: flex;
-  align-items: center;
-`;

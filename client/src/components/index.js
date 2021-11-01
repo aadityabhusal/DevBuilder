@@ -1,1 +1,0 @@
-export { GlobalContainer } from "./GlobalContainer";

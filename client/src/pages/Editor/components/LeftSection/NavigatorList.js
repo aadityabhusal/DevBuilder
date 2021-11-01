@@ -1,8 +1,14 @@
 import { useContext, useEffect, useState } from "react";
-import styled from "styled-components";
+import {
+  DropDownArrow,
+  NavigatorItemName,
+  NavigatorListContainer,
+  NavigatorListItem,
+  VerticalLines,
+} from "../../../../components/editor/LeftSection";
 import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
 import { hideHoverBox, showHoverBox } from "../../../../utils";
-import { DropDownIcon } from "../Icons";
+import { DropDownIcon } from "../../../../components/ui/Icons";
 const nonClosingTags = ["img", "video", "input", "hr", "br"];
 
 export function NavigatorList({ data, firstDrop }) {
@@ -71,44 +77,3 @@ export function NavigatorList({ data, firstDrop }) {
     </NavigatorListContainer>
   ) : null;
 }
-
-const NavigatorListContainer = styled.div`
-  background-color: #fff;
-`;
-
-const DropDownArrow = styled.div`
-  align-self: stretch;
-  cursor: pointer;
-  ${({ isDropped }) => !isDropped && `transform: rotate(-90deg);`}
-
-  svg {
-    fill: #7f8c8d;
-    height: 20px;
-    width: 20px;
-    vertical-align: middle;
-  }
-
-  :hover svg {
-    fill: #000;
-  }
-`;
-
-const NavigatorListItem = styled.div`
-  border-bottom: 1px solid #bdc3c7;
-  font-size: 14px;
-  display: flex;
-  :hover {
-    background-color: #ecf0f1;
-  }
-`;
-
-const NavigatorItemName = styled.div`
-  padding-left: 5px;
-  background-color: inherit;
-`;
-
-const VerticalLines = styled.div`
-  margin-left: 10px;
-  border: none;
-  border-left: 1px solid #bdc3c7;
-`;
