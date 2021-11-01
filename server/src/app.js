@@ -3,6 +3,7 @@ const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
+const createError = require("http-errors");
 
 const app = express();
 const routes = require("./routes");
@@ -20,9 +21,7 @@ app.use(morgan("dev"));
 app.use("/", routes());
 
 app.use(async (req, res, next) => {
-  const error = new Error("Not found");
-  error.status = 404;
-  next(error);
+  next(createError.NotFound());
 });
 
 app.use(async (err, req, res, next) => {

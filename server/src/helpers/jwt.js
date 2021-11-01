@@ -1,4 +1,5 @@
 const JWT = require("jsonwebtoken");
+const createError = require("http-errors");
 
 function signAccessToken(_id) {
   return new Promise((resolve, reject) => {
@@ -10,7 +11,7 @@ function signAccessToken(_id) {
       audience: _id,
     };
     JWT.sign(payload, secret, options, (err, token) => {
-      if (err) return reject(new Error("Internal Server Error"));
+      if (err) return reject(createError.InternalServerError());
       resolve(token);
     });
   });
@@ -25,39 +26,30 @@ function signRefreshToken(_id) {
       audience: _id,
     };
     JWT.sign(payload, secret, options, (err, token) => {
-      if (err) return reject(new Error("Internal Server Error"));
+      if (err) reject(createError.InternalServerError());
       resolve(token);
     });
   });
 }
 
 function verifyAccessToken(req, res, next) {
-  try {
-    if (!req.headers["authorization"]) throw new Error("");
-    const token = req.headers["authorization"].split(" ")[1];
-    JWT.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
-      if (err) {
-        if (err.name === "JsonWebTokenError") throw new Error("");
-        else throw new Error(err.message);
-      }
-      req.payload = payload;
-      next();
-    });
-  } catch (err) {
-    if (err.message === "") err.message = "Unauthorized Access Error";
-    err.status = 401;
-    next(err);
-  }
+  if (!req.headers["authorization"]) return next(createError.Unauthorized());
+  const token = req.headers["authorization"].split(" ")[1];
+  JWT.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
+    if (err) {
+      const message =
+        err.name === "JsonWebTokenError" ? "Unauthorized" : err.message;
+      return next(createError.Unauthorized(message));
+    }
+    req.payload = payload;
+    next();
+  });
 }
 
 function verifyRefreshToken(token) {
   return new Promise((resolve, reject) => {
     JWT.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, payload) => {
-      if (err) {
-        let error = new Error("Unauthorized Access Error");
-        error.status = 401;
-        return reject(error);
-      }
+      if (err) return reject(createError.Unauthorized());
       resolve(payload._id);
     });
   });
