@@ -48,3 +48,13 @@ export const LoginBox = styled.div`
     box-shadow: none;
   }
 `;
+
+export const Links = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  & a {
+    text-decoration: none;
+    color: #3498db;
+  }
+`;

@@ -84,7 +84,7 @@ export function UserPage(props) {
           </SiteForm>
         )}
         <SiteList>
-          {authUser?._id === user._id && sites.length ? (
+          {authUser?._id === user._id && sites?.length ? (
             sites.map((item) => (
               <Site key={item.siteId}>
                 <img src="/siteImage.png" alt="Site" />
