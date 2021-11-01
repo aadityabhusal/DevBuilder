@@ -5,12 +5,13 @@ const {
   signRefreshToken,
   verifyRefreshToken,
 } = require("../helpers/jwt");
+const createError = require("http-errors");
 
 const register = async (req, res, next) => {
   try {
     const result = await registerSchema.validateAsync(req.body);
     if (await User.exists({ email: result.email }))
-      throw new Error("Email already exists");
+      throw createError.Conflict(`${result.email} has already been registered`);
     let newUser = new User(result);
     let user = await newUser.save();
 
@@ -18,7 +19,7 @@ const register = async (req, res, next) => {
     const refreshToken = await signRefreshToken(user.id);
     res.send({ accessToken, refreshToken, message: "User Created" });
   } catch (error) {
-    error.status = error.isJoi === true ? 422 : 409;
+    if (error.isJoi === true) error.status = 422;
     next(error);
   }
 };
@@ -26,18 +27,16 @@ const login = async (req, res, next) => {
   try {
     const result = await loginSchema.validateAsync(req.body);
     let user = await User.findOne({ email: result.email });
-    if (!user) throw new Error("User Not Found");
+    if (!user) throw createError.NotFound("User Not Found");
     const isMatched = await user.isValidPassword(result.password);
-    if (!isMatched) throw new Error("Invalid Username or Password");
+    if (!isMatched) throw createError.Unauthorized("Invalid Email or Password");
 
     const accessToken = await signAccessToken(user.id);
     const refreshToken = await signRefreshToken(user.id);
     res.send({ accessToken, refreshToken, message: "Login Successful" });
   } catch (error) {
-    if (!error.status) {
-      error.status = 401;
-      error.message = "Invalid Username or Password";
-    }
+    if (error.isJoi === true)
+      return next(createError.BadRequest("Invalid Email or Password"));
     next(error);
   }
 };
@@ -51,14 +50,13 @@ const logout = async (req, res, next) => {
 const refreshToken = async (req, res, next) => {
   try {
     const { refreshToken } = req.body;
-    if (!refreshToken) throw new Error("Bad Reqest");
+    if (!refreshToken) throw createError.BadRequest();
     let userId = await verifyRefreshToken(refreshToken);
     console.log("userId", userId);
     const accessToken = await signAccessToken(userId);
     const rfToken = await signRefreshToken(userId);
     res.send({ accessToken, refreshToken: rfToken });
   } catch (error) {
-    // if (!error.status) error.status = 400;
     next(error);
   }
 };
