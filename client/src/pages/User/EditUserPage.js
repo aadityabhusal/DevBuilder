@@ -16,11 +16,11 @@ import {
   DialogText,
 } from "../../components/common/DialogBox";
 
-export function EditUserPage({ history }) {
+export function EditUserPage({ history, user: authUser }) {
   const [user, setUser] = useState();
   const [password, setPassword] = useState("");
   const [updated, setUpdated] = useState(false);
-  const { user: authUser, setUser: setAuthUser } = useContext(UserContext);
+  const { token, setNewToken } = useContext(UserContext);
   const [dialogBox, setDialogBox] = useState(false);
   const { userId } = useParams();
 
@@ -45,7 +45,7 @@ export function EditUserPage({ history }) {
         })
       ).json();
       if (!response.error) {
-        setAuthUser(response);
+        setNewToken("", token.refreshToken);
         setUpdated(true);
       } else {
         throw new Error(response.error);

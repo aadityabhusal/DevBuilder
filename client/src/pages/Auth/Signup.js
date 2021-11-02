@@ -12,7 +12,7 @@ export function Signup(props) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const { user } = useContext(UserContext);
+  const { user, setNewToken } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,26 +22,30 @@ export function Signup(props) {
       email,
       password,
     };
+
     try {
-      let response = await fetch(`/user/signup`, {
-        method: "post",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      if (!response.error) {
-        props.history.push("/login");
+      let response = await (
+        await fetch(`/auth/register`, {
+          method: "post",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+      ).json();
+
+      if (response.status) setError(response.message);
+      else {
+        const { accessToken, refreshToken } = response;
+        setNewToken(accessToken, refreshToken);
       }
-      throw new Error(response.error);
     } catch (error) {
       setError(error.message);
     }
   };
 
-  return (
-    // !user ? (
+  return !user ? (
     <SignupSection>
       <SignupBox>
         <h1>Sign Up</h1>
@@ -89,8 +93,7 @@ export function Signup(props) {
         </Links>
       </SignupBox>
     </SignupSection>
-    // ) : (
-    //   <Redirect to={`/user/${user._id}`} />
-    // );
+  ) : (
+    <Redirect to={`/user/${user._id}`} />
   );
 }

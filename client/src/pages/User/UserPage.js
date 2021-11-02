@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import {
@@ -9,12 +9,10 @@ import {
   Sites,
   UserHead,
 } from "../../components/user/User";
-import { UserContext } from "../../contexts/UserContext";
 
-export function UserPage(props) {
+export function UserPage({ user: authUser }) {
   const [user, setUser] = useState();
   const [sites, setSites] = useState([]);
-  const { user: authUser } = useContext(UserContext);
   const [siteName, setSiteName] = useState([]);
   const { userId } = useParams();
 
@@ -37,23 +35,22 @@ export function UserPage(props) {
   };
 
   useEffect(() => {
-    getUser(userId);
-    // setSites(authUser?.sites || []);
-  }, [userId, authUser]);
+    const getUser = async (userId) => {
+      try {
+        let response = await fetch(`/user/${userId}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+        let data = await response.json();
+        setUser(data);
+        setSites(data.sites);
+      } catch (error) {}
+    };
 
-  const getUser = async (userId) => {
-    try {
-      let response = await fetch(`/user/${userId}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      let data = await response.json();
-      setUser(data);
-      setSites(data.sites);
-    } catch (error) {}
-  };
+    getUser(userId);
+  }, [userId]);
 
   return user ? (
     <div>
@@ -61,7 +58,7 @@ export function UserPage(props) {
         <img src="/default-user.png" alt="user" />
         <div>
           <h1>{`${user.firstName} ${user.lastName}`}</h1>
-          {authUser?._id === user._id && (
+          {authUser._id === user._id && (
             <>
               <h2>{`${authUser.email}`}</h2>
               <EditUserButton to={`/user/${authUser._id}/edit`}>
@@ -72,7 +69,7 @@ export function UserPage(props) {
         </div>
       </UserHead>
       <Sites>
-        {authUser?._id === user._id && (
+        {authUser._id === user._id && (
           <SiteForm>
             <input
               type="text"
@@ -84,7 +81,7 @@ export function UserPage(props) {
           </SiteForm>
         )}
         <SiteList>
-          {authUser?._id === user._id && sites?.length ? (
+          {authUser._id === user._id && sites?.length ? (
             sites.map((item) => (
               <Site key={item.siteId}>
                 <img src="/siteImage.png" alt="Site" />

@@ -4,12 +4,10 @@ import { HeaderContainer } from "../../components/common/Header";
 import { UserContext } from "../../contexts/UserContext";
 
 export function Header() {
-  const { user, setUser, setToken } = useContext(UserContext);
+  const { user, setNewToken } = useContext(UserContext);
 
   const logout = async (e) => {
-    localStorage.removeItem("token");
-    setToken("");
-    setUser(null);
+    setNewToken("", "");
   };
 
   return (

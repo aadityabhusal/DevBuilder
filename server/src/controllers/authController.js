@@ -14,8 +14,12 @@ const register = async (req, res, next) => {
       throw createError.Conflict(`${result.email} has already been registered`);
     let newUser = new User(result);
     let user = await newUser.save();
-
-    const accessToken = await signAccessToken(user.id);
+    const accessToken = await signAccessToken(
+      user.id,
+      user.email,
+      user.firstName,
+      user.lastName
+    );
     const refreshToken = await signRefreshToken(user.id);
     res.send({ accessToken, refreshToken, message: "User Created" });
   } catch (error) {
@@ -27,11 +31,17 @@ const login = async (req, res, next) => {
   try {
     const result = await loginSchema.validateAsync(req.body);
     let user = await User.findOne({ email: result.email });
+
     if (!user) throw createError.NotFound("User Not Found");
     const isMatched = await user.isValidPassword(result.password);
     if (!isMatched) throw createError.Unauthorized("Invalid Email or Password");
 
-    const accessToken = await signAccessToken(user.id);
+    const accessToken = await signAccessToken(
+      user.id,
+      user.email,
+      user.firstName,
+      user.lastName
+    );
     const refreshToken = await signRefreshToken(user.id);
     res.send({ accessToken, refreshToken, message: "Login Successful" });
   } catch (error) {
@@ -52,7 +62,6 @@ const refreshToken = async (req, res, next) => {
     const { refreshToken } = req.body;
     if (!refreshToken) throw createError.BadRequest();
     let userId = await verifyRefreshToken(refreshToken);
-    console.log("userId", userId);
     const accessToken = await signAccessToken(userId);
     const rfToken = await signRefreshToken(userId);
     res.send({ accessToken, refreshToken: rfToken });
