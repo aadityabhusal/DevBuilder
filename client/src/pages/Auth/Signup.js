@@ -40,9 +40,7 @@ export function Signup(props) {
         const { accessToken, refreshToken } = response;
         setNewToken(accessToken, refreshToken);
       }
-    } catch (error) {
-      setError(error.message);
-    }
+    } catch (error) {}
   };
 
   return !user ? (
