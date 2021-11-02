@@ -42,7 +42,7 @@ export function SettingsPanel({ isActive }) {
   const [dialogBox, setDialogBox] = useState(false);
   const { pageTree, updateTitle, savePage } = useContext(PageTreeContext);
   const { siteTree } = useContext(SiteTreeContext);
-  const { user } = useContext(UserContext);
+  const { user, authFetch } = useContext(UserContext);
   const [title, setTitle] = useState("");
   const history = useHistory();
 
@@ -80,13 +80,8 @@ export function SettingsPanel({ isActive }) {
 
   const deleteSite = async () => {
     try {
-      await fetch(`/site/${siteTree._id}`, {
-        method: "delete",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: user._id }),
+      await authFetch(`/site/${siteTree._id}`, "DELETE", {
+        body: { userId: user._id },
       });
       history.push("/user/" + user._id);
     } catch (error) {}

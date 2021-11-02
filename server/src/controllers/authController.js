@@ -16,7 +16,6 @@ const register = async (req, res, next) => {
     let user = await newUser.save();
     const accessToken = await signAccessToken(
       user.id,
-      user.email,
       user.firstName,
       user.lastName
     );
@@ -38,7 +37,6 @@ const login = async (req, res, next) => {
 
     const accessToken = await signAccessToken(
       user.id,
-      user.email,
       user.firstName,
       user.lastName
     );
@@ -59,11 +57,16 @@ const logout = async (req, res, next) => {
 };
 const refreshToken = async (req, res, next) => {
   try {
+    if (!req.headers["authorization"]) throw createError.Unauthorized();
+    const oldAccessToken = req.headers["authorization"].split(" ")[1];
     const { refreshToken } = req.body;
     if (!refreshToken) throw createError.BadRequest();
-    let userId = await verifyRefreshToken(refreshToken);
-    const accessToken = await signAccessToken(userId);
-    const rfToken = await signRefreshToken(userId);
+    let { _id, firstName, lastName } = await verifyRefreshToken(
+      oldAccessToken,
+      refreshToken
+    );
+    const accessToken = await signAccessToken(_id, firstName, lastName);
+    const rfToken = await signRefreshToken(_id);
     res.send({ accessToken, refreshToken: rfToken });
   } catch (error) {
     next(error);

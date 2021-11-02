@@ -13,25 +13,21 @@ import {
   PageItem,
   PageList,
 } from "../../../../components/editor/LeftSection";
+import { UserContext } from "../../../../contexts/UserContext";
 
 export function PagesPanel({ pages, isActive }) {
   const [pageList, setPageList] = useState(pages);
   const { setPageTree } = useContext(PageTreeContext);
   const { siteId } = useParams();
+  const { authFetch } = useContext(UserContext);
 
   const addPage = async (e) => {
     if (e.keyCode === 13) {
       let value = e.target.value;
       try {
-        let response = await fetch(`/page/`, {
-          method: "post",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ siteId, name: value }),
+        let data = await authFetch(`/page/`, "POST", {
+          body: { siteId, name: value },
         });
-        let data = await response.json();
         setPageList(data);
       } catch (error) {}
       e.target.value = "";
@@ -40,7 +36,7 @@ export function PagesPanel({ pages, isActive }) {
 
   const setPage = async (e, item) => {
     try {
-      const response = await (await fetch(`/page/${item.pageId}`)).json();
+      let response = await authFetch(`/page/${item.pageId}`, "GET");
       setPageTree(response);
     } catch (error) {}
   };
@@ -48,15 +44,9 @@ export function PagesPanel({ pages, isActive }) {
   const deletePage = async (e, item) => {
     e.stopPropagation();
     try {
-      let response = await fetch(`/page/${item.pageId}`, {
-        method: "delete",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ siteId }),
+      let data = await authFetch(`/page/${item.pageId}`, "DELETE", {
+        body: { siteId },
       });
-      let data = await response.json();
       setPageList(data);
     } catch (error) {}
   };

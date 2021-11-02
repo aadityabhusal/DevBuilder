@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import {
@@ -9,27 +9,22 @@ import {
   Sites,
   UserHead,
 } from "../../components/user/User";
+import { UserContext } from "../../contexts/UserContext";
 
 export function UserPage({ user: authUser }) {
   const [user, setUser] = useState();
   const [sites, setSites] = useState([]);
   const [siteName, setSiteName] = useState([]);
   const { userId } = useParams();
+  const { authFetch } = useContext(UserContext);
 
   const createSite = async (e) => {
     let data = {
       name: siteName,
       userId: user._id,
     };
-    let response = await fetch(`/site`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    let sitesData = await response.json();
+
+    let sitesData = await authFetch(`/site`, "POST", { body: data });
     setSites(sitesData);
     setSiteName("");
   };
@@ -37,20 +32,13 @@ export function UserPage({ user: authUser }) {
   useEffect(() => {
     const getUser = async (userId) => {
       try {
-        let response = await fetch(`/user/${userId}`, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
-        let data = await response.json();
-        setUser(data);
-        setSites(data.sites);
+        let response = await authFetch(`/user/${userId}`, "GET");
+        setUser(response);
+        setSites(response.sites);
       } catch (error) {}
     };
-
     getUser(userId);
-  }, [userId]);
+  }, [userId, authFetch]);
 
   return user ? (
     <div>
@@ -60,8 +48,8 @@ export function UserPage({ user: authUser }) {
           <h1>{`${user.firstName} ${user.lastName}`}</h1>
           {authUser._id === user._id && (
             <>
-              <h2>{`${authUser.email}`}</h2>
-              <EditUserButton to={`/user/${authUser._id}/edit`}>
+              <h2>{`${user.email}`}</h2>
+              <EditUserButton to={`/user/${user._id}/edit`}>
                 Edit Profile
               </EditUserButton>
             </>

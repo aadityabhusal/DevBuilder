@@ -1,9 +1,11 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
+import { UserContext } from "./UserContext";
 
 export const PageTreeContext = createContext();
 
 export const PageTreeProvider = (props) => {
   const [pageTree, setPageTree] = useState(props.value);
+  const { authFetch } = useContext(UserContext);
 
   function updateTree(
     element,
@@ -47,14 +49,7 @@ export const PageTreeProvider = (props) => {
   }
 
   async function savePage() {
-    await fetch(`/page/${pageTree._id}`, {
-      method: "put",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(pageTree),
-    });
+    await authFetch(`/page/${pageTree._id}`, "PUT", { body: pageTree });
   }
 
   return (
