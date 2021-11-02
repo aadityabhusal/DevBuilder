@@ -16,17 +16,27 @@ import {
   DialogText,
 } from "../../components/common/DialogBox";
 
-export function EditUserPage({ history, user: authUser }) {
+export function EditUserPage() {
   const [user, setUser] = useState();
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
-  const { setNewToken } = useContext(UserContext);
+  const [success, setSuccess] = useState(false);
+  const { authFetch, setNewToken } = useContext(UserContext);
   const [dialogBox, setDialogBox] = useState(false);
   const { userId } = useParams();
 
   useEffect(() => {
-    setUser(authUser);
-  }, [authUser]);
+    const getUser = async (userId) => {
+      try {
+        let { email, firstName, lastName } = await authFetch(
+          `/user/${userId}`,
+          "GET"
+        );
+        setUser({ email, firstName, lastName });
+      } catch (error) {}
+    };
+    getUser(userId);
+  }, [userId, authFetch]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,21 +44,15 @@ export function EditUserPage({ history, user: authUser }) {
       user.password = password;
     }
     try {
-      let response = await (
-        await fetch(`/user/${userId}`, {
-          method: "put",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(user),
-        })
-      ).json();
-
+      let response = await authFetch(`/user/${userId}`, "PUT", {
+        body: user,
+      });
       if (response.status) setError(response.message);
       else {
         const { accessToken, refreshToken } = response;
+        console.log(accessToken, refreshToken);
         setNewToken(accessToken, refreshToken);
+        setSuccess(true);
       }
     } catch (error) {}
   };
@@ -59,13 +63,8 @@ export function EditUserPage({ history, user: authUser }) {
 
   const deleteUser = async () => {
     try {
-      let response = await fetch(`/user/${userId}`, {
-        method: "delete",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
+      let response = await authFetch(`/user/${userId}`, "DELETE", {
+        body: user,
       });
 
       if (response.status) setError(response.message);
@@ -106,6 +105,7 @@ export function EditUserPage({ history, user: authUser }) {
           </DialogOverlay>
         )}
         <h1 style={{ textAlign: "center" }}>Update your profile</h1>
+        {success && <SuccessMessage>Your profile was updated</SuccessMessage>}
         {error && <div>{error}</div>}
         <Form onSubmit={handleSubmit} method="POST">
           <EditUserInput
@@ -151,6 +151,6 @@ export function EditUserPage({ history, user: authUser }) {
       </EditContainer>
     </div>
   ) : (
-    <h2>Loading...</h2>
+    <h2 style={{ textAlign: "center" }}>Loading...</h2>
   );
 }

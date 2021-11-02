@@ -1,12 +1,12 @@
 const JWT = require("jsonwebtoken");
 const createError = require("http-errors");
 
-function signAccessToken(_id, email, firstName, lastName) {
+function signAccessToken(_id, firstName, lastName) {
   return new Promise((resolve, reject) => {
-    const payload = { _id, email, firstName, lastName };
+    const payload = { _id, firstName, lastName };
     const secret = process.env.ACCESS_TOKEN_SECRET;
     const options = {
-      expiresIn: "10m",
+      expiresIn: "15m",
       issuer: "devbuilder",
       audience: _id,
     };
@@ -46,11 +46,19 @@ function verifyAccessToken(req, res, next) {
   });
 }
 
-function verifyRefreshToken(token) {
+function verifyRefreshToken(token, rfToken) {
   return new Promise((resolve, reject) => {
-    JWT.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, payload) => {
-      if (err) return reject(createError.Unauthorized());
-      resolve(payload._id);
+    JWT.verify(token, process.env.ACCESS_TOKEN_SECRET, (err) => {
+      if (!err || err.message === "jwt expired") return resolve(token);
+      return reject(createError.Unauthorized());
+    });
+  }).then((accessToken) => {
+    return new Promise((resolve, reject) => {
+      JWT.verify(rfToken, process.env.REFRESH_TOKEN_SECRET, (err, payload) => {
+        if (err) return reject(createError.Unauthorized());
+        let { _id, firstName, lastName } = JWT.decode(accessToken);
+        resolve({ _id, firstName, lastName });
+      });
     });
   });
 }

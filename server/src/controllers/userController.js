@@ -10,6 +10,7 @@ const getUser = async (req, res, next) => {
     let data = await User.findById(req.params.userId, {
       firstName: 1,
       lastName: 1,
+      email: 1,
       sites: 1,
     });
     res.send(data);
@@ -37,7 +38,6 @@ const updateUser = async (req, res, next) => {
     if (!user) throw createError.NotFound("User Not Found");
     const accessToken = await signAccessToken(
       user.id,
-      user.email,
       user.firstName,
       user.lastName
     );

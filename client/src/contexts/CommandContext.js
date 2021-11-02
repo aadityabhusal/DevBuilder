@@ -13,7 +13,6 @@ export const CommandProvider = (props) => {
     }
     update.current = update.commands.length;
     update.commands.push(command);
-    console.log(update);
     setHistory((prev) => update);
   };
 
@@ -27,11 +26,6 @@ export const CommandProvider = (props) => {
         // Problem: sometimes deep nested element moves causes an element to stay within the current parent eventhough the children array and objects are updated
         cmd.parent.children_order.splice(cmd.index, 1);
         delete cmd.parent.children[cmd.element._id];
-
-        console.log(
-          cmd.parent.children_order,
-          Object.keys(cmd.parent.children)
-        );
 
         if (cmd.prevParent && cmd.prevIndex !== -1) {
           cmd.prevParent.children_order.splice(

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { SelectedElementProvider } from "../../contexts/SelectedElementContext";
 import { PageTreeProvider } from "../../contexts/PageTreeContext";
@@ -10,33 +10,35 @@ import {
   DragLeftSection,
   EditorContainer,
 } from "../../components/editor/Editor";
+import { UserContext } from "../../contexts/UserContext";
 
 export function EditorPage({ history, user }) {
   const [site, setSite] = useState();
   const [page, setPage] = useState();
+  const { authFetch } = useContext(UserContext);
 
   const { siteId } = useParams();
   const dragRef = useRef();
 
   useEffect(() => {
-    getSite(siteId, history, user);
-  }, [siteId, history, user]);
+    async function getSite(siteId, history, user) {
+      try {
+        let siteResponse = await authFetch(`/site/${siteId}`, "GET");
+        if (siteResponse.userId !== user._id) {
+          history.push("/");
+        } else {
+          setSite(siteResponse);
+          let page = siteResponse.pages.find(
+            (item) => item.pageName === "index.html"
+          );
+          let pageResponse = await authFetch(`/page/${page.pageId}`, "GET");
+          setPage(pageResponse);
+        }
+      } catch (error) {}
+    }
 
-  async function getSite(siteId, history, user) {
-    try {
-      const siteResponse = await (await fetch(`/site/${siteId}`)).json();
-      if (siteResponse.userId !== user._id) {
-        history.push("/");
-      } else {
-        setSite(siteResponse);
-        let page = siteResponse.pages.find(
-          (item) => item.pageName === "index.html"
-        );
-        const pageResponse = await (await fetch(`/page/${page.pageId}`)).json();
-        setPage(pageResponse);
-      }
-    } catch (error) {}
-  }
+    getSite(siteId, history, user);
+  }, [siteId, history, user, authFetch]);
 
   document.addEventListener("mouseup", (e) => {
     document.removeEventListener("mousemove", resizeLeftSection);

@@ -18,21 +18,37 @@ export const UserProvider = (props) => {
   const isAuthed = () => {
     let { accessToken } = token;
     if (!accessToken) return false;
-    const { _id, email, firstName, lastName } = jwt_decode(accessToken);
-    return { _id, email, firstName, lastName } || false;
+    try {
+      const { _id, firstName, lastName } = jwt_decode(accessToken);
+      return { _id, firstName, lastName } || false;
+    } catch (error) {
+      return false;
+    }
   };
 
-  const fetchTokens = async (accessToken, refreshToken) => {
-    return await (
-      await fetch(`/auth/refreshToken`, {
-        method: "post",
+  const authFetch = async (url, method, body = {}, headers = {}) => {
+    try {
+      if (body.body) body.body = JSON.stringify(body.body);
+      let response = await fetch(url, {
+        method,
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: "Bearer " + token.accessToken,
+          ...headers,
         },
-        body: JSON.stringify({ refreshToken }),
-      })
-    ).json();
+        ...body,
+      });
+      return await response.json();
+    } catch (error) {
+      return error;
+    }
+  };
+
+  const fetchTokens = async (refreshToken) => {
+    return await authFetch(`/auth/refreshToken`, "POST", {
+      body: { refreshToken },
+    });
   };
 
   useEffect(() => {
@@ -40,19 +56,23 @@ export const UserProvider = (props) => {
       const setTokens = async (accessToken, refreshToken) => {
         let currentDate = new Date();
         if (!accessToken) return;
-        let decodedToken = jwt_decode(accessToken);
-        if (decodedToken.exp * 1000 < currentDate.getTime()) {
-          const data = await fetchTokens(accessToken, refreshToken);
-          setNewToken(data.accessToken, data.refreshToken);
-        }
-        return;
+        try {
+          let decodedToken = jwt_decode(accessToken);
+          if (decodedToken.exp * 1000 < currentDate.getTime()) {
+            let data = await fetchTokens(refreshToken);
+            if (data.status) data = { accessToken: "", refreshToken: "" };
+            setNewToken(data.accessToken, data.refreshToken);
+          }
+        } catch (error) {}
       };
       setTokens(token.accessToken, token.refreshToken);
     }
   }, [token]);
 
   return (
-    <UserContext.Provider value={{ user: isAuthed(), token, setNewToken }}>
+    <UserContext.Provider
+      value={{ user: isAuthed(), token, authFetch, setNewToken }}
+    >
       {props.children}
     </UserContext.Provider>
   );
