@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { SelectedElementProvider } from "../../contexts/SelectedElementContext";
 import { PageTreeProvider } from "../../contexts/PageTreeContext";
-import { UserContext } from "../../contexts/UserContext";
 
 import { LeftSection, DisplaySection } from "./components";
 import { SiteTreeProvider } from "../../contexts/SiteTreeContext";
@@ -12,11 +11,10 @@ import {
   EditorContainer,
 } from "../../components/editor/Editor";
 
-export function EditorPage({ history }) {
+export function EditorPage({ history, user }) {
   const [site, setSite] = useState();
   const [page, setPage] = useState();
 
-  const { user } = useContext(UserContext);
   const { siteId } = useParams();
   const dragRef = useRef();
 

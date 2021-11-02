@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Redirect } from "react-router";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Links, LoginBox, LoginSection } from "../../components/auth/Login";
 import { UserContext } from "../../contexts/UserContext";
 
@@ -8,8 +8,7 @@ export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { user, setToken } = useContext(UserContext);
-  const history = useHistory();
+  const { user, setNewToken } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,30 +19,27 @@ export function Login() {
 
     try {
       let response = await (
-        await fetch(`/user/login`, {
+        await fetch(`/auth/login`, {
           method: "post",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          credentials: "include",
           body: JSON.stringify(data),
         })
       ).json();
 
-      if (!response.error) {
-        localStorage.setItem("token", response.token);
-        setToken(response.token);
-        history.push("/user/" + response.uid);
+      if (response.status) setError(response.message);
+      else {
+        const { accessToken, refreshToken } = response;
+        setNewToken(accessToken, refreshToken);
       }
-      throw new Error(response.error);
     } catch (error) {
       setError(error.message);
     }
   };
 
-  return (
-    // !user ? (
+  return !user ? (
     <LoginSection>
       <LoginBox>
         <h1>Log In</h1>
@@ -69,8 +65,7 @@ export function Login() {
         </Links>
       </LoginBox>
     </LoginSection>
-    // ) : (
-    //   <Redirect to={`/user/${user._id}`} />
-    // );
+  ) : (
+    <Redirect to={`/user/${user._id}`} />
   );
 }
