@@ -9,13 +9,10 @@ const pageRoutes = require("./pageRoutes");
 const router = express.Router();
 
 const routes = () => {
-  // router.get("/", verifyAccessToken, (req, res) => {
-  //   res.send({ message: req.payload });
-  // });
   router.use("/auth", authRoutes());
-  router.use("/user", userRoutes());
-  router.use("/site", siteRoutes());
-  router.use("/page", pageRoutes());
+  router.use("/user", verifyAccessToken, userRoutes());
+  router.use("/site", verifyAccessToken, siteRoutes());
+  router.use("/page", verifyAccessToken, pageRoutes());
   return router;
 };
 

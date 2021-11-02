@@ -19,8 +19,8 @@ import {
 export function EditUserPage({ history, user: authUser }) {
   const [user, setUser] = useState();
   const [password, setPassword] = useState("");
-  const [updated, setUpdated] = useState(false);
-  const { token, setNewToken } = useContext(UserContext);
+  const [error, setError] = useState(false);
+  const { setNewToken } = useContext(UserContext);
   const [dialogBox, setDialogBox] = useState(false);
   const { userId } = useParams();
 
@@ -44,11 +44,11 @@ export function EditUserPage({ history, user: authUser }) {
           body: JSON.stringify(user),
         })
       ).json();
-      if (!response.error) {
-        setNewToken("", token.refreshToken);
-        setUpdated(true);
-      } else {
-        throw new Error(response.error);
+
+      if (response.status) setError(response.message);
+      else {
+        const { accessToken, refreshToken } = response;
+        setNewToken(accessToken, refreshToken);
       }
     } catch (error) {}
   };
@@ -67,11 +67,10 @@ export function EditUserPage({ history, user: authUser }) {
         },
         body: JSON.stringify(user),
       });
-      if (!response.error) {
-        localStorage.removeItem("token");
-        window.location = "http://localhost:3000";
-      } else {
-        throw new Error(response.error);
+
+      if (response.status) setError(response.message);
+      else {
+        setNewToken("", "");
       }
     } catch (error) {}
   };
@@ -107,7 +106,7 @@ export function EditUserPage({ history, user: authUser }) {
           </DialogOverlay>
         )}
         <h1 style={{ textAlign: "center" }}>Update your profile</h1>
-        {updated && <SuccessMessage>Your profile was updated!</SuccessMessage>}
+        {error && <div>{error}</div>}
         <Form onSubmit={handleSubmit} method="POST">
           <EditUserInput
             type="text"

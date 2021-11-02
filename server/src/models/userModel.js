@@ -50,9 +50,17 @@ UserSchema.methods.isValidPassword = async function (password) {
   }
 };
 
-UserSchema.pre("findOneAndUpdate", function (next) {
+UserSchema.pre("findOneAndUpdate", async function (next) {
   this.options.runValidators = true;
-  next();
+  if (this.password) {
+    try {
+      const salt = await bcrypt.genSalt(10);
+      this.password = await bcrypt.hash(this.password, salt);
+      next();
+    } catch (error) {
+      next(error);
+    }
+  } else next();
 });
 
 module.exports = mongoose.model("User", UserSchema);
