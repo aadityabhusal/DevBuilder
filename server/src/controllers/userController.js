@@ -39,7 +39,8 @@ const updateUser = async (req, res, next) => {
     const accessToken = await signAccessToken(
       user.id,
       user.firstName,
-      user.lastName
+      user.lastName,
+      user.status
     );
     const refreshToken = await signRefreshToken(user.id);
     res.send({ accessToken, refreshToken, message: "User Updated" });

@@ -1,4 +1,5 @@
 const express = require("express");
+const router = express.Router();
 const {
   createPage,
   getPage,
@@ -6,10 +7,7 @@ const {
   deletePage,
   exportPage,
 } = require("../controllers/pageController");
-
 const elementRoutes = require("./elementRoutes");
-
-const router = express.Router();
 
 const routes = () => {
   router.post("/", createPage);

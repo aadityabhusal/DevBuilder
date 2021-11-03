@@ -1,9 +1,9 @@
 const JWT = require("jsonwebtoken");
 const createError = require("http-errors");
 
-function signAccessToken(_id, firstName, lastName) {
+function signAccessToken(_id, firstName, lastName, status) {
   return new Promise((resolve, reject) => {
-    const payload = { _id, firstName, lastName };
+    const payload = { _id, firstName, lastName, status };
     const secret = process.env.ACCESS_TOKEN_SECRET;
     const options = {
       expiresIn: "15m",
@@ -41,6 +41,9 @@ function verifyAccessToken(req, res, next) {
         err.name === "JsonWebTokenError" ? "Unauthorized" : err.message;
       return next(createError.Unauthorized(message));
     }
+    if (payload.status === 0) {
+      return next(createError.Forbidden("You need to verify your email."));
+    }
     req.payload = payload;
     next();
   });
@@ -56,8 +59,8 @@ function verifyRefreshToken(token, rfToken) {
     return new Promise((resolve, reject) => {
       JWT.verify(rfToken, process.env.REFRESH_TOKEN_SECRET, (err, payload) => {
         if (err) return reject(createError.Unauthorized());
-        let { _id, firstName, lastName } = JWT.decode(accessToken);
-        resolve({ _id, firstName, lastName });
+        let { _id, firstName, lastName, status } = JWT.decode(accessToken);
+        resolve({ _id, firstName, lastName, status });
       });
     });
   });

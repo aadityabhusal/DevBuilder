@@ -1,4 +1,11 @@
 const crypto = require("crypto");
-let key1 = crypto.randomBytes(64).toString("hex");
-let key2 = crypto.randomBytes(64).toString("hex");
-console.table([key1, key2]);
+
+const generateKey = () => {
+  let key = crypto.randomBytes(64).toString("hex");
+  console.log("Key Generated: ", key);
+  return key;
+};
+
+module.exports = {
+  generateKey,
+};

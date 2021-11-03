@@ -6,18 +6,37 @@ const {
   verifyRefreshToken,
 } = require("../helpers/jwt");
 const createError = require("http-errors");
+const { sendEmail } = require("../helpers/sendEmail");
+const { generateKey } = require("../helpers/generateKey");
 
 const register = async (req, res, next) => {
   try {
     const result = await registerSchema.validateAsync(req.body);
     if (await User.exists({ email: result.email }))
       throw createError.Conflict(`${result.email} has already been registered`);
+
+    const verificationKey = generateKey();
+    result.emailVerificationKey = verificationKey;
+
+    if (
+      !(await sendEmail({
+        to: "bhusal.001aditya@gmail.com",
+        type: "emailVerification",
+        data: { verificationKey },
+      }))
+    ) {
+      throw createError.ExpectationFailed(
+        "Could not send email. Please try again."
+      );
+    }
+
     let newUser = new User(result);
     let user = await newUser.save();
     const accessToken = await signAccessToken(
       user.id,
       user.firstName,
-      user.lastName
+      user.lastName,
+      user.status
     );
     const refreshToken = await signRefreshToken(user.id);
     res.send({ accessToken, refreshToken, message: "User Created" });
@@ -38,7 +57,8 @@ const login = async (req, res, next) => {
     const accessToken = await signAccessToken(
       user.id,
       user.firstName,
-      user.lastName
+      user.lastName,
+      user.status
     );
     const refreshToken = await signRefreshToken(user.id);
     res.send({ accessToken, refreshToken, message: "Login Successful" });
@@ -61,11 +81,11 @@ const refreshToken = async (req, res, next) => {
     const oldAccessToken = req.headers["authorization"].split(" ")[1];
     const { refreshToken } = req.body;
     if (!refreshToken) throw createError.BadRequest();
-    let { _id, firstName, lastName } = await verifyRefreshToken(
+    let { _id, firstName, lastName, status } = await verifyRefreshToken(
       oldAccessToken,
       refreshToken
     );
-    const accessToken = await signAccessToken(_id, firstName, lastName);
+    const accessToken = await signAccessToken(_id, firstName, lastName, status);
     const rfToken = await signRefreshToken(_id);
     res.send({ accessToken, refreshToken: rfToken });
   } catch (error) {
