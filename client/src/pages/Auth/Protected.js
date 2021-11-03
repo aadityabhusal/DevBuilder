@@ -4,11 +4,18 @@ import { UserContext } from "../../contexts/UserContext";
 
 export function Protected({ component: Component, ...props }) {
   const { user } = useContext(UserContext);
+
   return (
     <Route
       {...props}
       render={(props) =>
-        user ? <Component user={user} {...props} /> : <Redirect to="/" />
+        !user ? (
+          <Redirect to="/" />
+        ) : user.status === 0 ? (
+          <Redirect to="/verify-email" />
+        ) : (
+          <Component user={user} {...props} />
+        )
       }
     />
   );

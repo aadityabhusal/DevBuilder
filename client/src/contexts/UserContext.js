@@ -19,8 +19,8 @@ export const UserProvider = (props) => {
     let { accessToken } = token;
     if (!accessToken) return false;
     try {
-      const { _id, firstName, lastName } = jwt_decode(accessToken);
-      return { _id, firstName, lastName } || false;
+      const { _id, firstName, lastName, status } = jwt_decode(accessToken);
+      return { _id, firstName, lastName, status } || false;
     } catch (error) {
       return false;
     }
