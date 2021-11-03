@@ -15,13 +15,13 @@ const sendEmail = ({ to, type, data = {} }) => {
   return sendgrid.send(message);
 };
 
-const emailVerification = ({ verificationKey }) => {
+const emailVerification = ({ emailVerificationKey }) => {
   return {
     subject: "Please verify your email address",
     text: `
     Hello There! Thank you for signing up to DevBuilder. To verify your email, click on the link below:
     
-    http://localhost:3000/verify-email/${verificationKey}
+    http://localhost:3000/verify-email/${emailVerificationKey}
 
     Regards
     DevBuilder Team`,

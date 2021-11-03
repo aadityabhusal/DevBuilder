@@ -15,14 +15,12 @@ const register = async (req, res, next) => {
     if (await User.exists({ email: result.email }))
       throw createError.Conflict(`${result.email} has already been registered`);
 
-    const verificationKey = generateKey();
-    result.emailVerificationKey = verificationKey;
-
+    result.emailVerificationKey = generateKey();
     if (
       !(await sendEmail({
-        to: "bhusal.001aditya@gmail.com",
+        to: result.email,
         type: "emailVerification",
-        data: { verificationKey },
+        data: { emailVerificationKey: result.emailVerificationKey },
       }))
     ) {
       throw createError.ExpectationFailed(
@@ -45,6 +43,7 @@ const register = async (req, res, next) => {
     next(error);
   }
 };
+
 const login = async (req, res, next) => {
   try {
     const result = await loginSchema.validateAsync(req.body);
@@ -68,6 +67,7 @@ const login = async (req, res, next) => {
     next(error);
   }
 };
+
 const logout = async (req, res, next) => {
   try {
     res.send({ message: "Logout Route" });
@@ -75,6 +75,7 @@ const logout = async (req, res, next) => {
     return next(error);
   }
 };
+
 const refreshToken = async (req, res, next) => {
   try {
     if (!req.headers["authorization"]) throw createError.Unauthorized();
@@ -93,9 +94,39 @@ const refreshToken = async (req, res, next) => {
   }
 };
 
+const verifyEmail = async (req, res, next) => {
+  try {
+    let { emailVerificationKey } = req.body;
+    let isValid = await User.findOne({ emailVerificationKey });
+
+    if (!isValid)
+      throw createError.BadRequest("Invalid Email Verification Key");
+    if (isValid && isValid.status === 1)
+      throw createError.BadRequest("Email Already Verified");
+
+    let user = await User.findOneAndUpdate(
+      { emailVerificationKey },
+      { status: 1 },
+      {
+        new: true,
+        useFindAndModify: false,
+      }
+    );
+    if (!user) throw createError.BadRequest("Email Verification Failed");
+
+    let { id, firstName, lastName, status } = user;
+    const accessToken = await signAccessToken(id, firstName, lastName, status);
+    const refreshToken = await signRefreshToken(id);
+    res.send({ accessToken, refreshToken });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   register,
   login,
   logout,
   refreshToken,
+  verifyEmail,
 };
