@@ -26,7 +26,7 @@ export const UserProvider = (props) => {
     }
   };
 
-  const authFetch = async (url, method, body = {}, headers = {}) => {
+  const innerFetch = async (url, method, token, body = {}) => {
     try {
       if (body.body) body.body = JSON.stringify(body.body);
       let response = await fetch(url, {
@@ -34,40 +34,55 @@ export const UserProvider = (props) => {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          Authorization: "Bearer " + token.accessToken,
-          ...headers,
+          Authorization: "Bearer " + token,
         },
         ...body,
       });
       return await response.json();
     } catch (error) {
-      return error;
+      return { status: 401, message: "Unathorized Access" };
     }
   };
 
-  const fetchTokens = async (refreshToken) => {
-    return await authFetch(`/auth/refreshToken`, "POST", {
-      body: { refreshToken },
-    });
+  const getNewTokens = async ({ accessToken, refreshToken }) => {
+    try {
+      let currentDate = new Date();
+      if (!accessToken || !refreshToken) return ["", ""];
+      let decodedToken = jwt_decode(accessToken);
+      if (decodedToken.exp * 1000 < currentDate.getTime()) {
+        let data = await innerFetch(`/auth/refreshToken`, "POST", accessToken, {
+          body: { refreshToken },
+        });
+
+        if (data.status) return ["", ""];
+        return [data.accessToken, data.refreshToken];
+      }
+      return [accessToken, refreshToken];
+    } catch (error) {
+      return ["", ""];
+    }
+  };
+
+  const authFetch = async (url, method, body = {}, headers = {}) => {
+    try {
+      let [accessToken, refreshToken] = await getNewTokens(token);
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      return await innerFetch(url, method, accessToken, body, headers);
+    } catch (error) {
+      return { status: 401, message: "Unathorized Access" };
+    }
   };
 
   useEffect(() => {
-    if (token.refreshToken) {
-      const setTokens = async (accessToken, refreshToken) => {
-        let currentDate = new Date();
-        if (!accessToken) return;
-        try {
-          let decodedToken = jwt_decode(accessToken);
-          if (decodedToken.exp * 1000 < currentDate.getTime()) {
-            let data = await fetchTokens(refreshToken);
-            if (data.status) data = { accessToken: "", refreshToken: "" };
-            setNewToken(data.accessToken, data.refreshToken);
-          }
-        } catch (error) {}
-      };
-      setTokens(token.accessToken, token.refreshToken);
+    async function checkTokens() {
+      let [accessToken, refreshToken] = await getNewTokens(token);
+      setNewToken(accessToken, refreshToken);
     }
-  }, [token]);
+    checkTokens();
+  }, []);
+
+  console.log("Rendered");
 
   return (
     <UserContext.Provider
