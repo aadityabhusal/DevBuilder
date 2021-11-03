@@ -116,8 +116,7 @@ const verifyEmail = async (req, res, next) => {
 
     let { id, firstName, lastName, status } = user;
     const accessToken = await signAccessToken(id, firstName, lastName, status);
-    const refreshToken = await signRefreshToken(id);
-    res.send({ accessToken, refreshToken });
+    res.send({ accessToken, message: "Email Verification Successful" });
   } catch (error) {
     next(error);
   }

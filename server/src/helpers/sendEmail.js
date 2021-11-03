@@ -21,7 +21,7 @@ const emailVerification = ({ emailVerificationKey }) => {
     text: `
     Hello There! Thank you for signing up to DevBuilder. To verify your email, click on the link below:
     
-    http://localhost:3000/verify-email/${emailVerificationKey}
+    http://localhost:3000/verify-email?emailVerificationKey=${emailVerificationKey}
 
     Regards
     DevBuilder Team`,
