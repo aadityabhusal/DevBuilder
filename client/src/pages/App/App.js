@@ -7,7 +7,14 @@ import { Header } from "./Header";
 import { EditUserPage } from "../User/EditUserPage";
 import { Footer } from "../../components/common/Footer";
 import { GlobalContainer } from "../../components/ui/GlobalContainer";
-import { Signup, Login, Protected, ForgotPassword, VerifyEmail } from "../Auth";
+import {
+  Signup,
+  Login,
+  Protected,
+  ForgotPassword,
+  VerifyEmail,
+  ResetPassword,
+} from "../Auth";
 
 function App() {
   return (
@@ -20,7 +27,8 @@ function App() {
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/forgot-password" component={ForgotPassword} />
-            <Route path="/verify-email" component={VerifyEmail} />
+            <Route exact path="/reset-password" component={ResetPassword} />
+            <Route exact path="/verify-email" component={VerifyEmail} />
             <Protected exact path="/user/:userId" component={UserPage} />
             <Protected path="/user/:userId/edit" component={EditUserPage} />
             <Protected path="/editor/:siteId" component={EditorPage} />
