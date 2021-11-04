@@ -7,14 +7,20 @@ const {
   deletePage,
   exportPage,
 } = require("../controllers/pageController");
+const { verifyAccessToken } = require("../helpers/jwt");
 const elementRoutes = require("./elementRoutes");
 
 const routes = () => {
-  router.post("/", createPage);
+  router.post("/", verifyAccessToken, createPage);
 
-  router.route("/:pageId").get(getPage).put(updatePage).delete(deletePage);
+  router
+    .route("/:pageId")
+    .all(verifyAccessToken)
+    .get(getPage)
+    .put(updatePage)
+    .delete(deletePage);
 
-  router.get("/:pageId/export", exportPage);
+  router.get("/:pageId/export", verifyAccessToken, exportPage);
 
   /*   router.use(
     "/:pageId",

@@ -6,15 +6,21 @@ const {
   deleteSite,
   exportSite,
 } = require("../controllers/siteController");
+const { verifyAccessToken } = require("../helpers/jwt");
 
 const router = express.Router();
 
 const routes = () => {
-  router.post("/", createSite);
+  router.post("/", verifyAccessToken, createSite);
 
-  router.route("/:siteId").get(getSite).put(updateSite).delete(deleteSite);
+  router
+    .route("/:siteId")
+    .all(verifyAccessToken)
+    .get(getSite)
+    .put(updateSite)
+    .delete(deleteSite);
 
-  router.get("/:siteId/export", exportSite);
+  router.get("/:siteId/export", verifyAccessToken, exportSite);
 
   return router;
 };

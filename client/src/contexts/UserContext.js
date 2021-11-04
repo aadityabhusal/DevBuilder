@@ -68,7 +68,9 @@ export const UserProvider = (props) => {
       let [accessToken, refreshToken] = await getNewTokens(token);
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
-      return await innerFetch(url, method, accessToken, body, headers);
+      let result = await innerFetch(url, method, accessToken, body, headers);
+      if (result.status) window.location.href = window.origin;
+      else return result;
     } catch (error) {
       return { status: 401, message: "Unathorized Access" };
     }
@@ -81,8 +83,6 @@ export const UserProvider = (props) => {
     }
     checkTokens();
   }, []);
-
-  console.log("Rendered");
 
   return (
     <UserContext.Provider

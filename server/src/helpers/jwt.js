@@ -44,6 +44,12 @@ function verifyAccessToken(req, res, next) {
     if (payload.status === 0) {
       return next(createError.Forbidden("You need to verify your email."));
     }
+    if (
+      (req.params.userId && req.params.userId !== payload._id) ||
+      (req.body.userId && req.body.userId !== payload._id)
+    ) {
+      return next(createError.Unauthorized("Unauthorized access"));
+    }
     req.payload = payload;
     next();
   });
