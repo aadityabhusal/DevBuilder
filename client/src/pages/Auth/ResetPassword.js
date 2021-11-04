@@ -41,8 +41,9 @@ export function ResetPassword({ location }) {
     <SignupSection>
       <SignupBox>
         <h1>Reset Password</h1>
-        {error && <div style={{ color: "#c0392b" }}>Error: {error}</div>}
-        {success ? (
+        {error ? (
+          <div style={{ color: "#c0392b" }}>Error: {error}</div>
+        ) : success ? (
           <div style={{ color: "#27ae60", textAlign: "center" }}>
             Password Reset Successful
           </div>
