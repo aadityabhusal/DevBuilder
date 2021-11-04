@@ -1,5 +1,9 @@
 const User = require("../models/userModel");
-const { registerSchema, loginSchema } = require("../helpers/validation");
+const {
+  registerSchema,
+  loginSchema,
+  forgotPasswordSchema,
+} = require("../helpers/validation");
 const {
   signAccessToken,
   signRefreshToken,
@@ -23,7 +27,7 @@ const register = async (req, res, next) => {
         data: { emailVerificationKey: result.emailVerificationKey },
       }))
     ) {
-      throw createError.ExpectationFailed(
+      throw createError.InternalServerError(
         "Could not send email. Please try again."
       );
     }
@@ -122,10 +126,57 @@ const verifyEmail = async (req, res, next) => {
   }
 };
 
+const forgotPassword = async (req, res, next) => {
+  try {
+    const result = await forgotPasswordSchema.validateAsync(req.body);
+    let passwordResetKey = generateKey();
+
+    let user = await User.findOneAndUpdate(
+      { email: result.email },
+      { passwordResetKey },
+      {
+        new: true,
+        useFindAndModify: false,
+      }
+    );
+    // For not allowing to figure out who has email on our site
+    // else use: throw createError.BadRequest("Email Not Found");
+    if (!user) res.send({ message: "Password Reset Link Sent" });
+
+    if (
+      !(await sendEmail({
+        to: result.email,
+        type: "passwordReset",
+        data: { passwordResetKey },
+      }))
+    ) {
+      throw createError.InternalServerError(
+        "Could not send email. Please try again."
+      );
+    }
+
+    res.send({ message: "Password Reset Link Sent" });
+  } catch (error) {
+    if (error.isJoi === true)
+      return next(createError.BadRequest("Invalid Email Provided"));
+    next(error);
+  }
+};
+
+const resetPassword = async (req, res, next) => {
+  try {
+    res.send({ message: "Password Reset Successful" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   register,
   login,
   logout,
   refreshToken,
   verifyEmail,
+  forgotPassword,
+  resetPassword,
 };

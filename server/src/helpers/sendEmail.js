@@ -9,17 +9,22 @@ const sendEmail = ({ to, type, data = {} }) => {
     case "emailVerification":
       emailContent = emailVerification(data);
       break;
+    case "passwordReset":
+      emailContent = passwordReset(data);
+      break;
   }
-
-  const message = { to, from, ...emailContent };
-  return sendgrid.send(message);
+  if (emailContent) {
+    const message = { to, from, ...emailContent };
+    return sendgrid.send(message);
+  }
+  return false;
 };
 
 const emailVerification = ({ emailVerificationKey }) => {
   return {
     subject: "Please verify your email address",
     text: `
-    Hello There! Thank you for signing up to DevBuilder. To verify your email, click on the link below:
+    Hello There! Thank you for signing up to DevBuilder. To verify your email, please click on the link below:
     
     http://localhost:3000/verify-email?emailVerificationKey=${emailVerificationKey}
 
@@ -28,6 +33,20 @@ const emailVerification = ({ emailVerificationKey }) => {
   };
 };
 
+const passwordReset = ({ passwordResetKey }) => {
+  return {
+    subject: "Reset your password",
+    text: `
+    Hello There! To reset your DevBuilder account password, please click on the link below:
+    
+    http://localhost:3000/reset-password?passwordResetKey=${passwordResetKey}
+
+    Regards
+    DevBuilder Team`,
+  };
+};
+
 module.exports = {
   sendEmail,
+  passwordReset,
 };
