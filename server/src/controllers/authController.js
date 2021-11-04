@@ -3,6 +3,7 @@ const {
   registerSchema,
   loginSchema,
   forgotPasswordSchema,
+  resetPasswordSchema,
 } = require("../helpers/validation");
 const {
   signAccessToken,
@@ -103,6 +104,7 @@ const verifyEmail = async (req, res, next) => {
     let { emailVerificationKey } = req.body;
     let isValid = await User.findOne({ emailVerificationKey });
 
+    // Fetching twice from database to give proper response messages given below
     if (!isValid)
       throw createError.BadRequest("Invalid Email Verification Key");
     if (isValid && isValid.status === 1)
@@ -163,9 +165,40 @@ const forgotPassword = async (req, res, next) => {
   }
 };
 
+const checkResetPasswordKey = async (req, res, next) => {
+  try {
+    if (!req.body.passwordResetKey)
+      throw createError.BadRequest("Invalid Password Reset Key");
+    let isValid = await User.findOne({
+      passwordResetKey: req.body.passwordResetKey,
+    });
+
+    if (!isValid) throw createError.BadRequest("Invalid Password Reset Key");
+    res.send({ message: "Valid Password Reset Key" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const resetPassword = async (req, res, next) => {
   try {
-    res.send({ message: "Password Reset Successful" });
+    const { password, passwordResetKey } =
+      await resetPasswordSchema.validateAsync(req.body);
+
+    let isValid = await User.findOne({ passwordResetKey });
+    // Fetching twice from database to give proper response messages given below
+    if (!isValid) throw createError.BadRequest("Invalid Password Reset Key");
+
+    let user = await User.findOneAndUpdate(
+      { passwordResetKey },
+      { password },
+      {
+        new: true,
+        useFindAndModify: false,
+      }
+    );
+    if (!user) throw createError.BadRequest("Reset Password Failed");
+    res.send({ message: "Reset Password Successful" });
   } catch (error) {
     next(error);
   }
@@ -178,5 +211,6 @@ module.exports = {
   refreshToken,
   verifyEmail,
   forgotPassword,
+  checkResetPasswordKey,
   resetPassword,
 };

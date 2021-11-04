@@ -61,10 +61,10 @@ UserSchema.methods.isValidPassword = async function (password) {
 
 UserSchema.pre("findOneAndUpdate", async function (next) {
   this.options.runValidators = true;
-  if (this.password) {
+  if (this._update.password) {
     try {
       const salt = await bcrypt.genSalt(10);
-      this.password = await bcrypt.hash(this.password, salt);
+      this._update.password = await bcrypt.hash(this._update.password, salt);
       next();
     } catch (error) {
       next(error);
