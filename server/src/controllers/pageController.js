@@ -3,9 +3,12 @@ const Site = require("../models/siteModel");
 const mongoose = require("mongoose");
 const JSZip = require("jszip");
 const { getHeadHTML, getBodyHTML, getStyles } = require("./getPageHTML");
+const createError = require("http-errors");
+const { generateKey } = require("../helpers/generateKey");
 
 const createPage = async (req, res, next) => {
   try {
+    req.body.pageToken = generateKey();
     let newPage = new Page(req.body);
     let page = await newPage.save();
 
@@ -74,7 +77,13 @@ const deletePage = async (req, res, next) => {
 
 const exportPage = async (req, res, next) => {
   try {
+    let pageToken = req.query.pageToken;
+    if (!pageToken) throw createError.Unauthorized("Unauthorized access");
+
     let page = await Page.findById(req.params.pageId);
+    if (page.pageToken !== pageToken)
+      throw createError.Unauthorized("Unauthorized access");
+
     let pageHead = getHeadHTML(page.head);
     let pageBody = getBodyHTML(page.body);
     const zip = new JSZip();
@@ -87,11 +96,18 @@ const exportPage = async (req, res, next) => {
     let result = `<!DOCTYPE html><html lang="en"><head>${pageHead}${links}</head>${pageBody}</html>`;
 
     zip.file(page.name, result);
-    const files = await zip.generateAsync({ type: "nodebuffer" });
+    const files = await zip.generateAsync({
+      type: "nodebuffer",
+      streamFiles: true,
+    });
+    res.set("Content-Type", "application/zip");
+    res.set(
+      "Content-Disposition",
+      "attachment; filename=" + page.name + ".zip"
+    );
     res.end(files);
   } catch (error) {
-    error.status = 400;
-    return next(error);
+    next(error);
   }
 };
 

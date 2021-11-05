@@ -51,9 +51,20 @@ function getStyles(styleObj, pageName) {
   let styles = [];
   for (const itemKey in styleObj) {
     links += `<link rel="stylesheet" href="./${pageName}/${itemKey}.css">`;
-    styles.push([`${itemKey}.css`, styleObj[itemKey]]);
+    let cssText = getCSSText(styleObj[itemKey].styles);
+    styles.push([`${itemKey}.css`, cssText]);
   }
   return { links, styles };
+}
+
+function getCSSText(styleBlocks) {
+  let result = styleBlocks.map((block) => {
+    let list = block.style.map((item) => {
+      return `${item.name}:${item.value};`;
+    });
+    return `${block.selector}{${list.join("")}}`;
+  });
+  return result.join("");
 }
 
 module.exports = { getHeadHTML, getBodyHTML, getStyles };

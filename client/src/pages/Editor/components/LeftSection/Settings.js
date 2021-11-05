@@ -71,11 +71,17 @@ export function SettingsPanel({ isActive }) {
   };
 
   const exportPage = async () => {
-    window.open(`http://localhost:8000/page/${pageTree._id}/export`, "_blank");
+    window.open(
+      `http://localhost:8000/page/${pageTree._id}/export?pageToken=${pageTree.pageToken}`,
+      "_blank"
+    );
   };
 
   const exportSite = async () => {
-    window.open(`http://localhost:8000/site/${siteTree._id}/export`, "_blank");
+    window.open(
+      `http://localhost:8000/site/${siteTree._id}/export?siteToken=${siteTree.siteToken}`,
+      "_blank"
+    );
   };
 
   const deleteSite = async () => {

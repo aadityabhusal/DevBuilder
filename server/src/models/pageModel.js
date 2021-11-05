@@ -55,6 +55,10 @@ const PageSchema = new mongoose.Schema(
         data: {},
       },
     },
+    pageToken: {
+      type: String,
+      required: true,
+    },
     configuration: {
       type: Object,
       default: {},

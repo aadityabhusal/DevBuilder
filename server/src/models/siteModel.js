@@ -26,6 +26,10 @@ const SiteSchema = new mongoose.Schema(
       type: Object,
       default: {},
     },
+    siteToken: {
+      type: String,
+      required: true,
+    },
     status: {
       type: Number,
       default: 0,

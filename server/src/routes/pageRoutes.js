@@ -20,7 +20,7 @@ const routes = () => {
     .put(updatePage)
     .delete(deletePage);
 
-  router.get("/:pageId/export", verifyAccessToken, exportPage);
+  router.get("/:pageId/export", exportPage);
 
   /*   router.use(
     "/:pageId",

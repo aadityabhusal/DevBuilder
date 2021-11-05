@@ -20,7 +20,7 @@ const routes = () => {
     .put(updateSite)
     .delete(deleteSite);
 
-  router.get("/:siteId/export", verifyAccessToken, exportSite);
+  router.get("/:siteId/export", exportSite);
 
   return router;
 };

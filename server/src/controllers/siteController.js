@@ -4,9 +4,12 @@ const Page = require("../models/pageModel");
 const mongoose = require("mongoose");
 const JSZip = require("jszip");
 const { getHeadHTML, getBodyHTML, getStyles } = require("./getPageHTML");
+const createError = require("http-errors");
+const { generateKey } = require("../helpers/generateKey");
 
 const createSite = async (req, res, next) => {
   try {
+    req.body.siteToken = generateKey();
     let newSite = new Site(req.body);
     let site = await newSite.save();
     let user = await User.findOneAndUpdate(
@@ -21,6 +24,7 @@ const createSite = async (req, res, next) => {
     let newPage = new Page({
       siteId: site._id,
       name: "index.html",
+      pageToken: generateKey(),
     });
     let page = await newPage.save();
 
@@ -87,6 +91,13 @@ const deleteSite = async (req, res, next) => {
 
 const exportSite = async (req, res, next) => {
   try {
+    let siteToken = req.query.siteToken;
+    if (!siteToken) throw createError.Unauthorized("Unauthorized access");
+
+    let site = await Site.findById(req.params.siteId);
+    if (site.siteToken !== siteToken)
+      throw createError.Unauthorized("Unauthorized access");
+
     const zip = new JSZip();
     let pages = await Page.find({ siteId: req.params.siteId });
     pages.forEach(async (page) => {
@@ -103,6 +114,11 @@ const exportSite = async (req, res, next) => {
       zip.file(page.name, result);
     });
     const files = await zip.generateAsync({ type: "nodebuffer" });
+    res.set("Content-Type", "application/zip");
+    res.set(
+      "Content-Disposition",
+      "attachment; filename=" + site.name + ".zip"
+    );
     res.end(files);
   } catch (error) {
     error.status = 400;
