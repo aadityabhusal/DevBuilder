@@ -36,7 +36,7 @@ export function VerifyEmail({ location }) {
     if (emailVerificationKey) {
       verifyEmail();
     }
-  }, [emailVerificationKey, token]);
+  }, [emailVerificationKey]);
 
   return !emailVerificationKey ? (
     <>

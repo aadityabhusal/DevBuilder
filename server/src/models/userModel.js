@@ -25,16 +25,6 @@ const UserSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
-
-  emailVerificationKey: {
-    type: String,
-    required: true,
-  },
-
-  passwordResetKey: {
-    type: String,
-    default: "",
-  },
   status: {
     type: Number,
     default: 0,

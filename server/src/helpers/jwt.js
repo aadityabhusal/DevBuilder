@@ -16,6 +16,7 @@ function signAccessToken(_id, firstName, lastName, status) {
     });
   });
 }
+
 function signRefreshToken(_id) {
   return new Promise((resolve, reject) => {
     const payload = { _id };
@@ -72,9 +73,37 @@ function verifyRefreshToken(token, rfToken) {
   });
 }
 
+function signVerificationToken(_id, email = "") {
+  return new Promise((resolve, reject) => {
+    const payload = {};
+    const secret = process.env.VERIFICATION_TOKEN_SECRET;
+    const options = {
+      expiresIn: "2h",
+      issuer: "devbuilder",
+      audience: _id || email,
+    };
+    JWT.sign(payload, secret, options, (err, token) => {
+      if (err) reject(createError.InternalServerError());
+      resolve(token);
+    });
+  });
+}
+
+function verifyVerificationToken(token) {
+  return new Promise((resolve, reject) => {
+    JWT.verify(token, process.env.VERIFICATION_TOKEN_SECRET, (err, payload) => {
+      if (err)
+        return reject(createError.BadRequest("Invalid Verification Token"));
+      resolve(payload);
+    });
+  });
+}
+
 module.exports = {
   signAccessToken,
   signRefreshToken,
   verifyAccessToken,
   verifyRefreshToken,
+  signVerificationToken,
+  verifyVerificationToken,
 };

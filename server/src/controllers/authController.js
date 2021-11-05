@@ -9,10 +9,11 @@ const {
   signAccessToken,
   signRefreshToken,
   verifyRefreshToken,
+  signVerificationToken,
+  verifyVerificationToken,
 } = require("../helpers/jwt");
 const createError = require("http-errors");
 const { sendEmail } = require("../helpers/sendEmail");
-const { generateKey } = require("../helpers/generateKey");
 
 const register = async (req, res, next) => {
   try {
@@ -20,12 +21,15 @@ const register = async (req, res, next) => {
     if (await User.exists({ email: result.email }))
       throw createError.Conflict(`${result.email} has already been registered`);
 
-    result.emailVerificationKey = generateKey();
+    let newUser = new User(result);
+    let user = await newUser.save();
+
+    let emailVerificationKey = await signVerificationToken(user.id);
     if (
       !(await sendEmail({
         to: result.email,
         type: "emailVerification",
-        data: { emailVerificationKey: result.emailVerificationKey },
+        data: { emailVerificationKey },
       }))
     ) {
       throw createError.InternalServerError(
@@ -33,8 +37,6 @@ const register = async (req, res, next) => {
       );
     }
 
-    let newUser = new User(result);
-    let user = await newUser.save();
     const accessToken = await signAccessToken(
       user.id,
       user.firstName,
@@ -101,24 +103,24 @@ const refreshToken = async (req, res, next) => {
 
 const verifyEmail = async (req, res, next) => {
   try {
-    let { emailVerificationKey } = req.body;
-    let isValid = await User.findOne({ emailVerificationKey });
-
-    // Fetching twice from database to give proper response messages given below
-    if (!isValid)
+    if (!req.body.emailVerificationKey)
       throw createError.BadRequest("Invalid Email Verification Key");
-    if (isValid && isValid.status === 1)
-      throw createError.BadRequest("Email Already Verified");
 
+    let { aud } = await verifyVerificationToken(req.body.emailVerificationKey);
     let user = await User.findOneAndUpdate(
-      { emailVerificationKey },
+      { _id: aud, status: 0 },
       { status: 1 },
       {
         new: true,
         useFindAndModify: false,
       }
     );
-    if (!user) throw createError.BadRequest("Email Verification Failed");
+    console.log(Boolean(user));
+    if (!user) {
+      throw createError.BadRequest(
+        "Email Already Verified or Account Doesn't Exist"
+      );
+    }
 
     let { id, firstName, lastName, status } = user;
     const accessToken = await signAccessToken(id, firstName, lastName, status);
@@ -131,19 +133,7 @@ const verifyEmail = async (req, res, next) => {
 const forgotPassword = async (req, res, next) => {
   try {
     const result = await forgotPasswordSchema.validateAsync(req.body);
-    let passwordResetKey = generateKey();
-
-    let user = await User.findOneAndUpdate(
-      { email: result.email },
-      { passwordResetKey },
-      {
-        new: true,
-        useFindAndModify: false,
-      }
-    );
-    // For not allowing to figure out who has email on our site
-    // else use: throw createError.BadRequest("Email Not Found");
-    if (!user) res.send({ message: "Password Reset Link Sent" });
+    let passwordResetKey = await signVerificationToken("", result.email);
 
     if (
       !(await sendEmail({
@@ -166,12 +156,13 @@ const forgotPassword = async (req, res, next) => {
 };
 
 const checkResetPasswordKey = async (req, res, next) => {
+  console.log("checkResetPasswordKey", req.body);
   try {
     if (!req.body.passwordResetKey)
       throw createError.BadRequest("Invalid Password Reset Key");
-    let isValid = await User.findOne({
-      passwordResetKey: req.body.passwordResetKey,
-    });
+
+    let { aud } = await verifyVerificationToken(req.body.passwordResetKey);
+    let isValid = await User.findOne({ email: aud });
 
     if (!isValid) throw createError.BadRequest("Invalid Password Reset Key");
     res.send({ message: "Valid Password Reset Key" });
@@ -181,16 +172,18 @@ const checkResetPasswordKey = async (req, res, next) => {
 };
 
 const resetPassword = async (req, res, next) => {
+  console.log("checkResetPasswordKey", req.body);
   try {
+    if (!req.body.password || !req.body.passwordResetKey)
+      throw createError.BadRequest("Invalid Password or Password Reset Key");
+
     const { password, passwordResetKey } =
       await resetPasswordSchema.validateAsync(req.body);
 
-    let isValid = await User.findOne({ passwordResetKey });
-    // Fetching twice from database to give proper response messages given below
-    if (!isValid) throw createError.BadRequest("Invalid Password Reset Key");
+    let { aud } = await verifyVerificationToken(passwordResetKey);
 
     let user = await User.findOneAndUpdate(
-      { passwordResetKey },
+      { email: aud },
       { password },
       {
         new: true,
