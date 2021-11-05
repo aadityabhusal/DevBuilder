@@ -50,7 +50,6 @@ export function EditUserPage() {
       if (response.status) setError(response.message);
       else {
         const { accessToken, refreshToken } = response;
-        console.log(accessToken, refreshToken);
         setNewToken(accessToken, refreshToken);
         setSuccess(true);
       }

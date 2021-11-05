@@ -115,7 +115,7 @@ const verifyEmail = async (req, res, next) => {
         useFindAndModify: false,
       }
     );
-    console.log(Boolean(user));
+
     if (!user) {
       throw createError.BadRequest(
         "Email Already Verified or Account Doesn't Exist"
@@ -156,7 +156,6 @@ const forgotPassword = async (req, res, next) => {
 };
 
 const checkResetPasswordKey = async (req, res, next) => {
-  console.log("checkResetPasswordKey", req.body);
   try {
     if (!req.body.passwordResetKey)
       throw createError.BadRequest("Invalid Password Reset Key");
@@ -172,7 +171,6 @@ const checkResetPasswordKey = async (req, res, next) => {
 };
 
 const resetPassword = async (req, res, next) => {
-  console.log("checkResetPasswordKey", req.body);
   try {
     if (!req.body.password || !req.body.passwordResetKey)
       throw createError.BadRequest("Invalid Password or Password Reset Key");
