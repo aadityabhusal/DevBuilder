@@ -4,8 +4,9 @@
   "description": "The server for the website builders for developers",
   "main": "src/server.js",
   "scripts": {
-    "start": "nodemon src/server.js",
-    "test": "jest --coverage"
+    "start": "node src/server.js",
+    "test": "jest --coverage",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "author": "Aaditya Bhusal",
   "license": "ISC",
