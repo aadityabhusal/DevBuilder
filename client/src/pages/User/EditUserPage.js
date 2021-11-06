@@ -44,7 +44,7 @@ export function EditUserPage() {
       user.password = password;
     }
     try {
-      let response = await authFetch(`/user/${userId}`, "PUT", {
+      let response = await authFetch(`/api/user/${userId}`, "PUT", {
         body: user,
       });
       if (response.status) setError(response.message);
@@ -62,7 +62,7 @@ export function EditUserPage() {
 
   const deleteUser = async () => {
     try {
-      let response = await authFetch(`/user/${userId}`, "DELETE", {
+      let response = await authFetch(`/api/user/${userId}`, "DELETE", {
         body: user,
       });
 

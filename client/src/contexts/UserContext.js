@@ -50,9 +50,14 @@ export const UserProvider = (props) => {
       if (!accessToken || !refreshToken) return ["", ""];
       let decodedToken = jwt_decode(accessToken);
       if (decodedToken.exp * 1000 < currentDate.getTime()) {
-        let data = await innerFetch(`/auth/refreshToken`, "POST", accessToken, {
-          body: { refreshToken },
-        });
+        let data = await innerFetch(
+          `/api/auth/refreshToken`,
+          "POST",
+          accessToken,
+          {
+            body: { refreshToken },
+          }
+        );
 
         if (data.status) return ["", ""];
         return [data.accessToken, data.refreshToken];

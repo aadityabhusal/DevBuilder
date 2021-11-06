@@ -49,7 +49,7 @@ export const PageTreeProvider = (props) => {
   }
 
   async function savePage() {
-    await authFetch(`/page/${pageTree._id}`, "PUT", { body: pageTree });
+    await authFetch(`/api/page/${pageTree._id}`, "PUT", { body: pageTree });
   }
 
   return (

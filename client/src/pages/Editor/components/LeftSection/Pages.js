@@ -25,7 +25,7 @@ export function PagesPanel({ pages, isActive }) {
     if (e.keyCode === 13) {
       let value = e.target.value;
       try {
-        let data = await authFetch(`/page/`, "POST", {
+        let data = await authFetch(`/api/page/`, "POST", {
           body: { siteId, name: value },
         });
         setPageList(data);
@@ -36,7 +36,7 @@ export function PagesPanel({ pages, isActive }) {
 
   const setPage = async (e, item) => {
     try {
-      let response = await authFetch(`/page/${item.pageId}`, "GET");
+      let response = await authFetch(`/api/page/${item.pageId}`, "GET");
       setPageTree(response);
     } catch (error) {}
   };
@@ -44,7 +44,7 @@ export function PagesPanel({ pages, isActive }) {
   const deletePage = async (e, item) => {
     e.stopPropagation();
     try {
-      let data = await authFetch(`/page/${item.pageId}`, "DELETE", {
+      let data = await authFetch(`/api/page/${item.pageId}`, "DELETE", {
         body: { siteId },
       });
       setPageList(data);

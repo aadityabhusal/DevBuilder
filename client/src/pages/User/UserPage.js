@@ -24,7 +24,7 @@ export function UserPage({ user: authUser }) {
       userId: user._id,
     };
 
-    let sitesData = await authFetch(`/site`, "POST", { body: data });
+    let sitesData = await authFetch(`/api/site`, "POST", { body: data });
     setSites(sitesData);
     setSiteName("");
   };
@@ -32,7 +32,7 @@ export function UserPage({ user: authUser }) {
   useEffect(() => {
     const getUser = async (userId) => {
       try {
-        let response = await authFetch(`/user/${userId}`, "GET");
+        let response = await authFetch(`/api/user/${userId}`, "GET");
         setUser(response);
         setSites(response.sites);
       } catch (error) {}

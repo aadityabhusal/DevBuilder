@@ -13,7 +13,7 @@ export function ForgotPassword() {
     e.preventDefault();
     try {
       let response = await (
-        await fetch(`/auth/forgot-password`, {
+        await fetch(`/api/auth/forgot-password`, {
           method: "post",
           headers: {
             Accept: "application/json",

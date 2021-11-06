@@ -86,7 +86,7 @@ export function SettingsPanel({ isActive }) {
 
   const deleteSite = async () => {
     try {
-      await authFetch(`/site/${siteTree._id}`, "DELETE", {
+      await authFetch(`/api/site/${siteTree._id}`, "DELETE", {
         body: { userId: user._id },
       });
       history.push("/user/" + user._id);

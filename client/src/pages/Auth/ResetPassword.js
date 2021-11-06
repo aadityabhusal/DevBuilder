@@ -17,7 +17,7 @@ export function ResetPassword({ location }) {
     const checkPasswordResetKey = async () => {
       try {
         let response = await (
-          await fetch(`/auth/check-reset-password`, {
+          await fetch(`/api/auth/check-reset-password`, {
             method: "post",
             headers: {
               Accept: "application/json",
@@ -43,7 +43,7 @@ export function ResetPassword({ location }) {
     e.preventDefault();
     try {
       let response = await (
-        await fetch(`/auth/reset-password`, {
+        await fetch(`/api/auth/reset-password`, {
           method: "post",
           headers: {
             Accept: "application/json",

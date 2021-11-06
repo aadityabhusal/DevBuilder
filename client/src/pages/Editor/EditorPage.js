@@ -23,7 +23,7 @@ export function EditorPage({ history, user }) {
   useEffect(() => {
     async function getSite(siteId, history, user) {
       try {
-        let siteResponse = await authFetch(`/site/${siteId}`, "GET");
+        let siteResponse = await authFetch(`/api/site/${siteId}`, "GET");
         if (siteResponse.userId !== user._id) {
           history.push("/");
         } else {
@@ -31,7 +31,7 @@ export function EditorPage({ history, user }) {
           let page = siteResponse.pages.find(
             (item) => item.pageName === "index.html"
           );
-          let pageResponse = await authFetch(`/page/${page.pageId}`, "GET");
+          let pageResponse = await authFetch(`/api/page/${page.pageId}`, "GET");
           setPage(pageResponse);
         }
       } catch (error) {}

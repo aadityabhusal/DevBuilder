@@ -25,7 +25,7 @@ export function Signup(props) {
 
     try {
       let response = await (
-        await fetch(`/auth/register`, {
+        await fetch(`/api/auth/register`, {
           method: "post",
           headers: {
             Accept: "application/json",

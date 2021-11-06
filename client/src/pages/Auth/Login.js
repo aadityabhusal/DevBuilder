@@ -19,7 +19,7 @@ export function Login() {
 
     try {
       let response = await (
-        await fetch(`/auth/login`, {
+        await fetch(`/api/auth/login`, {
           method: "post",
           headers: {
             Accept: "application/json",

@@ -15,7 +15,7 @@ export function VerifyEmail({ location }) {
     async function verifyEmail() {
       try {
         let response = await (
-          await fetch(`/auth/verify-email`, {
+          await fetch(`/api/auth/verify-email`, {
             method: "PUT",
             headers: {
               Accept: "application/json",
