@@ -18,7 +18,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan("dev"));
-app.use("/", routes());
+app.use("/api/", routes());
 
 app.use(async (req, res, next) => {
   next(createError.NotFound());
