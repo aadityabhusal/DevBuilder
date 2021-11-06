@@ -1,7 +1,6 @@
-const app = require("./app");
-const path = require("path");
-const mongoose = require("mongoose");
 require("dotenv").config({ path: __dirname + "/.env" });
+const app = require("./app");
+const mongoose = require("mongoose");
 const PORT = process.env.PORT || 8000;
 
 mongoose.Promise = global.Promise;
@@ -34,12 +33,5 @@ process.on("SIGINT", async () => {
   await mongoose.connection.close();
   process.exit(0);
 });
-
-if (process.env.NODE_ENV == "production") {
-  app.use(express.static("client/build"));
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-  });
-}
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
