@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "test": "jest --coverage",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild": "cross-env NPM_CONFIG_PRODUCTION=false SKIP_PREFLIGHT_CHECK=true INLINE_RUNTIME_CHUNK=false npm install --prefix client && npm run build --prefix client"
   },
   "author": "Aaditya Bhusal",
   "license": "ISC",
@@ -20,6 +20,7 @@
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "crypto-js": "^4.1.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
