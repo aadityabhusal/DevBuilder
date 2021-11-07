@@ -26,7 +26,7 @@ const emailVerification = ({ emailVerificationKey }) => {
     text: `
     Hello There! Thank you for signing up to DevBuilder. To verify your email, please click on the link below:
     
-    http://localhost:3000/verify-email?emailVerificationKey=${emailVerificationKey}
+    https://devbuilder.herokuapp.com/verify-email?emailVerificationKey=${emailVerificationKey}
 
     Regards
     DevBuilder Team`,
@@ -39,7 +39,7 @@ const passwordReset = ({ passwordResetKey }) => {
     text: `
     Hello There! To reset your DevBuilder account password, please click on the link below:
     
-    http://localhost:3000/reset-password?passwordResetKey=${passwordResetKey}
+    https://devbuilder.herokuapp.com/reset-password?passwordResetKey=${passwordResetKey}
 
     Regards
     DevBuilder Team`,
