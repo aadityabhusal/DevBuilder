@@ -6,7 +6,6 @@ const PORT = process.env.PORT || 8000;
 mongoose.Promise = global.Promise;
 mongoose
   .connect(process.env.MONGODB_URI, {
-    dbName: process.env.DB_NAME,
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
