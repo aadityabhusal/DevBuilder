@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "test": "jest --coverage",
-    "heroku-postbuild": "cross-env NPM_CONFIG_PRODUCTION=false SKIP_PREFLIGHT_CHECK=true INLINE_RUNTIME_CHUNK=false npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild": "npm install --prefix client && cross-env NPM_CONFIG_PRODUCTION=false SKIP_PREFLIGHT_CHECK=true INLINE_RUNTIME_CHUNK=false npm run build --prefix client"
   },
   "author": "Aaditya Bhusal",
   "license": "ISC",
