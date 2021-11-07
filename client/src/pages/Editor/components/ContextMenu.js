@@ -4,11 +4,7 @@ import {
   StyledContextMenuItem,
 } from "../../../components/editor/ContextMenu";
 import { SelectedElementContext } from "../../../contexts/SelectedElementContext";
-
-/* 
-  - When Copying section, the same ids of the elements get used again. So, when the elements are hovered in Navigator section the previous item is highlighted
-  - The above issue could cause problems if querySelector(data._id) will be used to make changes to the element
-*/
+import { nanoid } from "nanoid";
 
 function ContextMenu({}, ref) {
   const { selectedElement, insertPasteElement } = useContext(
@@ -19,12 +15,26 @@ function ContextMenu({}, ref) {
     await navigator.clipboard.writeText(JSON.stringify(selectedElement));
   }
 
+  function updateChildrenIds(element, _id = nanoid()) {
+    element._id = _id;
+    element.children_order.forEach((elem, i) => {
+      let new_id = nanoid();
+      element.children_order[i] = new_id;
+      element.children[new_id] = updateChildrenIds(
+        element.children[elem],
+        new_id
+      );
+      delete element.children[elem];
+    });
+    return element;
+  }
+
   async function handlePaste(e) {
     let pasteData = await navigator.clipboard.readText();
     if (checkPasteData(pasteData)) {
       pasteData = JSON.parse(pasteData);
-      pasteData._id = performance.now().toString(36).replace(/\./g, "");
-      pasteData.path = [...selectedElement.path, selectedElement._id];
+      pasteData = updateChildrenIds(pasteData);
+      console.log(pasteData);
       insertPasteElement(pasteData);
     }
   }

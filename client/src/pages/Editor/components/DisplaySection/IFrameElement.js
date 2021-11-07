@@ -9,6 +9,7 @@ import {
 import { CommandContext } from "../../../../contexts/CommandContext";
 import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
+import { nanoid } from "nanoid";
 const nonClosingTags = ["img", "video", "input", "hr", "br"];
 
 export function IframeElement({ data, parentElement, contextMenu }) {
@@ -48,8 +49,7 @@ export function IframeElement({ data, parentElement, contextMenu }) {
     e.stopPropagation();
     try {
       let data = JSON.parse(e.dataTransfer.getData("draggedElement"));
-      if (!data._id)
-        data._id = performance.now().toString(36).replace(/\./g, "");
+      if (!data._id) data._id = nanoid();
       if (!data.path.length) data.path = [...element.path, element._id];
       let afterElement = localStorage.getItem("afterElement");
 

@@ -3,6 +3,7 @@ import { updateStyle } from "../../../../utils";
 import { StyleBlock } from "./StyleBlock";
 import { properties } from "../../lists/properties";
 import { CloseIcon } from "../../../../components/ui/Icons";
+import { nanoid } from "nanoid";
 import {
   AddNewStyle,
   BlockContainer,
@@ -31,7 +32,7 @@ export function StyleEditor({ currentStyle }) {
     );
     if (foundInvalid === -1) {
       let update = { ...styleBlocks };
-      let _id = performance.now().toString(36).replace(/\./g, "");
+      let _id = nanoid();
       update.styles.push({
         _id,
         selector: "",

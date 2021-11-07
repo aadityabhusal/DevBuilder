@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import React, { useEffect, useState } from "react";
 import {
   Panel,
@@ -32,14 +33,12 @@ export function LayoutsPanel({ isActive, layoutList }) {
         item._id = id;
       }
     } else {
-      let id = (performance.now() + Math.random())
-        .toString(36)
-        .replace(/\./g, "");
+      let id = nanoid();
       element._id = id;
       return { id, item: element };
     }
     return {
-      id: (performance.now() + Math.random()).toString(36).replace(/\./g, ""),
+      id: nanoid(),
       item: {
         ...element,
         children_order: Object.keys(results),
