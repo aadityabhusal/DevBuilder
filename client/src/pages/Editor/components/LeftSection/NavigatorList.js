@@ -38,7 +38,9 @@ export function NavigatorList({ data, parentElement, firstDrop }) {
 
   const handleClick = (e) => {
     e.stopPropagation();
-    let from = parentElement.children_order.indexOf(element._id);
+    let from = parentElement._id
+      ? parentElement.children_order.indexOf(element._id)
+      : null;
     setSelectedElement((prev) => ({ element, from }));
   };
 
@@ -71,6 +73,7 @@ export function NavigatorList({ data, parentElement, firstDrop }) {
               <NavigatorList
                 key={element.children[elem]._id}
                 data={element.children[elem]}
+                parentElement={element}
               ></NavigatorList>
             );
           })
