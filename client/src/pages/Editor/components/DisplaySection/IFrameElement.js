@@ -31,13 +31,19 @@ export function IframeElement({ data, parentElement, contextMenu }) {
   const handleClick = (e) => {
     e.stopPropagation();
     closeContextMenu(e, contextMenu);
-    setSelectedElement(element);
+    let from = parentElement._id
+      ? parentElement.children_order.indexOf(element._id)
+      : null;
+    setSelectedElement((prev) => ({ element, from }));
   };
 
   const openContextMenu = (e, contextMenu) => {
     e.preventDefault();
     e.stopPropagation();
-    setSelectedElement(element);
+    let from = parentElement._id
+      ? parentElement.children_order.indexOf(element._id)
+      : null;
+    setSelectedElement((prev) => ({ element, from }));
     contextMenu.current.style.display = "flex";
     contextMenu.current.style.top = e.clientY + "px";
     contextMenu.current.style.left = e.clientX + "px";
@@ -72,6 +78,7 @@ export function IframeElement({ data, parentElement, contextMenu }) {
           from,
           to,
         });
+        // data.path passed separately because of interchange between parent and target path while undoing and redoing
         moveElement(data, data.path, targetPath, from, to);
       }
       localStorage.setItem("afterElement", "");

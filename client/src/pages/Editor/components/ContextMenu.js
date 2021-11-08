@@ -5,14 +5,17 @@ import {
 } from "../../../components/editor/ContextMenu";
 import { SelectedElementContext } from "../../../contexts/SelectedElementContext";
 import { nanoid } from "nanoid";
+import { PageTreeContext } from "../../../contexts/PageTreeContext";
+import { CommandContext } from "../../../contexts/CommandContext";
 
 function ContextMenu({}, ref) {
-  const { selectedElement, insertPasteElement } = useContext(
-    SelectedElementContext
-  );
+  const { selectedElement } = useContext(SelectedElementContext);
+  const { addCommand } = useContext(CommandContext);
+  const { moveElement } = useContext(PageTreeContext);
 
   async function handleCopy(e) {
     await navigator.clipboard.writeText(JSON.stringify(selectedElement));
+    ref.current.style.display = "none";
   }
 
   function updateChildrenIds(element, _id = nanoid()) {
@@ -31,11 +34,25 @@ function ContextMenu({}, ref) {
 
   async function handlePaste(e) {
     let pasteData = await navigator.clipboard.readText();
-    if (checkPasteData(pasteData)) {
-      pasteData = JSON.parse(pasteData);
-      pasteData = updateChildrenIds(pasteData);
-      console.log(pasteData);
-      insertPasteElement(pasteData);
+    pasteData = checkPasteData(pasteData);
+    if (pasteData) {
+      pasteData = updateChildrenIds(pasteData.element);
+      let targetPath = selectedElement.element.path.concat(
+        selectedElement.element._id
+      );
+      let to = selectedElement.element.children_order.length;
+      ref.current.style.display = "none";
+
+      addCommand({
+        action: "moveElement",
+        element: pasteData,
+        parent: [],
+        target: targetPath,
+        from: null,
+        to,
+      });
+
+      moveElement(pasteData, [], targetPath, null, to);
     }
   }
 
@@ -51,12 +68,11 @@ export const ContextMenuFR = React.forwardRef(ContextMenu);
 
 function checkPasteData(pasteData) {
   try {
-    let data = JSON.parse(pasteData);
-    if (data._id && data.tagName && data.path.length) {
-      return true;
-    } else {
-      throw new Error();
+    let { element, from } = JSON.parse(pasteData);
+    if (element._id && element.tagName && element.path.length) {
+      return { element, from };
     }
+    throw new Error();
   } catch (e) {
     return false;
   }

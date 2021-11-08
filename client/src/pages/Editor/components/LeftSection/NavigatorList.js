@@ -11,7 +11,7 @@ import { hideHoverBox, showHoverBox } from "../../../../utils";
 import { DropDownIcon } from "../../../../components/ui/Icons";
 const nonClosingTags = ["img", "video", "input", "hr", "br"];
 
-export function NavigatorList({ data, firstDrop }) {
+export function NavigatorList({ data, parentElement, firstDrop }) {
   const [element, setElement] = useState();
   const [isDropped, setIsDropped] = useState(firstDrop || false);
   const { setSelectedElement } = useContext(SelectedElementContext);
@@ -38,7 +38,8 @@ export function NavigatorList({ data, firstDrop }) {
 
   const handleClick = (e) => {
     e.stopPropagation();
-    setSelectedElement(element);
+    let from = parentElement.children_order.indexOf(element._id);
+    setSelectedElement((prev) => ({ element, from }));
   };
 
   const handleDrop = (e) => {

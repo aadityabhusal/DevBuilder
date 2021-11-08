@@ -16,7 +16,7 @@ export function PropertiesPanel({ isActive }) {
   const handleAttribute = (e, property) => {
     setSelectedElement((prev, prop) => {
       let temp = { ...prev };
-      temp.attributes[property] = e.target.value;
+      temp.element.attributes[property] = e.target.value;
       return temp;
     });
   };
@@ -24,7 +24,7 @@ export function PropertiesPanel({ isActive }) {
   const handleProperty = (e, property) => {
     setSelectedElement((prev, prop) => {
       let temp = { ...prev };
-      temp[property][0] = e.target.value;
+      temp.element[property][0] = e.target.value;
       return temp;
     });
   };
@@ -36,9 +36,11 @@ export function PropertiesPanel({ isActive }) {
         <>
           <PanelLabel>
             <span>HTML Element:</span>
-            <b style={{ marginLeft: "5px" }}>{`${selectedElement.tagName}`}</b>
+            <b
+              style={{ marginLeft: "5px" }}
+            >{`${selectedElement.element.tagName}`}</b>
           </PanelLabel>
-          {Object.entries(selectedElement.attributes).map((item, i) => (
+          {Object.entries(selectedElement.element.attributes).map((item, i) => (
             <PanelInputText
               type="text"
               data-elem-prop={item[0]}
@@ -48,11 +50,11 @@ export function PropertiesPanel({ isActive }) {
               onChange={(e) => handleAttribute(e, item[0])}
             />
           ))}
-          {selectedElement.hasOwnProperty("text") && (
+          {selectedElement.element.hasOwnProperty("text") && (
             <PanelTextArea
               rows={10}
               placeholder="Enter the text content"
-              value={selectedElement.text}
+              value={selectedElement.element.text}
               onChange={(e) => handleProperty(e, "text")}
             ></PanelTextArea>
           )}

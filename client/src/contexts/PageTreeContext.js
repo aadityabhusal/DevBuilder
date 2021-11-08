@@ -37,10 +37,9 @@ export const PageTreeProvider = (props) => {
 
   function moveElement(data, elementPath, targetPath, from, to) {
     let tree = { ...pageTree };
-    let element =
-      data._id && from !== null
-        ? removeElement(tree, data._id, elementPath, from)
-        : data;
+    let element = elementPath.length
+      ? removeElement(tree, data._id, elementPath, from)
+      : data;
     if (targetPath.length) {
       insertElement(tree, element, targetPath, to);
     }

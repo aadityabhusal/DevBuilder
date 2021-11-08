@@ -19,6 +19,7 @@ export function NavigatorPanel({ isActive }) {
         <NavigatorList
           data={pageTree.body.children[pageTree.body.children_order[0]]}
           firstDrop={true}
+          parentElement={{}}
         ></NavigatorList>
       </NavigatorContainer>
     </Panel>
