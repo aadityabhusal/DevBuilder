@@ -17,6 +17,7 @@ export const PageTreeProvider = (props) => {
     elementPath.forEach((item) => {
       parent = parent.children[item];
     });
+    console.log("removeElement", elementId, elementPath, parent);
     let element = { ...parent.children[elementId] };
     parent.children_order.splice(from, 1);
     delete parent.children[elementId];
@@ -36,10 +37,11 @@ export const PageTreeProvider = (props) => {
 
   function moveElement(data, elementPath, targetPath, from, to) {
     let tree = { ...pageTree };
-    let element = data._id
-      ? removeElement(tree, data._id, elementPath, from)
-      : data;
-    if (targetPath) {
+    let element =
+      data._id && from !== null
+        ? removeElement(tree, data._id, elementPath, from)
+        : data;
+    if (targetPath.length) {
       insertElement(tree, element, targetPath, to);
     }
     setPageTree((prev) => tree);

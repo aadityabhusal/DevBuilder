@@ -48,17 +48,22 @@ export function IframeElement({ data, parentElement, contextMenu }) {
     e.stopPropagation();
     try {
       let data = JSON.parse(e.dataTransfer.getData("draggedElement"));
-      let draggedParent = JSON.parse(localStorage.getItem("draggedParent"));
+      let draggedParent = JSON.parse(
+        localStorage.getItem("draggedParent") || "{}"
+      );
       let afterElement = localStorage.getItem("afterElement");
 
       if (!element.path.includes(data._id) && data._id !== element._id) {
         let targetPath = element.path.concat(element._id);
-        let from = data._id
-          ? draggedParent.children_order.indexOf(data._id)
-          : draggedParent.children_order.length;
+        let from = draggedParent._id
+          ? data._id
+            ? draggedParent.children_order.indexOf(data._id)
+            : draggedParent.children_order.length
+          : null;
         let to = afterElement
           ? element.children_order.indexOf(afterElement)
           : element.children_order.length;
+
         addCommand({
           action: "moveElement",
           element: data,
@@ -73,9 +78,7 @@ export function IframeElement({ data, parentElement, contextMenu }) {
       localStorage.setItem("draggedElement", "");
       localStorage.setItem("draggedParent", "");
       document.getElementById("after-element-line").style.display = "none";
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const handleDragOver = async (e) => {
@@ -137,6 +140,7 @@ export function IframeElement({ data, parentElement, contextMenu }) {
         {...elemAttributes}
       >
         {element.text.join("")}
+        {element._id}
         {element.children_order.map((elem) => {
           return (
             <IframeElement
