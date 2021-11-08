@@ -30,7 +30,7 @@ export const PageTreeProvider = (props) => {
       target = target.children[item];
     });
     if (!element._id) element._id = nanoid();
-    element.path = targetPath;
+    element = updateChildrenPath(element, target);
     target.children_order.splice(to, 0, element._id);
     target.children[element._id] = element;
   }
@@ -45,6 +45,18 @@ export const PageTreeProvider = (props) => {
       insertElement(tree, element, targetPath, to);
     }
     setPageTree((prev) => tree);
+  }
+
+  function updateChildrenPath(element, parent) {
+    element.path = [...parent.path, parent._id];
+    element.children_order.forEach((elem, i) => {
+      element.children[elem].path = [...element.path, element._id];
+      element.children[elem] = updateChildrenPath(
+        element.children[elem],
+        element
+      );
+    });
+    return element;
   }
 
   function updateStyles(name, action = "") {
