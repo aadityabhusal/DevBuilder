@@ -55,11 +55,32 @@ function ContextMenu({}, ref) {
       moveElement(pasteData, [], targetPath, null, to);
     }
   }
+  function handleDelete() {
+    addCommand({
+      action: "moveElement",
+      element: selectedElement.element,
+      parent: selectedElement.element.path,
+      target: [],
+      from: selectedElement.from,
+      to: null,
+    });
+
+    moveElement(
+      selectedElement.element,
+      selectedElement.element.path,
+      [],
+      selectedElement.from,
+      null
+    );
+  }
 
   return (
     <StyledContextMenu ref={ref}>
       <StyledContextMenuItem onClick={handleCopy}>Copy</StyledContextMenuItem>
       <StyledContextMenuItem onClick={handlePaste}>Paste</StyledContextMenuItem>
+      <StyledContextMenuItem onClick={handleDelete}>
+        Delete
+      </StyledContextMenuItem>
     </StyledContextMenu>
   );
 }
