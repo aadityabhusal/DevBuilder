@@ -147,7 +147,6 @@ export function IframeElement({ data, parentElement, contextMenu }) {
         {...elemAttributes}
       >
         {element.text.join("")}
-        {element._id}
         {element.children_order.map((elem) => {
           return (
             <IframeElement

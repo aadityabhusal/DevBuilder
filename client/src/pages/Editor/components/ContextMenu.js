@@ -56,6 +56,7 @@ function ContextMenu({}, ref) {
     }
   }
   function handleDelete() {
+    ref.current.style.display = "none";
     addCommand({
       action: "moveElement",
       element: selectedElement.element,

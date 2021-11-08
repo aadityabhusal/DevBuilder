@@ -17,7 +17,6 @@ export const PageTreeProvider = (props) => {
     elementPath.forEach((item) => {
       parent = parent.children[item];
     });
-    console.log("removeElement", elementId, elementPath, parent);
     let element = { ...parent.children[elementId] };
     parent.children_order.splice(from, 1);
     delete parent.children[elementId];
