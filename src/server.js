@@ -13,6 +13,7 @@ mongoose
   })
   .then(() => {
     console.log("MongoDB Connected");
+    app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
   })
   .catch((err) => console.log(err.message));
 
@@ -32,5 +33,3 @@ process.on("SIGINT", async () => {
   await mongoose.connection.close();
   process.exit(0);
 });
-
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`));

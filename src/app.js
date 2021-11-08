@@ -34,6 +34,8 @@ app.use(async (req, res, next) => {
 
 app.use(async (err, req, res, next) => {
   console.log(err);
+  if (err.name === "MongooseError" || err.name === "MongoError")
+    err = createError.InternalServerError();
   res.status(err.status || 500);
   res.send({ status: err.status || 500, message: err.message });
 });
