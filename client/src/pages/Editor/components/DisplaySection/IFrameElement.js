@@ -70,6 +70,16 @@ export function IframeElement({ data, parentElement, contextMenu }) {
           ? element.children_order.indexOf(afterElement)
           : element.children_order.length;
 
+        if (afterElement && draggedParent._id === element._id) {
+          let prevIndex = draggedParent.children_order.indexOf(data._id);
+          let currentIndex = element.children_order.indexOf(afterElement);
+          if (
+            prevIndex === currentIndex ||
+            draggedParent.children_order[prevIndex + 1] === afterElement
+          )
+            return 0;
+        } else if (element.children_order.slice(-1)[0] === data._id) return 0;
+
         addCommand({
           action: "moveElement",
           element: data,
