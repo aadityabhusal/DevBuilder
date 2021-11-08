@@ -30,6 +30,7 @@ export const PageTreeProvider = (props) => {
     });
     if (!element._id) element._id = nanoid();
     element = updateChildrenPath(element, target);
+    console.log(element);
     target.children_order.splice(to, 0, element._id);
     target.children[element._id] = element;
   }
@@ -47,13 +48,14 @@ export const PageTreeProvider = (props) => {
 
   function updateChildrenPath(element, parent) {
     element.path = [...parent.path, parent._id];
-    element.children_order.forEach((elem, i) => {
-      element.children[elem].path = [...element.path, element._id];
-      element.children[elem] = updateChildrenPath(
-        element.children[elem],
-        element
-      );
-    });
+    element.children_order &&
+      element.children_order.forEach((elem, i) => {
+        element.children[elem].path = [...element.path, element._id];
+        element.children[elem] = updateChildrenPath(
+          element.children[elem],
+          element
+        );
+      });
     return element;
   }
 
