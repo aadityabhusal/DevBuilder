@@ -20,15 +20,16 @@ function ContextMenu({}, ref) {
 
   function updateChildrenIds(element, _id = nanoid()) {
     element._id = _id;
-    element.children_order.forEach((elem, i) => {
-      let new_id = nanoid();
-      element.children_order[i] = new_id;
-      element.children[new_id] = updateChildrenIds(
-        element.children[elem],
-        new_id
-      );
-      delete element.children[elem];
-    });
+    element.children_order &&
+      element.children_order.forEach((elem, i) => {
+        let new_id = nanoid();
+        element.children_order[i] = new_id;
+        element.children[new_id] = updateChildrenIds(
+          element.children[elem],
+          new_id
+        );
+        delete element.children[elem];
+      });
     return element;
   }
 
