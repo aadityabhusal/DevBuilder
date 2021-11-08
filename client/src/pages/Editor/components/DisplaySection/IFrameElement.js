@@ -9,13 +9,12 @@ import {
 import { CommandContext } from "../../../../contexts/CommandContext";
 import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
-import { nanoid } from "nanoid";
 const nonClosingTags = ["img", "video", "input", "hr", "br"];
 
 export function IframeElement({ data, parentElement, contextMenu }) {
   const [element, setElement] = useState();
   const elementRef = useRef();
-  const { pageTree } = useContext(PageTreeContext);
+  const { moveElement } = useContext(PageTreeContext);
   const { setSelectedElement } = useContext(SelectedElementContext);
   const { addCommand } = useContext(CommandContext);
 
@@ -49,18 +48,34 @@ export function IframeElement({ data, parentElement, contextMenu }) {
     e.stopPropagation();
     try {
       let data = JSON.parse(e.dataTransfer.getData("draggedElement"));
-      if (!data._id) data._id = nanoid();
-      if (!data.path.length) data.path = [...element.path, element._id];
+      let draggedParent = JSON.parse(localStorage.getItem("draggedParent"));
       let afterElement = localStorage.getItem("afterElement");
 
       if (!element.path.includes(data._id) && data._id !== element._id) {
-        let prevParent = removeElementFromParent(data, afterElement);
-        insertElement(data, afterElement, prevParent);
+        let targetPath = element.path.concat(element._id);
+        let from = data._id
+          ? draggedParent.children_order.indexOf(data._id)
+          : draggedParent.children_order.length;
+        let to = afterElement
+          ? element.children_order.indexOf(afterElement)
+          : element.children_order.length;
+        addCommand({
+          action: "moveElement",
+          element: data,
+          parent: data.path,
+          target: targetPath,
+          from,
+          to,
+        });
+        moveElement(data, data.path, targetPath, from, to);
       }
       localStorage.setItem("afterElement", "");
       localStorage.setItem("draggedElement", "");
+      localStorage.setItem("draggedParent", "");
       document.getElementById("after-element-line").style.display = "none";
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleDragOver = async (e) => {
@@ -91,60 +106,11 @@ export function IframeElement({ data, parentElement, contextMenu }) {
   const handleDragStart = (e) => {
     e.stopPropagation();
     e.target.style.opacity = "0.6";
-    e.dataTransfer.setData("draggedElement", JSON.stringify(element));
-    localStorage.setItem("draggedElement", JSON.stringify(element));
-    localStorage.setItem("draggedParent", JSON.stringify(parentElement));
-  };
-
-  const removeElementFromParent = (child, afterElement) => {
-    try {
-      let draggedParent = localStorage.getItem("draggedParent");
-      localStorage.setItem("draggedParent", "");
-      draggedParent = JSON.parse(draggedParent);
-
-      if (afterElement && draggedParent._id === element._id) {
-        let prevIndex = draggedParent.children_order.indexOf(child._id);
-        let currentIndex = element.children_order.indexOf(afterElement);
-        if (
-          prevIndex === currentIndex ||
-          draggedParent.children_order[prevIndex + 1] === afterElement
-        )
-          return 0;
-      } else if (element.children_order.slice(-1)[0] === child._id) return 0;
-
-      let prevParent = pageTree.body;
-      child.path.forEach((item) => {
-        prevParent = prevParent.children[item];
-      });
-
-      let prevIndex = prevParent.children_order.indexOf(child._id);
-      prevParent.children_order.splice(prevIndex, 1);
-      delete prevParent.children[child._id];
-      return { prevParent, prevIndex };
-    } catch (error) {}
-  };
-
-  const insertElement = (child, afterElement, prevParent) => {
-    let update = { ...element };
-    let index;
-    if (prevParent === 0) return;
-
-    if (!afterElement) {
-      index = update.children_order.length;
-      update.children_order.push(child._id);
-    } else {
-      index = update.children_order.indexOf(afterElement);
-      update.children_order.splice(index, 0, child._id);
-    }
-    update.children[child._id] = child;
-
-    addCommand({
-      action: "moveElement",
-      element: { ...child },
-      parent: { ...update },
-      index,
-      ...prevParent,
-    });
+    let { children, ...data } = element;
+    let { children: pc, ...parentData } = parentElement;
+    e.dataTransfer.setData("draggedElement", JSON.stringify(data));
+    localStorage.setItem("draggedElement", JSON.stringify(data));
+    localStorage.setItem("draggedParent", JSON.stringify(parentData));
   };
 
   const handleDragend = (e) => {
@@ -171,9 +137,7 @@ export function IframeElement({ data, parentElement, contextMenu }) {
         {...elemAttributes}
       >
         {element.text.join("")}
-        {element._id}
         {element.children_order.map((elem) => {
-          element.children[elem].path = [...element.path, element._id];
           return (
             <IframeElement
               key={element.children[elem]._id}

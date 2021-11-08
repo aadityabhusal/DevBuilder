@@ -22,12 +22,14 @@ import { StylesPanel } from "./Styles";
 import elementList from "../../lists/elements.json";
 import layoutList from "../../lists/layouts.json";
 import { SiteTreeContext } from "../../../../contexts/SiteTreeContext";
+import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 
 export const LeftSection = React.forwardRef(({}, ref) => {
   const [activePanel, setActivePanel] = useState(1);
   const checkActive = (index) => (activePanel === index ? "active" : "");
   const { siteTree } = useContext(SiteTreeContext);
-  return (
+  const { pageTree } = useContext(PageTreeContext);
+  return pageTree ? (
     <LeftContainer id="left-panel" data-panel-side="left" ref={ref}>
       <PanelList className="panel-list">
         <div className={checkActive(1)} onClick={() => setActivePanel(1)}>
@@ -62,5 +64,5 @@ export const LeftSection = React.forwardRef(({}, ref) => {
         <SettingsPanel isActive={checkActive(7)} />
       </Panels>
     </LeftContainer>
-  );
+  ) : null;
 });

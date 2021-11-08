@@ -1,34 +1,48 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
+import { nanoid } from "nanoid";
 
 export const PageTreeContext = createContext();
 
 export const PageTreeProvider = (props) => {
-  const [pageTree, setPageTree] = useState(props.value);
+  const [pageTree, setPageTree] = useState(null);
   const { authFetch } = useContext(UserContext);
 
-  function updateTree(
-    element,
-    action = "",
-    level = 0,
-    site = pageTree.body.children
-  ) {
-    if (level === element.path.length - 1) {
-      let lastItem = element.path[element.path.length - 1];
-      if (site.hasOwnProperty(lastItem)) {
-        action === "delete"
-          ? delete site[lastItem].children[element._id]
-          : (site[lastItem].children[element._id] = element);
-      }
-      return;
-    } else {
-      updateTree(
-        element,
-        action,
-        level + 1,
-        site[element.path[level]].children
-      );
+  useEffect(() => {
+    setPageTree((prev) => props.value);
+  }, [props.value]);
+
+  function removeElement(tree, elementId, elementPath, from) {
+    let parent = tree.body;
+    elementPath.forEach((item) => {
+      parent = parent.children[item];
+    });
+    let element = { ...parent.children[elementId] };
+    parent.children_order.splice(from, 1);
+    delete parent.children[elementId];
+    return element;
+  }
+
+  function insertElement(tree, element, targetPath, to) {
+    let target = tree.body;
+    targetPath.forEach((item) => {
+      target = target.children[item];
+    });
+    if (!element._id) element._id = nanoid();
+    element.path = targetPath;
+    target.children_order.splice(to, 0, element._id);
+    target.children[element._id] = element;
+  }
+
+  function moveElement(data, elementPath, targetPath, from, to) {
+    let tree = { ...pageTree };
+    let element = data._id
+      ? removeElement(tree, data._id, elementPath, from)
+      : data;
+    if (targetPath) {
+      insertElement(tree, element, targetPath, to);
     }
+    setPageTree((prev) => tree);
   }
 
   function updateStyles(name, action = "") {
@@ -57,10 +71,10 @@ export const PageTreeProvider = (props) => {
       value={{
         pageTree,
         setPageTree,
-        updateTree,
         updateStyles,
         updateTitle,
         savePage,
+        moveElement,
       }}
     >
       {props.children}
