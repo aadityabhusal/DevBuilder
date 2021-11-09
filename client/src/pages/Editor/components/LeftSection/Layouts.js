@@ -49,7 +49,7 @@ export function LayoutsPanel({ isActive, layoutList }) {
 
   return layouts ? (
     <Panel className={isActive}>
-      <PanelTitle>Layouts</PanelTitle>
+      <PanelTitle>Layouts (BETA)</PanelTitle>
       <PanelItems cols={2}>
         {layouts.map((item, i) => {
           return (
