@@ -6,11 +6,7 @@ import {
   CopyIcon,
   PasteIcon,
 } from "../../../../components/ui/Icons";
-import {
-  getCSSArray,
-  updateStyle,
-  getStylePropertyName,
-} from "../../../../utils";
+import { getCSSArray, getStylePropertyName } from "../../../../utils";
 import {
   CloseButton,
   CopyButton,
@@ -19,10 +15,12 @@ import {
   StyleList,
   StyleListItem,
 } from "../../../../components/editor/StyleBlock";
+import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 
-export function StyleBlock({ data, currentStyle }) {
+export function StyleBlock({ data, blockKey, currentStyle }) {
   const [propertyList, setPropertyList] = useState();
   const { addCommand } = useContext(CommandContext);
+  const { stylePropertyChange } = useContext(PageTreeContext);
 
   useEffect(() => {
     setPropertyList((prev) => data);
@@ -86,7 +84,7 @@ export function StyleBlock({ data, currentStyle }) {
               style: currentStyle,
               prevStyle,
             });
-            updateStyle(currentStyle.name, currentStyle.styles);
+            stylePropertyChange(currentStyle.name, blockKey, i, item);
           }
         }
       }
@@ -114,7 +112,7 @@ export function StyleBlock({ data, currentStyle }) {
     let update = { ...propertyList };
     let index = update.style.findIndex((item) => item.name === propertyName);
     update.style.splice(index, 1);
-    updateStyle(currentStyle.name, currentStyle.styles);
+    stylePropertyChange(currentStyle.name, blockKey, index);
 
     setPropertyList((prev) => update);
   };

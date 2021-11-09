@@ -116,7 +116,11 @@ export function StyleEditor({ currentStyle }) {
                 <CloseIcon />
               </CloseButton>
             </StyleHead>
-            <StyleBlock data={styleBlock} currentStyle={currentStyle} />
+            <StyleBlock
+              data={styleBlock}
+              blockKey={i}
+              currentStyle={currentStyle}
+            />
             <PropertiesDataList id="properties-data-list">
               {properties.map((item, i) => (
                 <option value={item} key={i} />
