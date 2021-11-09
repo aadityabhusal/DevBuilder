@@ -57,18 +57,28 @@ export function StyleBlock({ data, currentStyle }) {
     return true;
   };
 
+  function checkValue(prop, val, prev) {
+    if (prev.trim() === val.trim()) return false;
+    let element = document.createElement("div");
+    if (val.includes(" !important")) {
+      let value = val.replace(" !important", "");
+      element.style.setProperty(prop, value, "important");
+    } else element.style.setProperty(prop, val);
+
+    if (element.style[getStylePropertyName(prop)]) return true;
+    return false;
+  }
+
   const updateValue = (e, currentProperty) => {
     let update = { ...propertyList };
     let prevStyle = JSON.stringify(currentStyle.styles);
     update.style.forEach((item, i) => {
       if (item.name === currentProperty.name) {
+        let prev = item.value;
         item.value = e.target.value;
 
-        let element = document.createElement("div");
-        element.style[getStylePropertyName(currentProperty.name)] =
-          e.target.value;
-
-        if (element.style[getStylePropertyName(currentProperty.name)]) {
+        let isValid = checkValue(currentProperty.name, e.target.value, prev);
+        if (isValid) {
           let newStyle = JSON.stringify(currentStyle.styles);
           if (newStyle !== prevStyle) {
             addCommand({
