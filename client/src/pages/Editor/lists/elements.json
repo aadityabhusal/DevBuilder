@@ -156,53 +156,5 @@
     },
     "children_order": [],
     "children": {}
-  },
-  "Table": {
-    "_id": "",
-    "tagName": "table",
-    "path": [],
-    "text": [""],
-    "attributes": {
-      "id": "",
-      "class": ""
-    },
-    "children_order": [],
-    "children": {}
-  },
-  "Table Row": {
-    "_id": "",
-    "tagName": "tr",
-    "path": [],
-    "text": [""],
-    "attributes": {
-      "id": "",
-      "class": ""
-    },
-    "children_order": [],
-    "children": {}
-  },
-  "Table Heading": {
-    "_id": "",
-    "tagName": "th",
-    "path": [],
-    "text": ["Table Heading"],
-    "attributes": {
-      "id": "",
-      "class": ""
-    },
-    "children_order": [],
-    "children": {}
-  },
-  "Table Data": {
-    "_id": "",
-    "tagName": "td",
-    "path": [],
-    "text": ["Table Data"],
-    "attributes": {
-      "id": "",
-      "class": ""
-    },
-    "children_order": [],
-    "children": {}
   }
 }

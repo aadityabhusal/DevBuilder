@@ -18,10 +18,7 @@ export const CommandProvider = (props) => {
     setHistory((prev) => update);
   }
 
-  console.log("rendered");
-
   function undo() {
-    console.log("Hello");
     if (history.current >= 0) {
       let update = { ...history };
       let cmd = update.commands[update.current];
