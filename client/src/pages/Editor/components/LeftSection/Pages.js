@@ -68,7 +68,7 @@ export function PagesPanel({ pages, isActive }) {
           ))}
         </PageList>
         <PageInputText
-          placeholder="Type name and hit enter"
+          placeholder="Type name.extension and hit enter"
           onKeyUp={addPage}
         />
       </PanelItems>

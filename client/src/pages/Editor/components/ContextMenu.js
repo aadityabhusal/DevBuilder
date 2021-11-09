@@ -14,8 +14,10 @@ function ContextMenu({}, ref) {
   const { moveElement } = useContext(PageTreeContext);
 
   async function handleCopy(e) {
-    await navigator.clipboard.writeText(JSON.stringify(selectedElement));
     ref.current.style.display = "none";
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(selectedElement));
+    } catch (error) {}
   }
 
   function updateChildrenIds(element, _id = nanoid()) {
@@ -33,7 +35,7 @@ function ContextMenu({}, ref) {
     return element;
   }
 
-  async function handlePaste(e) {
+  async function handlePaste(e, duplicateTo = null) {
     let pasteData = await navigator.clipboard.readText();
     pasteData = checkPasteData(pasteData);
     if (pasteData) {
@@ -43,6 +45,11 @@ function ContextMenu({}, ref) {
       );
       let to = selectedElement.element.children_order.length;
       ref.current.style.display = "none";
+
+      if (duplicateTo) {
+        to = duplicateTo;
+        targetPath.pop();
+      }
 
       addCommand({
         action: "moveElement",
@@ -56,6 +63,15 @@ function ContextMenu({}, ref) {
       moveElement(pasteData, [], targetPath, null, to);
     }
   }
+
+  async function handleDuplicate() {
+    try {
+      handleCopy();
+      let to = selectedElement.from + 1;
+      handlePaste({}, to);
+    } catch (error) {}
+  }
+
   function handleDelete() {
     ref.current.style.display = "none";
     addCommand({
@@ -80,6 +96,9 @@ function ContextMenu({}, ref) {
     <StyledContextMenu ref={ref}>
       <StyledContextMenuItem onClick={handleCopy}>Copy</StyledContextMenuItem>
       <StyledContextMenuItem onClick={handlePaste}>Paste</StyledContextMenuItem>
+      <StyledContextMenuItem onClick={handleDuplicate}>
+        Duplicate
+      </StyledContextMenuItem>
       <StyledContextMenuItem onClick={handleDelete}>
         Delete
       </StyledContextMenuItem>

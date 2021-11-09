@@ -30,7 +30,6 @@ export const PageTreeProvider = (props) => {
     });
     if (!element._id) element._id = nanoid();
     element = updateChildrenPath(element, target);
-    console.log(element);
     target.children_order.splice(to, 0, element._id);
     target.children[element._id] = element;
   }
