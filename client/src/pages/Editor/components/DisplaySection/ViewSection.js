@@ -41,7 +41,9 @@ export function ViewSection() {
   return pageTree ? (
     <>
       <ContextMenuFR ref={contextRef} />
-      <OutlineBox id="outlineBox"></OutlineBox>
+      <OutlineBox id="outlineBox">
+        <span></span>
+      </OutlineBox>
       <AfterElementLine id="after-element-line"></AfterElementLine>
       <Frame
         id="iframe-view"

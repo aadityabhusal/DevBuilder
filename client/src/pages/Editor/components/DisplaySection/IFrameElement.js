@@ -140,7 +140,6 @@ export function IframeElement({ data, parentElement, contextMenu }) {
   return element ? (
     !nonClosingTags.includes(HTMLTag) ? (
       <HTMLTag
-        title={HTMLTag}
         ref={elementRef}
         draggable={true}
         onClick={handleClick}
