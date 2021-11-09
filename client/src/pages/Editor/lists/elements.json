@@ -1,5 +1,5 @@
 {
-  "div": {
+  "Container": {
     "_id": "",
     "tagName": "div",
     "path": [],
@@ -11,7 +11,7 @@
     "children_order": [],
     "children": {}
   },
-  "a": {
+  "Link": {
     "_id": "",
     "tagName": "a",
     "path": [],
@@ -24,7 +24,7 @@
     "children_order": [],
     "children": {}
   },
-  "img": {
+  "Image": {
     "_id": "",
     "tagName": "img",
     "path": [],
@@ -35,7 +35,7 @@
       "src": "/placeholder.png"
     }
   },
-  "button": {
+  "Button": {
     "_id": "",
     "tagName": "button",
     "path": [],
@@ -47,7 +47,7 @@
     "children_order": [],
     "children": {}
   },
-  "input": {
+  "Input": {
     "_id": "",
     "tagName": "input",
     "path": [],
@@ -60,7 +60,7 @@
       "placeholder": ""
     }
   },
-  "text": {
+  "Text": {
     "_id": "",
     "tagName": "p",
     "path": [],
@@ -72,7 +72,7 @@
     "children_order": [],
     "children": {}
   },
-  "ol": {
+  "Ordered List": {
     "_id": "",
     "tagName": "ol",
     "path": [],
@@ -87,7 +87,7 @@
     "children_order": [],
     "children": {}
   },
-  "ul": {
+  "Unordered List": {
     "_id": "",
     "tagName": "ul",
     "path": [],
@@ -99,7 +99,7 @@
     "children_order": [],
     "children": {}
   },
-  "li": {
+  "List Item": {
     "_id": "",
     "tagName": "li",
     "path": [],
@@ -111,7 +111,7 @@
     "children_order": [],
     "children": {}
   },
-  "video": {
+  "Video": {
     "_id": "",
     "tagName": "video",
     "path": [],
@@ -121,7 +121,7 @@
       "src": ""
     }
   },
-  "h1": {
+  "Heading 1": {
     "_id": "",
     "tagName": "h1",
     "path": [],
@@ -133,7 +133,7 @@
     "children_order": [],
     "children": {}
   },
-  "h2": {
+  "Heading 2": {
     "_id": "",
     "tagName": "h2",
     "path": [],
@@ -145,7 +145,7 @@
     "children_order": [],
     "children": {}
   },
-  "h3": {
+  "Heading 3": {
     "_id": "",
     "tagName": "h3",
     "path": [],
@@ -157,7 +157,19 @@
     "children_order": [],
     "children": {}
   },
-  "tr": {
+  "Table": {
+    "_id": "",
+    "tagName": "table",
+    "path": [],
+    "text": [""],
+    "attributes": {
+      "id": "",
+      "class": ""
+    },
+    "children_order": [],
+    "children": {}
+  },
+  "Table Row": {
     "_id": "",
     "tagName": "tr",
     "path": [],
@@ -169,7 +181,7 @@
     "children_order": [],
     "children": {}
   },
-  "th": {
+  "Table Heading": {
     "_id": "",
     "tagName": "th",
     "path": [],
@@ -181,23 +193,11 @@
     "children_order": [],
     "children": {}
   },
-  "td": {
+  "Table Data": {
     "_id": "",
     "tagName": "td",
     "path": [],
     "text": ["Table Data"],
-    "attributes": {
-      "id": "",
-      "class": ""
-    },
-    "children_order": [],
-    "children": {}
-  },
-  "databox": {
-    "_id": "",
-    "tagName": "div",
-    "path": [],
-    "text": [""],
     "attributes": {
       "id": "",
       "class": ""

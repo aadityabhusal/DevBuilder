@@ -29,7 +29,8 @@ export function ElementsPanel({ isActive, elementList }) {
                 localStorage.setItem("draggedElement", JSON.stringify(item));
               }}
             >
-              &lt;{key}&gt;
+              <div id="elementTag">&lt;{item.tagName}&gt;</div>
+              <div id="elementName">{key}</div>
             </ElementsPanelItem>
           );
         })}

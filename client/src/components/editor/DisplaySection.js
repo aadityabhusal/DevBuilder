@@ -17,6 +17,8 @@ export const OutlineBox = styled.div`
 
   & > span {
     background-color: #3498db;
+    margin-top: -20px;
+    margin-left: -1px;
     color: #fff;
     padding: 2px 5px;
     font-size: 12px;

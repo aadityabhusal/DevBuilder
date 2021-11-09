@@ -45,8 +45,7 @@ export function IframeElement({ data, parentElement, contextMenu }) {
       : null;
     setSelectedElement((prev) => ({ element, from }));
     contextMenu.current.style.display = "flex";
-    contextMenu.current.style.top = e.clientY + "px";
-    contextMenu.current.style.left = e.clientX + "px";
+    contextMenu.current.style.transform = `translate(${e.clientX}px,${e.clientY}px)`;
     return false;
   };
 

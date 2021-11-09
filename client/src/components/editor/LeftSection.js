@@ -52,6 +52,19 @@ export const DeletePage = styled.div``;
 export const ElementsPanelItem = styled(PanelItem)`
   font-size: 16px;
   font-weight: 500;
+  padding: 0;
+
+  & > #elementTag {
+    font-size: 18px;
+    background: #ecf0f1;
+    padding: 10px;
+  }
+
+  & > #elementName {
+    border-top: 1px solid #bdc3c7;
+    font-size: 14px;
+    padding: 5px;
+  }
 `;
 
 // Navigator Panel

@@ -57,13 +57,19 @@ export const PanelItems = styled.div`
 export const PanelItem = styled.div`
   font-size: 14px;
   border: 1px solid #bdc3c7;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   text-align: center;
   padding: 10px 0;
-  cursor: pointer;
+  cursor: all-scroll;
+  transition: 0.2s all;
+
+  &:hover {
+    box-shadow: 0 3px 4px 0 rgb(0 0 0 / 15%);
+  }
 `;
 
 export const PanelButton = styled(PanelItem).attrs({ as: "button" })`
+  cursor: pointer;
   font-weight: 600;
   color: #2c3e50;
   background: #f5f6fa;
