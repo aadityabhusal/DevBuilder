@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { properties } from "../../lists/properties";
 import { CommandContext } from "../../../../contexts/CommandContext";
 import {
@@ -105,10 +105,18 @@ export function StyleBlock({ data, blockKey, currentStyle }) {
   };
 
   const deleteProperty = (propertyName) => {
+    let prevStyle = JSON.stringify(data);
     let update = Object.assign({}, propertyList);
     let index = update.style.findIndex((item) => item.name === propertyName);
     update.style.splice(index, 1);
-    styleBlockChange(currentStyle, blockKey, update);
+    addCommand({
+      action: "styleChange",
+      styleName: currentStyle,
+      blockKey,
+      style: JSON.stringify(update),
+      prevStyle,
+    });
+    styleBlockChange(currentStyle, blockKey, JSON.stringify(update));
 
     setPropertyList((prev) => update);
   };
