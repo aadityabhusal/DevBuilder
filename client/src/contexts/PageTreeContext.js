@@ -70,24 +70,24 @@ export const PageTreeProvider = (props) => {
     .
   */
 
-  // This is on the property level -- can we do it in the block level
-  function stylePropertyChange(styleName, blockIndex, index, value) {
-    let tree = { ...pageTree };
-    let styleBlock = tree.head.style[styleName].styles[blockIndex];
-    if (value) {
-      value = JSON.parse(value);
-      styleBlock.style.splice(index, 1, value);
-    } else styleBlock.style.splice(index, 1);
-    setPageTree((prev) => tree);
-  }
-
-  function styleBlockChange(styleName, blockIndex, blockValue) {
+  function styleBlockChange(styleName, blockId, blockValue) {
     let tree = { ...pageTree };
     let style = tree.head.style[styleName];
+    let blockIndex = tree.head.style[styleName].styles.findIndex(
+      (item) => item._id === blockId
+    );
     if (blockValue) {
       blockValue = JSON.parse(blockValue);
       style.styles.splice(blockIndex, 1, blockValue);
-    } else style.style.splice(blockIndex, 1);
+    } else style.styles.splice(blockIndex, 1);
+    setPageTree((prev) => tree);
+  }
+
+  function moveStyleBlock(styleName, styleBlock, from, to) {
+    let tree = { ...pageTree };
+    let style = tree.head.style[styleName];
+    if (from) style.styles.splice(from, 1);
+    if (to) style.styles.splice(to, 1, styleBlock);
     setPageTree((prev) => tree);
   }
 
@@ -121,8 +121,8 @@ export const PageTreeProvider = (props) => {
         updateTitle,
         savePage,
         moveElement,
-        stylePropertyChange,
         styleBlockChange,
+        moveStyleBlock,
       }}
     >
       {props.children}
