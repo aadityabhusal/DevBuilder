@@ -170,7 +170,7 @@ export function StyleBlock({ data, blockKey, currentStyle }) {
         <StyleListItem key={i}>
           <StyleInput
             list="properties-data-list"
-            key={item.name}
+            key={`name${item.name}${i}`}
             defaultValue={item.name}
             onBlur={(e) => handleProperty(e, i)}
             autocomplete="off"
@@ -182,6 +182,7 @@ export function StyleBlock({ data, blockKey, currentStyle }) {
             }}
           />
           <StyleInput
+            key={`value${item.value}${i}`}
             className="value-input"
             defaultValue={item.value}
             placeholder="Enter property value"
