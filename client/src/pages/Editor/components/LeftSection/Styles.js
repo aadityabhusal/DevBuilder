@@ -24,8 +24,6 @@ export function StylesPanel({ isActive }) {
   const [styleList, setStyleList] = useState();
   let stylesLength = Object.keys(pageTree.head.style).length;
 
-  console.log("REDE");
-
   useEffect(() => {
     let styles = Object.values(pageTree.head.style);
     setStyleList(styles);

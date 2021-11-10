@@ -23,11 +23,12 @@ import { CommandContext } from "../../../../contexts/CommandContext";
 export function StyleEditor({ currentStyle }) {
   const [styleBlocks, setStyleBlocks] = useState();
   const { addCommand } = useContext(CommandContext);
-  const { moveStyleBlock } = useContext(PageTreeContext);
+  const { pageTree, moveStyleBlock } = useContext(PageTreeContext);
+  let styles = pageTree.head.style[currentStyle.name].styles;
 
   useEffect(() => {
-    setStyleBlocks((prev) => currentStyle.styles);
-  }, [currentStyle.styles, currentStyle.styles.length]);
+    setStyleBlocks((prev) => styles);
+  }, [styles.length]);
 
   const addNewStyle = () => {
     let foundInvalid = styleBlocks.findIndex((item) => item.isValid === false);
