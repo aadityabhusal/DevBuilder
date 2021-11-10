@@ -88,8 +88,7 @@ export function StyleEditor({ currentStyle }) {
 
   const addProperty = (e, styleBlock) => {
     if (e.keyCode === 13 && styleBlock.style.length === 0) {
-      let update = { ...styleBlocks };
-      update.styles.forEach((item, i) => {
+      let update = styleBlocks.map((item, i) => {
         if (item._id === styleBlock._id) {
           item.style.push({
             name: "",
@@ -97,6 +96,7 @@ export function StyleEditor({ currentStyle }) {
             isValid: false,
           });
         }
+        return item;
       });
       setStyleBlocks((prev) => update);
     }
