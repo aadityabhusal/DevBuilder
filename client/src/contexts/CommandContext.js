@@ -1,12 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { updateStyle } from "../utils";
 import { PageTreeContext } from "./PageTreeContext";
 
 export const CommandContext = createContext();
 
 export const CommandProvider = (props) => {
   const [history, setHistory] = useState({ current: -1, commands: [] });
-  const { moveElement } = useContext(PageTreeContext);
+  const { moveElement, styleBlockChange } = useContext(PageTreeContext);
 
   function addCommand(command) {
     let update = { ...history };
@@ -28,11 +27,8 @@ export const CommandProvider = (props) => {
       }
 
       if (cmd.action === "styleChange") {
-        let prevStyle = JSON.parse(cmd.prevStyle);
-        cmd.style.styles = prevStyle;
-        updateStyle(cmd.style.name, cmd.style.styles);
+        styleBlockChange(cmd.styleName, cmd.blockKey, cmd.prevStyle);
       }
-
       update.current =
         update.current >= 0 ? update.current - 1 : update.current;
       setHistory((prev) => update);
@@ -47,9 +43,7 @@ export const CommandProvider = (props) => {
       }
 
       if (cmd.action === "styleChange") {
-        let prevStyle = JSON.parse(cmd.prevStyle);
-        cmd.style.styles = prevStyle;
-        updateStyle(cmd.style.name, cmd.style.styles);
+        styleBlockChange(cmd.styleName, cmd.blockKey, cmd.style);
       }
 
       let update = { ...history };

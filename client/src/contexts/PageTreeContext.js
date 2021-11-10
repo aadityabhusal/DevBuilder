@@ -74,16 +74,20 @@ export const PageTreeProvider = (props) => {
   function stylePropertyChange(styleName, blockIndex, index, value) {
     let tree = { ...pageTree };
     let styleBlock = tree.head.style[styleName].styles[blockIndex];
-    if (value) styleBlock.style.splice(index, 1, value);
-    else styleBlock.style.splice(index, 1);
+    if (value) {
+      value = JSON.parse(value);
+      styleBlock.style.splice(index, 1, value);
+    } else styleBlock.style.splice(index, 1);
     setPageTree((prev) => tree);
   }
 
   function styleBlockChange(styleName, blockIndex, blockValue) {
     let tree = { ...pageTree };
     let style = tree.head.style[styleName];
-    if (blockValue) style.styles.splice(blockIndex, 1, blockValue);
-    else style.style.splice(blockIndex, 1);
+    if (blockValue) {
+      blockValue = JSON.parse(blockValue);
+      style.styles.splice(blockIndex, 1, blockValue);
+    } else style.style.splice(blockIndex, 1);
     setPageTree((prev) => tree);
   }
 

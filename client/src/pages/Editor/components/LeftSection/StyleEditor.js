@@ -119,7 +119,7 @@ export function StyleEditor({ currentStyle }) {
             <StyleBlock
               data={styleBlock}
               blockKey={i}
-              currentStyle={currentStyle}
+              currentStyle={currentStyle.name}
             />
             <PropertiesDataList id="properties-data-list">
               {properties.map((item, i) => (

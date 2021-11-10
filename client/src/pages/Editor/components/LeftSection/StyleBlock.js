@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { properties } from "../../lists/properties";
 import { CommandContext } from "../../../../contexts/CommandContext";
 import {
@@ -6,7 +6,7 @@ import {
   CopyIcon,
   PasteIcon,
 } from "../../../../components/ui/Icons";
-import { getCSSArray, getStylePropertyName } from "../../../../utils";
+import { getStylePropertyName } from "../../../../utils";
 import {
   CloseButton,
   CopyButton,
@@ -20,30 +20,24 @@ import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 export function StyleBlock({ data, blockKey, currentStyle }) {
   const [propertyList, setPropertyList] = useState();
   const { addCommand } = useContext(CommandContext);
-  const { stylePropertyChange } = useContext(PageTreeContext);
+  const { styleBlockChange } = useContext(PageTreeContext);
 
   useEffect(() => {
     setPropertyList((prev) => data);
   }, [data]);
 
-  const handleProperty = (e, currentProperty, index) => {
+  const handleProperty = (e, index) => {
     let isValid = checkProperty(e.target.value, index);
-    if (!isValid) e.target.style.border = "1px solid #e74c3c";
-    if (currentProperty.name === e.target.value) return;
+    let { style, ...data } = Object.assign({}, propertyList);
+    if (style[index].name !== e.target.value) e.target.nextSibling.value = "";
+    if (style[index].name === e.target.value) return;
 
-    let update = { ...propertyList };
-    update.style.forEach((item, i) => {
-      if (item.name === currentProperty.name) {
-        if (isValid === 0) {
-          item.name = e.target.value.slice(0, -1);
-        } else {
-          item.name = e.target.value;
-        }
-        item.isValid = Boolean(isValid);
-      }
-    });
-
-    setPropertyList((prev) => update);
+    style[index].name = e.target.value;
+    style[index].isValid = true;
+    if (!isValid) {
+      style[index].isValid = false;
+    }
+    setPropertyList((prev) => ({ style, ...data }));
   };
 
   const checkProperty = (value, index) => {
@@ -51,7 +45,7 @@ export function StyleBlock({ data, blockKey, currentStyle }) {
     let foundSame = propertyList.style.find(
       (item, i) => item.name === value && i !== index
     );
-    if (foundSame) return 0;
+    if (foundSame) return false;
     return true;
   };
 
@@ -67,61 +61,66 @@ export function StyleBlock({ data, blockKey, currentStyle }) {
     return false;
   }
 
-  const updateValue = (e, currentProperty) => {
-    let update = { ...propertyList };
-    let prevStyle = JSON.stringify(currentStyle.styles);
-    update.style.forEach((item, i) => {
-      if (item.name === currentProperty.name) {
-        let prev = item.value;
-        item.value = e.target.value;
+  const updateValue = (e, index) => {
+    let prevStyle = JSON.stringify(data);
+    let update = Object.assign({}, propertyList);
+    let item = update.style[index];
+    if (item.isValid === false) return;
+    let prev = item.value;
+    let isValid = checkValue(item.name, e.target.value, prev);
+    if (isValid) {
+      item.value = e.target.value;
+      item.isValid = true;
 
-        let isValid = checkValue(currentProperty.name, e.target.value, prev);
-        if (isValid) {
-          let newStyle = JSON.stringify(currentStyle.styles);
-          if (newStyle !== prevStyle) {
-            addCommand({
-              action: "styleChange",
-              style: currentStyle,
-              prevStyle,
-            });
-            stylePropertyChange(currentStyle.name, blockKey, i, item);
-          }
-        }
-      }
-    });
-    setPropertyList((prev) => update);
-  };
-
-  const addProperty = (e) => {
-    let foundInvalid = propertyList.style.findIndex(
-      (item) => item.isValid === false
-    );
-    if (e.keyCode === 13 && foundInvalid === -1) {
-      let update = { ...propertyList };
-      update.style.push({
-        name: "",
-        value: "",
-        isValid: false,
+      addCommand({
+        action: "styleChange",
+        styleName: currentStyle,
+        blockKey,
+        style: JSON.stringify(update),
+        prevStyle,
       });
 
-      setPropertyList((prev) => update);
+      styleBlockChange(currentStyle, blockKey, JSON.stringify(update));
+    }
+  };
+
+  const addProperty = (e, index) => {
+    if (e.keyCode === 13) {
+      let foundInvalid = propertyList.style.findIndex(
+        (item) => item.isValid === false
+      );
+      if (
+        foundInvalid === -1 &&
+        propertyList.style[index].value === e.target.value
+      ) {
+        let update = Object.assign({}, propertyList);
+        update.style.push({
+          name: "",
+          value: "",
+          isValid: false,
+        });
+        setPropertyList((prev) => update);
+      } else {
+        updateValue(e, index);
+      }
     }
   };
 
   const deleteProperty = (propertyName) => {
-    let update = { ...propertyList };
+    let update = Object.assign({}, propertyList);
     let index = update.style.findIndex((item) => item.name === propertyName);
     update.style.splice(index, 1);
-    stylePropertyChange(currentStyle.name, blockKey, index);
+    styleBlockChange(currentStyle, blockKey, update);
 
     setPropertyList((prev) => update);
   };
 
+  /* 
   const pasteStyle = async () => {
     let pasteData = await navigator.clipboard.readText();
     let cssArray = getCSSArray(pasteData);
     if (cssArray) {
-      let update = { ...propertyList };
+      let update = Object.assign({}, propertyList);
       cssArray.forEach((element, j) => {
         let isValid = checkProperty(element[0], -1);
         if (isValid === false) return;
@@ -142,6 +141,7 @@ export function StyleBlock({ data, blockKey, currentStyle }) {
       setPropertyList((prev) => update);
     }
   };
+ */
 
   const copyStyle = async () => {
     let styleText = propertyList.style.map((item) => {
@@ -152,29 +152,33 @@ export function StyleBlock({ data, blockKey, currentStyle }) {
 
   return propertyList ? (
     <StyleList>
-      <PasteButton onClick={pasteStyle} title="Paste Style">
+      <PasteButton /* onClick={pasteStyle} */ title="Paste Style">
         <PasteIcon />
       </PasteButton>
       <CopyButton onClick={copyStyle} title="Copy Style">
         <CopyIcon />
       </CopyButton>
       {propertyList.style.map((item, i) => (
-        <StyleListItem key={item.name}>
+        <StyleListItem key={i}>
           <StyleInput
             list="properties-data-list"
             key={item.name}
             defaultValue={item.name}
-            onBlur={(e) => handleProperty(e, item, i)}
+            onBlur={(e) => handleProperty(e, i)}
             autocomplete="off"
             placeholder="Enter property name"
             autoFocus={item.isValid === false ? true : false}
+            style={{
+              borderColor: item.isValid === false ? "#e74c3c" : "#bdc3c7",
+              borderTop: item.isValid === false ? "1px solid #e74c3c" : "none",
+            }}
           />
           <StyleInput
             className="value-input"
-            value={item.value}
-            onChange={(e) => updateValue(e, item)}
+            defaultValue={item.value}
+            // onChange={(e) => updateValue(e, i)}
             placeholder="Enter property value"
-            onKeyUp={addProperty}
+            onKeyUp={(e) => addProperty(e, i)}
             autoFocus={
               item.name && i + 1 === propertyList.style.length ? true : false
             }
