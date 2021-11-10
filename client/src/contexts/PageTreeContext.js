@@ -58,18 +58,6 @@ export const PageTreeProvider = (props) => {
     return element;
   }
 
-  /* 
-    - Changes should be property based
-    - Each change must include a property - within a - block - within a - styleList
-    - The style change must store the previous state of a property and the current applied property value
-    - 
-    - Since the pageTree will be updated on every change 
-      - There is no need to apply styles to the head section directly (or maybe it is for changes made interactively )
-      - (confusion) Not sure if the pageTree needs to updates when a block is created
-      - When a property value will be changed, the previous values will be taken from the data passed to the component and command will be added to the pageTree
-    .
-  */
-
   function styleBlockChange(styleName, blockId, blockValue) {
     let tree = { ...pageTree };
     let style = tree.head.style[styleName];

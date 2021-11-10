@@ -17,7 +17,7 @@ import {
 } from "../../../../components/editor/StyleBlock";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 
-export function StyleBlock({ data, currentStyle }) {
+export function StyleBlock({ data, currentStyle, update }) {
   const [propertyList, setPropertyList] = useState();
   const { addCommand } = useContext(CommandContext);
   const { pageTree, styleBlockChange } = useContext(PageTreeContext);
@@ -25,26 +25,32 @@ export function StyleBlock({ data, currentStyle }) {
   let style = styles.find((item) => item._id === data._id);
 
   useEffect(() => {
-    setPropertyList((prev) => style);
+    setPropertyList((prev) => style.style);
   }, [style]);
 
-  const handleProperty = (e, index) => {
+  const handleProperty = (e, currentProperty, index) => {
     let isValid = checkProperty(e.target.value, index);
-    let { style, ...data } = Object.assign({}, propertyList);
-    if (style[index].name !== e.target.value) e.target.nextSibling.value = "";
-    if (style[index].name === e.target.value) return;
+    if (currentProperty.name !== e.target.value)
+      e.target.nextSibling.value = "";
+    if (currentProperty.name === e.target.value) return;
 
-    style[index].name = e.target.value;
-    style[index].isValid = true;
-    if (!isValid) {
-      style[index].isValid = false;
-    }
-    setPropertyList((prev) => ({ style, ...data }));
+    let update = propertyList.map((item, i) => {
+      if (item.name === currentProperty.name) {
+        item.name = e.target.value;
+        item.isValid = true;
+        if (!isValid) {
+          item.isValid = false;
+        }
+      }
+      return item;
+    });
+
+    setPropertyList((prev) => update);
   };
 
   const checkProperty = (value, index) => {
     if (!properties.includes(value)) return false;
-    let foundSame = propertyList.style.find(
+    let foundSame = propertyList.find(
       (item, i) => item.name === value && i !== index
     );
     if (foundSame) return 0;
@@ -65,41 +71,49 @@ export function StyleBlock({ data, currentStyle }) {
 
   const updateValue = (e, index) => {
     let prevStyle = JSON.stringify(data);
-    let update = Object.assign({}, propertyList);
-    let item = update.style[index];
+    let item = propertyList[index];
     if (!item.isValid) return;
     let prev = item.value;
     let isValid = checkValue(item.name, e.target.value, prev);
+
     if (isValid) {
-      item.value = e.target.value;
-      item.isValid = true;
+      let update = propertyList.map((prop) => {
+        if (prop.name === item.name) {
+          prop.value = e.target.value;
+          prop.isValid = true;
+        }
+        return prop;
+      });
+
+      let style = JSON.stringify({ ...data, style: update });
+
+      setPropertyList((prev) => update);
 
       addCommand({
         action: "styleChange",
         styleName: currentStyle,
         blockId: data._id,
-        style: JSON.stringify(update),
+        style,
         prevStyle,
       });
 
-      styleBlockChange(currentStyle, data._id, JSON.stringify(update));
+      styleBlockChange(currentStyle, data._id, style);
     }
   };
 
   const addProperty = (e, index) => {
     if (e.keyCode === 13) {
-      let foundInvalid = propertyList.style.findIndex((item) => !item.isValid);
-      if (
-        foundInvalid === -1 &&
-        propertyList.style[index].value === e.target.value
-      ) {
-        let update = Object.assign({}, propertyList);
-        update.style.push({
+      let foundInvalid = propertyList.findIndex((item) => !item.isValid);
+      if (foundInvalid === -1 && propertyList[index].value === e.target.value) {
+        // let update = Object.assign({}, propertyList);
+        let list = [...propertyList];
+        list.push({
           name: "",
           value: "",
           isValid: false,
         });
-        setPropertyList((prev) => update);
+        // let update = propertyList.slice().concat();
+        setPropertyList((prev) => list);
       } else {
         updateValue(e, index);
       }
@@ -125,7 +139,7 @@ export function StyleBlock({ data, currentStyle }) {
     let prevStyle = JSON.stringify(data);
     let pasteData = await navigator.clipboard.readText();
     let cssArray = getCSSArray(pasteData);
-    let foundInvalid = propertyList.style.findIndex((item) => !item.isValid);
+    let foundInvalid = propertyList.findIndex((item) => !item.isValid);
     if (cssArray && foundInvalid === -1) {
       let update = Object.assign({}, propertyList);
       cssArray.forEach((element, j) => {
@@ -160,7 +174,7 @@ export function StyleBlock({ data, currentStyle }) {
   };
 
   const copyStyle = async () => {
-    let styleText = propertyList.style.map((item) => {
+    let styleText = propertyList.map((item) => {
       return `${item.name}:${item.value};`;
     });
     await navigator.clipboard.writeText(styleText.join(""));
@@ -174,13 +188,13 @@ export function StyleBlock({ data, currentStyle }) {
       <CopyButton onClick={copyStyle} title="Copy Style">
         <CopyIcon />
       </CopyButton>
-      {propertyList.style.map((item, i) => (
-        <StyleListItem key={i}>
+      {propertyList.map((item, i) => (
+        <StyleListItem key={`${i}${propertyList.length}`}>
           <StyleInput
             list="properties-data-list"
-            key={`name${item.name}${i}`}
+            key={`name${item.name}${i}${propertyList.length}`}
             defaultValue={item.name}
-            onBlur={(e) => handleProperty(e, i)}
+            onBlur={(e) => handleProperty(e, item, i)}
             autocomplete="off"
             placeholder="Enter property name"
             autoFocus={!item.isValid ? true : false}
@@ -190,13 +204,13 @@ export function StyleBlock({ data, currentStyle }) {
             }}
           />
           <StyleInput
-            key={`value${item.value}${i}`}
+            key={`value${item.value}${i}${propertyList.length}`}
             className="value-input"
             defaultValue={item.value}
             placeholder="Enter property value"
             onKeyUp={(e) => addProperty(e, i)}
             autoFocus={
-              item.name && i + 1 === propertyList.style.length ? true : false
+              item.name && i + 1 === propertyList.length ? true : false
             }
           />
           <CloseButton
