@@ -22,12 +22,15 @@ export function StylesPanel({ isActive }) {
   const { pageTree, updateStyles } = useContext(PageTreeContext);
   const [currentStyle, setCurrentStyle] = useState();
   const [styleList, setStyleList] = useState();
+  let stylesLength = Object.keys(pageTree.head.style).length;
+
+  console.log("REDE");
 
   useEffect(() => {
     let styles = Object.values(pageTree.head.style);
     setStyleList(styles);
     setCurrentStyle(styles[0]);
-  }, [Object.keys(pageTree.head.style).length]);
+  }, [stylesLength]);
 
   const addStyle = (e) => {
     if (e.keyCode === 13) {
