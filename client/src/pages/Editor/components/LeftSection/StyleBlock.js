@@ -6,7 +6,7 @@ import {
   CopyIcon,
   PasteIcon,
 } from "../../../../components/ui/Icons";
-import { getStylePropertyName } from "../../../../utils";
+import { getCSSArray, getStylePropertyName } from "../../../../utils";
 import {
   CloseButton,
   CopyButton,
@@ -45,7 +45,7 @@ export function StyleBlock({ data, blockKey, currentStyle }) {
     let foundSame = propertyList.style.find(
       (item, i) => item.name === value && i !== index
     );
-    if (foundSame) return false;
+    if (foundSame) return 0;
     return true;
   };
 
@@ -65,7 +65,7 @@ export function StyleBlock({ data, blockKey, currentStyle }) {
     let prevStyle = JSON.stringify(data);
     let update = Object.assign({}, propertyList);
     let item = update.style[index];
-    if (item.isValid === false) return;
+    if (!item.isValid) return;
     let prev = item.value;
     let isValid = checkValue(item.name, e.target.value, prev);
     if (isValid) {
@@ -86,9 +86,7 @@ export function StyleBlock({ data, blockKey, currentStyle }) {
 
   const addProperty = (e, index) => {
     if (e.keyCode === 13) {
-      let foundInvalid = propertyList.style.findIndex(
-        (item) => item.isValid === false
-      );
+      let foundInvalid = propertyList.style.findIndex((item) => !item.isValid);
       if (
         foundInvalid === -1 &&
         propertyList.style[index].value === e.target.value
@@ -115,11 +113,12 @@ export function StyleBlock({ data, blockKey, currentStyle }) {
     setPropertyList((prev) => update);
   };
 
-  /* 
   const pasteStyle = async () => {
+    let prevStyle = JSON.stringify(data);
     let pasteData = await navigator.clipboard.readText();
     let cssArray = getCSSArray(pasteData);
-    if (cssArray) {
+    let foundInvalid = propertyList.style.findIndex((item) => !item.isValid);
+    if (cssArray && foundInvalid === -1) {
       let update = Object.assign({}, propertyList);
       cssArray.forEach((element, j) => {
         let isValid = checkProperty(element[0], -1);
@@ -128,6 +127,8 @@ export function StyleBlock({ data, blockKey, currentStyle }) {
           let index = update.style.findIndex(
             (item) => item.name === element[0]
           );
+          if (!checkValue(element[0], element[1], update.style[index].value))
+            return;
           update.style[index].value = element[1];
           return;
         }
@@ -138,10 +139,17 @@ export function StyleBlock({ data, blockKey, currentStyle }) {
         });
       });
 
-      setPropertyList((prev) => update);
+      addCommand({
+        action: "styleChange",
+        styleName: currentStyle,
+        blockKey,
+        style: JSON.stringify(update),
+        prevStyle,
+      });
+
+      styleBlockChange(currentStyle, blockKey, JSON.stringify(update));
     }
   };
- */
 
   const copyStyle = async () => {
     let styleText = propertyList.style.map((item) => {
@@ -152,7 +160,7 @@ export function StyleBlock({ data, blockKey, currentStyle }) {
 
   return propertyList ? (
     <StyleList>
-      <PasteButton /* onClick={pasteStyle} */ title="Paste Style">
+      <PasteButton onClick={pasteStyle} title="Paste Style">
         <PasteIcon />
       </PasteButton>
       <CopyButton onClick={copyStyle} title="Copy Style">
@@ -167,16 +175,15 @@ export function StyleBlock({ data, blockKey, currentStyle }) {
             onBlur={(e) => handleProperty(e, i)}
             autocomplete="off"
             placeholder="Enter property name"
-            autoFocus={item.isValid === false ? true : false}
+            autoFocus={!item.isValid ? true : false}
             style={{
-              borderColor: item.isValid === false ? "#e74c3c" : "#bdc3c7",
-              borderTop: item.isValid === false ? "1px solid #e74c3c" : "none",
+              borderColor: !item.isValid ? "#e74c3c" : "#bdc3c7",
+              borderTop: !item.isValid ? "1px solid #e74c3c" : "none",
             }}
           />
           <StyleInput
             className="value-input"
             defaultValue={item.value}
-            // onChange={(e) => updateValue(e, i)}
             placeholder="Enter property value"
             onKeyUp={(e) => addProperty(e, i)}
             autoFocus={
