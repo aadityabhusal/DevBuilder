@@ -17,7 +17,7 @@ import {
 } from "../../../../components/editor/StyleBlock";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 
-export function StyleBlock({ data, blockKey, currentStyle }) {
+export function StyleBlock({ data, currentStyle }) {
   const [propertyList, setPropertyList] = useState();
   const { addCommand } = useContext(CommandContext);
   const { styleBlockChange } = useContext(PageTreeContext);
@@ -75,12 +75,12 @@ export function StyleBlock({ data, blockKey, currentStyle }) {
       addCommand({
         action: "styleChange",
         styleName: currentStyle,
-        blockKey,
+        blockId: data._id,
         style: JSON.stringify(update),
         prevStyle,
       });
 
-      styleBlockChange(currentStyle, blockKey, JSON.stringify(update));
+      styleBlockChange(currentStyle, data._id, JSON.stringify(update));
     }
   };
 
@@ -112,13 +112,11 @@ export function StyleBlock({ data, blockKey, currentStyle }) {
     addCommand({
       action: "styleChange",
       styleName: currentStyle,
-      blockKey,
+      blockId: data._id,
       style: JSON.stringify(update),
       prevStyle,
     });
-    styleBlockChange(currentStyle, blockKey, JSON.stringify(update));
-
-    setPropertyList((prev) => update);
+    styleBlockChange(currentStyle, data._id, JSON.stringify(update));
   };
 
   const pasteStyle = async () => {
@@ -150,12 +148,12 @@ export function StyleBlock({ data, blockKey, currentStyle }) {
       addCommand({
         action: "styleChange",
         styleName: currentStyle,
-        blockKey,
+        blockId: data._id,
         style: JSON.stringify(update),
         prevStyle,
       });
 
-      styleBlockChange(currentStyle, blockKey, JSON.stringify(update));
+      styleBlockChange(currentStyle, data._id, JSON.stringify(update));
     }
   };
 
