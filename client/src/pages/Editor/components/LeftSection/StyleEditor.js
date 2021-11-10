@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { updateStyle } from "../../../../utils";
+import { useContext, useEffect, useState } from "react";
 import { StyleBlock } from "./StyleBlock";
 import { properties } from "../../lists/properties";
 import { CloseIcon } from "../../../../components/ui/Icons";
@@ -14,6 +13,8 @@ import {
   StyleHead,
   StyleInput,
 } from "../../../../components/editor/StyleEditor";
+import { PageTreeContext } from "../../../../contexts/PageTreeContext";
+import { CommandContext } from "../../../../contexts/CommandContext";
 
 /* 
   - StyleBlocks that are added in a newly created style are not saved in pageTree context 
@@ -21,50 +22,51 @@ import {
 
 export function StyleEditor({ currentStyle }) {
   const [styleBlocks, setStyleBlocks] = useState();
+  const { addCommand } = useContext(CommandContext);
+  const { moveStyleBlock } = useContext(PageTreeContext);
 
   useEffect(() => {
-    setStyleBlocks((prev) => currentStyle);
-  }, [currentStyle]);
+    setStyleBlocks((prev) => currentStyle.styles);
+  }, [currentStyle.styles, currentStyle.styles.length]);
 
   const addNewStyle = () => {
-    let foundInvalid = styleBlocks.styles.findIndex(
-      (item) => item.isValid === false
-    );
+    let foundInvalid = styleBlocks.findIndex((item) => item.isValid === false);
     if (foundInvalid === -1) {
-      let update = { ...styleBlocks };
       let _id = nanoid();
-      update.styles.push({
+      let index = styleBlocks.length;
+      let styleBlock = {
         _id,
         selector: "",
         style: [],
         isValid: false,
+      };
+      addCommand({
+        action: "moveStyleBlock",
+        styleName: currentStyle.name,
+        styleBlock: styleBlock,
+        from: null,
+        to: index,
       });
-      setStyleBlocks((blocks) => update);
+      moveStyleBlock(currentStyle.name, styleBlock, null, index);
     }
   };
 
   const handleStyleBlock = (e, styleBlock) => {
     let isValid = checkSelector(e.target.value, styleBlock._id);
-    if (!isValid) e.target.style.border = "1px solid #e74c3c";
-    else {
-      e.target.style.borderColor = "#bdc3c7";
-      e.target.style.borderBottom = "none";
-    }
-
-    let update = { ...styleBlocks };
-    update.styles.forEach((item, i) => {
+    let styles = styleBlocks.map((item, i) => {
       if (item._id === styleBlock._id) {
         item.selector = e.target.value;
         item.isValid = Boolean(isValid);
       }
+      return item;
     });
 
-    setStyleBlocks((prev) => update);
+    setStyleBlocks((prev) => styles);
   };
 
   const checkSelector = (selector, _id) => {
     if (selector.trim() === "") return false;
-    let findSelector = styleBlocks.styles.find(
+    let findSelector = styleBlocks.find(
       (item) => item.selector === selector && item._id !== _id
     );
     if (findSelector) return 0;
@@ -72,12 +74,16 @@ export function StyleEditor({ currentStyle }) {
   };
 
   const deleteBlock = (_id) => {
-    let update = { ...styleBlocks };
-    let index = update.styles.findIndex((item) => item._id === _id);
-    update.styles.splice(index, 1);
-    updateStyle(currentStyle.name, update.styles);
-
-    setStyleBlocks((prev) => update);
+    let index = styleBlocks.findIndex((item) => item._id === _id);
+    let styleBlock = JSON.stringify(styleBlocks[index]);
+    addCommand({
+      action: "moveStyleBlock",
+      styleName: currentStyle.name,
+      styleBlock: styleBlock,
+      from: index,
+      to: null,
+    });
+    moveStyleBlock(currentStyle.name, styleBlock, index, null);
   };
 
   const addProperty = (e, styleBlock) => {
@@ -99,7 +105,7 @@ export function StyleEditor({ currentStyle }) {
   return styleBlocks ? (
     <StyleContainer id="style-container">
       <StyleBlockList>
-        {styleBlocks.styles.map((styleBlock, i) => (
+        {styleBlocks.map((styleBlock, i) => (
           <BlockContainer key={styleBlock._id}>
             <StyleHead>
               <StyleInput
@@ -107,7 +113,13 @@ export function StyleEditor({ currentStyle }) {
                 onBlur={(e) => handleStyleBlock(e, styleBlock)}
                 placeholder="Enter selector"
                 onKeyDown={(e) => addProperty(e, styleBlock)}
-                autoFocus={i + 1 === styleBlocks.styles.length ? true : false}
+                autoFocus={i + 1 === styleBlocks.length ? true : false}
+                style={{
+                  borderColor: !styleBlock.isValid ? "#e74c3c" : "#bdc3c7",
+                  borderBottom: !styleBlock.isValid
+                    ? "1px solid #e74c3c"
+                    : "none",
+                }}
               />
               <CloseButton
                 onClick={(e) => deleteBlock(styleBlock._id)}
@@ -116,11 +128,7 @@ export function StyleEditor({ currentStyle }) {
                 <CloseIcon />
               </CloseButton>
             </StyleHead>
-            <StyleBlock
-              data={styleBlock}
-              blockKey={i}
-              currentStyle={currentStyle.name}
-            />
+            <StyleBlock data={styleBlock} currentStyle={currentStyle.name} />
             <PropertiesDataList id="properties-data-list">
               {properties.map((item, i) => (
                 <option value={item} key={i} />
