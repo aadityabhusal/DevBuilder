@@ -5,7 +5,8 @@ export const CommandContext = createContext();
 
 export const CommandProvider = (props) => {
   const [history, setHistory] = useState({ current: -1, commands: [] });
-  const { moveElement, styleBlockChange } = useContext(PageTreeContext);
+  const { moveElement, styleBlockChange, moveStyleBlock } =
+    useContext(PageTreeContext);
 
   function addCommand(command) {
     let update = { ...history };
@@ -29,6 +30,11 @@ export const CommandProvider = (props) => {
       if (cmd.action === "styleChange") {
         styleBlockChange(cmd.styleName, cmd.blockKey, cmd.prevStyle);
       }
+
+      if (cmd.action === "moveStyleBlock") {
+        moveStyleBlock(cmd.styleName, cmd.styleBlock, cmd.to, cmd.from);
+      }
+
       update.current =
         update.current >= 0 ? update.current - 1 : update.current;
       setHistory((prev) => update);
@@ -44,6 +50,10 @@ export const CommandProvider = (props) => {
 
       if (cmd.action === "styleChange") {
         styleBlockChange(cmd.styleName, cmd.blockKey, cmd.style);
+      }
+
+      if (cmd.action === "moveStyleBlock") {
+        moveStyleBlock(cmd.styleName, cmd.styleBlock, cmd.from, cmd.to);
       }
 
       let update = { ...history };
