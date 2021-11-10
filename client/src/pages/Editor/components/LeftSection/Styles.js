@@ -27,22 +27,14 @@ export function StylesPanel({ isActive }) {
     let styles = Object.values(pageTree.head.style);
     setStyleList(styles);
     setCurrentStyle(styles[0]);
-  }, [pageTree.head.style]);
+  }, [Object.keys(pageTree.head.style).length]);
 
   const addStyle = (e) => {
     if (e.keyCode === 13) {
       let name = e.target.value;
-      let newStyle = { name, styles: [] };
-      updateStyles(name);
-      setStyleList((prev) => [...prev, newStyle]);
       e.target.value = "";
+      updateStyles(name);
     }
-
-    let stylesheet = document.createElement("style");
-    stylesheet.id = e.target.value + "-stylesheet";
-    document
-      .getElementById("iframe-view")
-      .contentDocument.head.appendChild(stylesheet);
   };
 
   const deleteStyle = (e, name) => {

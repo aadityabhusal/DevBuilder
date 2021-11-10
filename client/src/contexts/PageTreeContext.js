@@ -74,22 +74,24 @@ export const PageTreeProvider = (props) => {
   function moveStyleBlock(styleName, styleBlock, from, to) {
     let tree = { ...pageTree };
     let style = tree.head.style[styleName];
-    if (from) style.styles.splice(from, 1);
-    if (to) style.styles.splice(to, 1, styleBlock);
+    if (from !== null) style.styles.splice(from, 1);
+    if (to !== null) style.styles.splice(to, 1, styleBlock);
     setPageTree((prev) => tree);
   }
 
   function updateStyles(name, action = "") {
-    if (!pageTree.head.style.hasOwnProperty(name)) {
-      pageTree.head.style[name] = { name, styles: [] };
+    let tree = { ...pageTree };
+    if (!tree.head.style.hasOwnProperty(name)) {
+      tree.head.style[name] = { name, styles: [] };
     } else {
       if (action === "delete") {
-        delete pageTree.head.style[name];
+        delete tree.head.style[name];
       } else {
-        // Edit style page name case here
+        // Edit style page name here
         // pageTree.head.style[name] = { name, styles: [] };
       }
     }
+    setPageTree((prev) => tree);
   }
 
   function updateTitle(value) {
