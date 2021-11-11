@@ -19,6 +19,7 @@ export const CommandProvider = (props) => {
   }
 
   function undo() {
+    console.log(history);
     if (history.current >= 0) {
       let update = { ...history };
       let cmd = update.commands[update.current];
@@ -28,7 +29,7 @@ export const CommandProvider = (props) => {
       }
 
       if (cmd.action === "styleChange") {
-        styleBlockChange(cmd.styleName, cmd.blockKey, cmd.prevStyle);
+        styleBlockChange(cmd.styleName, cmd.blockId, cmd.prevStyle);
       }
 
       if (cmd.action === "moveStyleBlock") {
@@ -49,7 +50,7 @@ export const CommandProvider = (props) => {
       }
 
       if (cmd.action === "styleChange") {
-        styleBlockChange(cmd.styleName, cmd.blockKey, cmd.style);
+        styleBlockChange(cmd.styleName, cmd.blockId, cmd.style);
       }
 
       if (cmd.action === "moveStyleBlock") {

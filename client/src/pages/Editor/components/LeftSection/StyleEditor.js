@@ -23,7 +23,8 @@ import { CommandContext } from "../../../../contexts/CommandContext";
 export function StyleEditor({ currentStyle }) {
   const [styleBlocks, setStyleBlocks] = useState();
   const { addCommand } = useContext(CommandContext);
-  const { pageTree, moveStyleBlock } = useContext(PageTreeContext);
+  const { pageTree, moveStyleBlock, styleBlockChange } =
+    useContext(PageTreeContext);
   let styles = pageTree.head.style[currentStyle.name].styles;
 
   useEffect(() => {
@@ -54,15 +55,11 @@ export function StyleEditor({ currentStyle }) {
 
   const handleStyleBlock = (e, styleBlock) => {
     let isValid = checkSelector(e.target.value, styleBlock._id);
-    let styles = styleBlocks.map((item, i) => {
-      if (item._id === styleBlock._id) {
-        item.selector = e.target.value;
-        item.isValid = Boolean(isValid);
-      }
-      return item;
-    });
-
-    setStyleBlocks((prev) => styles);
+    if (!isValid) e.target.style.border = "1px solid #e74c3c";
+    else {
+      e.target.style.borderColor = "#bdc3c7";
+      e.target.style.borderBottom = "none";
+    }
   };
 
   const checkSelector = (selector, _id) => {
@@ -88,18 +85,39 @@ export function StyleEditor({ currentStyle }) {
   };
 
   const addProperty = (e, styleBlock) => {
-    if (e.keyCode === 13 && styleBlock.style.length === 0) {
-      let update = styleBlocks.map((item, i) => {
-        if (item._id === styleBlock._id) {
-          item.style.push({
-            name: "",
-            value: "",
-            isValid: false,
-          });
-        }
-        return item;
-      });
-      setStyleBlocks((prev) => update);
+    if (e.keyCode === 13) {
+      let isValid = checkSelector(e.target.value, styleBlock._id);
+      if (isValid) {
+        let prevStyle = JSON.stringify(styleBlock);
+        styleBlock.selector = e.target.value;
+        styleBlock.isValid = Boolean(isValid);
+        addCommand({
+          action: "styleChange",
+          styleName: currentStyle.name,
+          blockId: styleBlock._id,
+          style: JSON.stringify(styleBlock),
+          prevStyle,
+        });
+
+        styleBlockChange(
+          currentStyle.name,
+          styleBlock._id,
+          JSON.stringify(styleBlock)
+        );
+      }
+      if (styleBlock.style.length === 0) {
+        let update = styleBlocks.map((item, i) => {
+          if (item._id === styleBlock._id) {
+            item.style.push({
+              name: "",
+              value: "",
+              isValid: false,
+            });
+          }
+          return item;
+        });
+        setStyleBlocks((prev) => update);
+      }
     }
   };
 
