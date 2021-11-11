@@ -73,7 +73,7 @@ export function StyleEditor({ currentStyle }) {
 
   const deleteBlock = (_id) => {
     let index = styleBlocks.findIndex((item) => item._id === _id);
-    let styleBlock = JSON.stringify(styleBlocks[index]);
+    let styleBlock = styleBlocks[index];
     addCommand({
       action: "moveStyleBlock",
       styleName: currentStyle.name,

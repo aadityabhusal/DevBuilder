@@ -75,7 +75,7 @@ export const PageTreeProvider = (props) => {
     let tree = { ...pageTree };
     let style = tree.head.style[styleName];
     if (from !== null) style.styles.splice(from, 1);
-    if (to !== null) style.styles.splice(to, 1, styleBlock);
+    if (to !== null) style.styles.splice(to, 0, styleBlock);
     setPageTree((prev) => tree);
   }
 
