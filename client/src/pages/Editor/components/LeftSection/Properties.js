@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
 import {
   Panel,
   PanelTitle,
@@ -7,26 +6,42 @@ import {
   PanelTextArea,
   PanelLabel,
 } from "../../../../components/editor/Panel";
+import { PageTreeContext } from "../../../../contexts/PageTreeContext";
+import { CommandContext } from "../../../../contexts/CommandContext";
 
 export function PropertiesPanel({ isActive }) {
-  const { selectedElement, setSelectedElement } = useContext(
-    SelectedElementContext
-  );
+  const { addCommand } = useContext(CommandContext);
+  const { changeProperty, selectedElement } = useContext(PageTreeContext);
 
   const handleAttribute = (e, property) => {
-    setSelectedElement((prev, prop) => {
-      let temp = { ...prev };
-      temp.element.attributes[property] = e.target.value;
-      return temp;
-    });
+    let { children, ...element } = selectedElement.element;
+    if (
+      e.keyCode === 13 &&
+      element.attributes[property].trim() !== e.target.value.trim()
+    ) {
+      let prev = JSON.stringify(element);
+      element.attributes[property] = e.target.value;
+      addCommand({
+        action: "changeProperty",
+        element: JSON.stringify(element),
+        prev,
+      });
+      changeProperty(JSON.stringify(element));
+    }
   };
 
   const handleProperty = (e, property) => {
-    setSelectedElement((prev, prop) => {
-      let temp = { ...prev };
-      temp.element[property][0] = e.target.value;
-      return temp;
-    });
+    if (e.keyCode === 13) {
+      let { children, ...element } = selectedElement.element;
+      let prev = JSON.stringify(element);
+      element[property][0] = e.target.value;
+      addCommand({
+        action: "changeProperty",
+        element: JSON.stringify(element),
+        prev,
+      });
+      changeProperty(JSON.stringify(element));
+    }
   };
 
   return (
@@ -45,17 +60,18 @@ export function PropertiesPanel({ isActive }) {
               type="text"
               data-elem-prop={item[0]}
               placeholder={`Enter the ${item[0]}`}
-              key={i}
-              value={item[1]}
-              onChange={(e) => handleAttribute(e, item[0])}
+              key={`${i}${item[1]}`}
+              defaultValue={item[1]}
+              onKeyDown={(e) => handleAttribute(e, item[0])}
             />
           ))}
           {selectedElement.element.hasOwnProperty("text") && (
             <PanelTextArea
               rows={10}
+              key={`${selectedElement.element.text}`}
               placeholder="Enter the text content"
-              value={selectedElement.element.text}
-              onChange={(e) => handleProperty(e, "text")}
+              defaultValue={selectedElement.element.text}
+              onKeyDown={(e) => handleProperty(e, "text")}
             ></PanelTextArea>
           )}
         </>
