@@ -36,6 +36,7 @@ export const AfterElementLine = styled.div`
 `;
 
 export const TopBar = styled.div`
+  height: 25px;
   padding: 5px 10px;
   border-bottom: 1px solid #bdc3c7;
   display: flex;
@@ -51,7 +52,7 @@ export const TopBar = styled.div`
     color: #fff;
 
     &:hover {
-      box-shadow: 0 3px 4px 0 #34495e;
+      box-shadow: 0 4px 6px 0 #34495e;
     }
   }
 `;
