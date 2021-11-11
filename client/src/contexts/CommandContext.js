@@ -65,7 +65,7 @@ export const CommandProvider = (props) => {
     }
   }
 
-  useEffect(() => {
+  /*   useEffect(() => {
     function executeKeyEvents(e) {
       if (e.ctrlKey && e.key === "z") {
         e.preventDefault();
@@ -76,12 +76,13 @@ export const CommandProvider = (props) => {
         redo();
       }
     }
-
+    console.log("Hello");
     document.addEventListener("keydown", executeKeyEvents);
     return () => {
+      console.log("Hello");
       document.removeEventListener("keydown", executeKeyEvents);
     };
-  });
+  }, [history.current]); */
 
   return (
     <CommandContext.Provider value={{ history, addCommand, undo, redo }}>
