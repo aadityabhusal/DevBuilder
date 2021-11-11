@@ -3,15 +3,13 @@ import {
   StyledContextMenu,
   StyledContextMenuItem,
 } from "../../../components/editor/ContextMenu";
-import { SelectedElementContext } from "../../../contexts/SelectedElementContext";
 import { nanoid } from "nanoid";
 import { PageTreeContext } from "../../../contexts/PageTreeContext";
 import { CommandContext } from "../../../contexts/CommandContext";
 
 function ContextMenu({}, ref) {
-  const { selectedElement } = useContext(SelectedElementContext);
   const { addCommand } = useContext(CommandContext);
-  const { moveElement } = useContext(PageTreeContext);
+  const { moveElement, selectedElement } = useContext(PageTreeContext);
 
   async function handleCopy(e) {
     ref.current.style.display = "none";

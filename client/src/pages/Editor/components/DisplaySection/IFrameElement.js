@@ -7,15 +7,13 @@ import {
   showHoverBox,
 } from "../../../../utils";
 import { CommandContext } from "../../../../contexts/CommandContext";
-import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 const nonClosingTags = ["img", "video", "input", "hr", "br"];
 
 export function IframeElement({ data, parentElement, contextMenu }) {
   const [element, setElement] = useState();
   const elementRef = useRef();
-  const { moveElement } = useContext(PageTreeContext);
-  const { setSelectedElement } = useContext(SelectedElementContext);
+  const { moveElement, setSelectedElement } = useContext(PageTreeContext);
   const { addCommand } = useContext(CommandContext);
 
   const HTMLTag = `${data.tagName}`;

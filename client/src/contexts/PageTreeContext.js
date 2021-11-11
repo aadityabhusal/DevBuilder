@@ -6,6 +6,7 @@ export const PageTreeContext = createContext();
 
 export const PageTreeProvider = (props) => {
   const [pageTree, setPageTree] = useState(null);
+  const [selectedElement, setSelectedElement] = useState(null);
   const { authFetch } = useContext(UserContext);
 
   useEffect(() => {
@@ -113,6 +114,8 @@ export const PageTreeProvider = (props) => {
         moveElement,
         styleBlockChange,
         moveStyleBlock,
+        selectedElement,
+        setSelectedElement,
       }}
     >
       {props.children}

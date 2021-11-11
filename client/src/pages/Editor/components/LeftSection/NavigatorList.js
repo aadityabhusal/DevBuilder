@@ -6,15 +6,15 @@ import {
   NavigatorListItem,
   VerticalLines,
 } from "../../../../components/editor/LeftSection";
-import { SelectedElementContext } from "../../../../contexts/SelectedElementContext";
 import { hideHoverBox, showHoverBox } from "../../../../utils";
 import { DropDownIcon } from "../../../../components/ui/Icons";
+import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 const nonClosingTags = ["img", "video", "input", "hr", "br"];
 
 export function NavigatorList({ data, parentElement, firstDrop }) {
   const [element, setElement] = useState();
   const [isDropped, setIsDropped] = useState(firstDrop || false);
-  const { setSelectedElement } = useContext(SelectedElementContext);
+  const { setSelectedElement } = useContext(PageTreeContext);
 
   useEffect(() => {
     if (data) {

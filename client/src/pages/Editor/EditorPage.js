@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
-import { SelectedElementProvider } from "../../contexts/SelectedElementContext";
 import { PageTreeProvider } from "../../contexts/PageTreeContext";
 
 import { LeftSection, DisplaySection } from "./components";
@@ -68,11 +67,9 @@ export function EditorPage({ history, user }) {
         {page ? (
           <PageTreeProvider value={page}>
             <CommandProvider>
-              <SelectedElementProvider>
-                <LeftSection ref={dragRef} />
-                <DragLeftSection onMouseDown={handleResize}></DragLeftSection>
-                <DisplaySection />
-              </SelectedElementProvider>
+              <LeftSection ref={dragRef} />
+              <DragLeftSection onMouseDown={handleResize}></DragLeftSection>
+              <DisplaySection />
             </CommandProvider>
           </PageTreeProvider>
         ) : null}
