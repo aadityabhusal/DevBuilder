@@ -93,7 +93,9 @@ export function StylesPanel({ isActive }) {
           ></PanelInputText>
         </AddItemBox>
       </DropDownMenu>
-      {currentStyle ? <StyleEditor currentStyle={currentStyle} /> : null}
+      {currentStyle ? (
+        <StyleEditor key={currentStyle.name} currentStyle={currentStyle} />
+      ) : null}
     </StylePanel>
   );
 }
