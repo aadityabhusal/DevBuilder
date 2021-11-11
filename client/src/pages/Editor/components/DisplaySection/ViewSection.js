@@ -7,7 +7,7 @@ import {
 } from "../../../../components/editor/DisplaySection";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 import { getCSSText } from "../../../../utils/getCSSText";
-import { ContextMenuFR } from "../ContextMenu";
+import { ContextMenu } from "../ContextMenu";
 import { IframeElement } from "./IFrameElement";
 
 const coreStyle = `
@@ -28,19 +28,11 @@ html {
 `;
 
 export function ViewSection() {
-  const contextRef = useRef();
-  const [contextMenu, setContextMenu] = useState();
   const { pageTree } = useContext(PageTreeContext);
-
-  useEffect(() => {
-    if (pageTree) {
-      setContextMenu(contextRef);
-    }
-  }, [pageTree]);
 
   return pageTree ? (
     <>
-      <ContextMenuFR ref={contextRef} />
+      <ContextMenu />
       <OutlineBox id="outlineBox">
         <span></span>
       </OutlineBox>
@@ -64,7 +56,6 @@ export function ViewSection() {
             <StyleSheetManager target={frameContext.document.head}>
               <>
                 <IframeElement
-                  contextMenu={contextMenu}
                   data={pageTree.body.children[pageTree.body.children_order[0]]}
                   parentElement={{}}
                 ></IframeElement>

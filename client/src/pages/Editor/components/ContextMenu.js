@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import {
   StyledContextMenu,
   StyledContextMenuItem,
@@ -7,9 +7,10 @@ import { nanoid } from "nanoid";
 import { PageTreeContext } from "../../../contexts/PageTreeContext";
 import { CommandContext } from "../../../contexts/CommandContext";
 
-function ContextMenu({}, ref) {
+export function ContextMenu() {
   const { addCommand } = useContext(CommandContext);
   const { moveElement, selectedElement } = useContext(PageTreeContext);
+  const ref = useRef();
 
   async function handleCopy(e) {
     ref.current.style.display = "none";
@@ -91,7 +92,7 @@ function ContextMenu({}, ref) {
   }
 
   return (
-    <StyledContextMenu ref={ref}>
+    <StyledContextMenu id="context-menu" ref={ref}>
       <StyledContextMenuItem onClick={handleCopy}>Copy</StyledContextMenuItem>
       <StyledContextMenuItem onClick={handlePaste}>Paste</StyledContextMenuItem>
       <StyledContextMenuItem onClick={handleDuplicate}>
@@ -103,8 +104,6 @@ function ContextMenu({}, ref) {
     </StyledContextMenu>
   );
 }
-
-export const ContextMenuFR = React.forwardRef(ContextMenu);
 
 function checkPasteData(pasteData) {
   try {

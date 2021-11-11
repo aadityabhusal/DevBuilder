@@ -11,7 +11,7 @@ import { CommandContext } from "../../../../contexts/CommandContext";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 const nonClosingTags = ["img", "video", "input", "hr", "br"];
 
-export function IframeElement({ data, parentElement, contextMenu }) {
+export function IframeElement({ data, parentElement }) {
   const [element, setElement] = useState();
   const elementRef = useRef();
   const { moveElement, setSelectedElement } = useContext(PageTreeContext);
@@ -29,21 +29,21 @@ export function IframeElement({ data, parentElement, contextMenu }) {
 
   const handleClick = (e) => {
     e.stopPropagation();
-    closeContextMenu(e, contextMenu);
+    closeContextMenu();
     let from = parentElement._id
       ? parentElement.children_order.indexOf(element._id)
       : null;
     setSelectedElement((prev) => ({ element, from }));
   };
 
-  const openContextMenu = (e, contextMenu) => {
+  const openContextMenu = (e) => {
     e.preventDefault();
     e.stopPropagation();
     let from = parentElement._id
       ? parentElement.children_order.indexOf(element._id)
       : null;
     setSelectedElement((prev) => ({ element, from }));
-    showContextMenu(e, contextMenu);
+    showContextMenu(e);
     return false;
   };
 
@@ -148,7 +148,7 @@ export function IframeElement({ data, parentElement, contextMenu }) {
         onDrop={handleDrop}
         onMouseOver={(e) => showHoverBox(e.target)}
         onMouseOut={(e) => hideHoverBox(e)}
-        onContextMenu={(e) => openContextMenu(e, contextMenu)}
+        onContextMenu={openContextMenu}
         className={"frame-element " + element.attributes["class"]}
         data-_id={element._id}
         {...elemAttributes}
@@ -158,7 +158,6 @@ export function IframeElement({ data, parentElement, contextMenu }) {
           return (
             <IframeElement
               key={element.children[elem]._id}
-              contextMenu={contextMenu}
               data={element.children[elem]}
               parentElement={element}
             ></IframeElement>
@@ -178,7 +177,7 @@ export function IframeElement({ data, parentElement, contextMenu }) {
         onDragEnd={handleDragend}
         onMouseOver={(e) => showHoverBox(e.target)}
         onMouseOut={(e) => hideHoverBox(e)}
-        onContextMenu={(e) => openContextMenu(e, contextMenu)}
+        onContextMenu={openContextMenu}
         className={"frame-element " + element.attributes["class"]}
         readOnly={HTMLTag === "input" ? true : false}
         controls={HTMLTag === "video" ? true : false}
