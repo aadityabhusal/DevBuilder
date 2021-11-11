@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const DisplayContainer = styled.div`
   display: flex;
+  flex-direction: column;
   flex: 1;
   position: relative;
 `;
@@ -32,4 +33,25 @@ export const AfterElementLine = styled.div`
   z-index: 100;
   pointer-events: none;
   user-select: none;
+`;
+
+export const TopBar = styled.div`
+  padding: 5px 10px;
+  border-bottom: 1px solid #bdc3c7;
+  display: flex;
+  justify-content: flex-end;
+  background-color: #415b75;
+
+  button {
+    padding: 4px 8px;
+    margin: 0;
+    margin-left: 10px;
+    background-color: #193a54;
+    border-color: #193a54;
+    color: #fff;
+
+    &:hover {
+      box-shadow: 0 3px 4px 0 #34495e;
+    }
+  }
 `;

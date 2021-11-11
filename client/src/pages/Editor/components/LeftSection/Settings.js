@@ -19,8 +19,6 @@ import {
   DialogText,
 } from "../../../../components/common/DialogBox";
 
-import { CommandContext } from "../../../../contexts/CommandContext";
-
 const coreStyle = `
 * {
   border: 1px solid #bdc3c7;
@@ -45,8 +43,6 @@ export function SettingsPanel({ isActive }) {
   const { user, authFetch } = useContext(UserContext);
   const [title, setTitle] = useState("");
   const history = useHistory();
-
-  const { undo, redo } = useContext(CommandContext);
 
   useEffect(() => {
     setTitle(pageTree.head.title);
@@ -147,12 +143,6 @@ export function SettingsPanel({ isActive }) {
         Delete Site
       </PanelButton>
       <div style={{ marginTop: "50px" }}></div>
-      <PanelButton id="saveProps" onClick={undo}>
-        Undo Action
-      </PanelButton>
-      <PanelButton id="saveProps" onClick={redo}>
-        Redo Action
-      </PanelButton>
     </Panel>
   );
 }
