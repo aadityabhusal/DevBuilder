@@ -46,6 +46,22 @@ export const PageTreeProvider = (props) => {
     setPageTree((prev) => tree);
   }
 
+  function changeProperty(elem) {
+    let tree = { ...pageTree };
+    let parent = tree.body;
+    let data = JSON.parse(elem);
+    data.path.forEach((item) => {
+      parent = parent.children[item];
+    });
+    let element = parent.children[data._id];
+    parent.children[data._id] = { ...element, ...data };
+    setSelectedElement((prev) => ({
+      element: parent.children[data._id],
+      from: prev,
+    }));
+    setPageTree((prev) => tree);
+  }
+
   function updateChildrenPath(element, parent) {
     element.path = [...parent.path, parent._id];
     element.children_order &&
@@ -112,6 +128,7 @@ export const PageTreeProvider = (props) => {
         updateTitle,
         savePage,
         moveElement,
+        changeProperty,
         styleBlockChange,
         moveStyleBlock,
         selectedElement,
