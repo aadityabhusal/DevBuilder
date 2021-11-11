@@ -4,6 +4,7 @@ import {
   getDragAfterElement,
   hideHoverBox,
   nestingValidation,
+  showContextMenu,
   showHoverBox,
 } from "../../../../utils";
 import { CommandContext } from "../../../../contexts/CommandContext";
@@ -42,8 +43,7 @@ export function IframeElement({ data, parentElement, contextMenu }) {
       ? parentElement.children_order.indexOf(element._id)
       : null;
     setSelectedElement((prev) => ({ element, from }));
-    contextMenu.current.style.display = "flex";
-    contextMenu.current.style.transform = `translate(${e.clientX}px,${e.clientY}px)`;
+    showContextMenu(e, contextMenu);
     return false;
   };
 

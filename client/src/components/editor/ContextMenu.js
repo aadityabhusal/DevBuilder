@@ -26,4 +26,5 @@ export const StyledContextMenu = styled.ul`
   border: 1px solid #bdc3c7;
   border-radius: 5px;
   position: absolute;
+  z-index: 110;
 `;
