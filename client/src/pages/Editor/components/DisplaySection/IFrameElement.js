@@ -70,6 +70,7 @@ export function IframeElement({ data, parentElement, contextMenu }) {
           : element.children_order.length;
 
         if (afterElement && draggedParent._id === element._id) {
+          if (to > from) to = to - 1;
           let prevIndex = draggedParent.children_order.indexOf(data._id);
           let currentIndex = element.children_order.indexOf(afterElement);
           if (
