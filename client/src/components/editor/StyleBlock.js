@@ -36,7 +36,7 @@ export const StyleInput = styled.input`
   border: 1px solid #bdc3c7;
   outline: none;
   border-radius: 0;
-  width: 170px;
+  width: 160px;
   border-top: none;
 
   &.value-input {

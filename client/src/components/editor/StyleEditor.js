@@ -51,7 +51,7 @@ export const StyleInput = styled.input`
   border-bottom: none;
   outline: none;
   border-radius: 0;
-  width: 170px;
+  width: 160px;
   margin-right: auto;
 `;
 
