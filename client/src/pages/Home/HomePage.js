@@ -26,7 +26,7 @@ export function HomePage() {
         <FeatureItem style={{ backgroundColor: "#272b35" }}>
           <h2>CSS Page Styling</h2>
           <FeatureImage>
-            <img src="/assets/images/styling.jpg" alt="Page Styling" />
+            <img src="/assets/images/styling.png" alt="Page Styling" />
           </FeatureImage>
         </FeatureItem>
         <FeatureItem style={{ backgroundColor: "#1e2229" }}>
