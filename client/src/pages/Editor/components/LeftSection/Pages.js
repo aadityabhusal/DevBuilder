@@ -24,6 +24,8 @@ export function PagesPanel({ pages, isActive }) {
   const addPage = async (e) => {
     if (e.keyCode === 13) {
       let value = e.target.value;
+      if (value.includes(".html")) value = value.replace(".html", "");
+      value = value + ".html";
       try {
         let data = await authFetch(`/api/page/`, "POST", {
           body: { siteId, name: value },

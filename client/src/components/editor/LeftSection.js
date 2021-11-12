@@ -45,7 +45,9 @@ export const PageItem = styled(PanelItem)`
   align-items: center;
 `;
 
-export const DeletePage = styled.div``;
+export const DeletePage = styled.div`
+  cursor: pointer;
+`;
 
 // Page Panel
 
