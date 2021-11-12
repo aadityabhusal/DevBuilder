@@ -106,7 +106,7 @@ export function SettingsPanel({ isActive }) {
       </PanelLabel>
       <SettingsInputText
         value={title}
-        placeholder="Type name and hit enter"
+        placeholder="Type page title and hit enter"
         onChange={handleTitle}
       />
       <PanelButton id="saveProps" onClick={savePage}>
