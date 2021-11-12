@@ -32,7 +32,7 @@ function moveLine(_id, box, type) {
     let afterElementLine = document.getElementById("after-element-line");
     let { top, left, width, height } = box;
 
-    afterElementLine.style.top = top + "px";
+    afterElementLine.style.top = top + 35 + "px";
     afterElementLine.style.left = left + "px";
     afterElementLine.style.display = "block";
 
