@@ -29,7 +29,7 @@ export function EditUserPage() {
     const getUser = async (userId) => {
       try {
         let { email, firstName, lastName } = await authFetch(
-          `/user/${userId}`,
+          `/api/user/${userId}`,
           "GET"
         );
         setUser({ email, firstName, lastName });
