@@ -8,6 +8,7 @@ import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 import { ViewSection } from "./ViewSection";
 import { PanelButton } from "../../../../components/editor/Panel";
 import { CommandContext } from "../../../../contexts/CommandContext";
+import { NavLink } from "react-router-dom";
 export function DisplaySection() {
   const { pageTree, savePage } = useContext(PageTreeContext);
   const { undo, redo } = useContext(CommandContext);
@@ -16,6 +17,9 @@ export function DisplaySection() {
     <DisplayContainer>
       <SectionMask id="display-mask"></SectionMask>
       <TopBar>
+        <NavLink activeClassName="is-active" to="/" exact={true}>
+          Go to Home
+        </NavLink>
         <PanelButton id="saveProps" onClick={undo} title="Undo Action">
           Undo
         </PanelButton>

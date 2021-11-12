@@ -40,8 +40,20 @@ export const TopBar = styled.div`
   padding: 5px 10px;
   border-bottom: 1px solid #bdc3c7;
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   background-color: #415b75;
+
+  a {
+    font-size: 14px;
+    color: #ffffff;
+    text-decoration: none;
+    margin-right: auto;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 
   button {
     padding: 4px 8px;
