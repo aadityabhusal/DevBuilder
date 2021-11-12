@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Container = styled.div`
-  font-family: Verdana, Helvetica, sans-serif;
+  font-family: Georgia, sans-serif;
 `;
 
 export function GlobalContainer(props) {
