@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const EditorContainer = styled.div`
   display: flex;
-  max-height: calc(100vh - 40px);
+  /* max-height: 100vh; */
   overflow: hidden;
 `;
 

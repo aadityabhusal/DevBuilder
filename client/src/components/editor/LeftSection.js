@@ -11,7 +11,7 @@ export const LeftContainer = styled.div`
 export const StylePanel = styled(Panel)`
   overflow: initial;
   padding: 0;
-  height: calc(100vh - 85px);
+  height: calc(100vh - 40px);
 `;
 
 export const SettingsInputText = styled(PanelInputText)`
