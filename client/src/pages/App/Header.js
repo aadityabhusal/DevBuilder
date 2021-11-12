@@ -12,9 +12,8 @@ export function Header(props) {
 
   return !props.location.pathname.includes("/editor/") ? (
     <HeaderContainer>
-      {/* <h3 style={{ margin: 0 }}>Website Builder</h3> */}
       <Logo>
-        <img src="/assets/logo.png" alt="DevBuilder Title" />
+        <img src="/assets/logo.png" alt="DevBuilder Logo" />
       </Logo>
       <nav>
         <NavLink activeClassName="is-active" to="/" exact={true}>

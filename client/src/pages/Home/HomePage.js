@@ -12,7 +12,10 @@ export function HomePage() {
   return (
     <MainSection>
       <HeroSection>
-        <h1>Website Builder for Developers</h1>
+        <div>
+          <img src="/assets/homelogo.png" alt="DevBuilder Logo" />
+        </div>
+        <h2>Website Builder for Developers</h2>
         <Link to="/login">Get Started</Link>
       </HeroSection>
       <Features>

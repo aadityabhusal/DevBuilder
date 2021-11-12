@@ -6,9 +6,15 @@ export const HeroSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #34495e;
-  color: #ecf0f1;
-  height: 50vh;
+  background-color: #fbfbfb;
+  color: #34495e;
+  height: 60vh;
+
+  & h2 {
+    margin-top: 30px;
+    font-size: 24px;
+    font-weight: bold;
+  }
 
   & a {
     border: 1px solid #ecf0f1;
