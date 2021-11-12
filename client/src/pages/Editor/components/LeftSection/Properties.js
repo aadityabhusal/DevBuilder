@@ -31,10 +31,16 @@ export function PropertiesPanel({ isActive }) {
   };
 
   const handleProperty = (e, property) => {
-    if (e.keyCode === 13) {
-      let { children, ...element } = selectedElement.element;
+    let { children, ...element } = selectedElement.element;
+    console.log(selectedElement);
+    if (
+      e.keyCode === 13 &&
+      (!element[property][0] ||
+        element[property][0].trim() !== e.target.value.trim())
+    ) {
+      console.log("OK");
       let prev = JSON.stringify(element);
-      element[property][0] = e.target.value;
+      element[property][0] = e.target.value.trim();
       addCommand({
         action: "changeProperty",
         element: JSON.stringify(element),
