@@ -8,7 +8,7 @@ export function showHoverBox(element, color = "#3498db") {
       let includesId = draggedElement.children_order?.includes(_id);
       if (_id === draggedElement._id || includesId) return;
     }
-    let topBarHeight = 35;
+    let topBarHeight = 36;
     let { top, left, width, height } = element.getBoundingClientRect();
     outlineBox.style.transform = `translate(${left}px, ${
       top + topBarHeight
