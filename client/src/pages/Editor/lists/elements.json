@@ -3,7 +3,19 @@
     "_id": "",
     "tagName": "div",
     "path": [],
-    "text": [""],
+    "text": ["Container"],
+    "attributes": {
+      "id": "",
+      "class": ""
+    },
+    "children_order": [],
+    "children": {}
+  },
+  "Text": {
+    "_id": "",
+    "tagName": "p",
+    "path": [],
+    "text": ["Text"],
     "attributes": {
       "id": "",
       "class": ""
@@ -35,11 +47,11 @@
       "src": "/placeholder.png"
     }
   },
-  "Button": {
+  "Heading 1": {
     "_id": "",
-    "tagName": "button",
+    "tagName": "h1",
     "path": [],
-    "text": ["Button"],
+    "text": ["Heading 1"],
     "attributes": {
       "id": "",
       "class": ""
@@ -47,24 +59,23 @@
     "children_order": [],
     "children": {}
   },
-  "Input": {
+  "Heading 2": {
     "_id": "",
-    "tagName": "input",
+    "tagName": "h2",
     "path": [],
+    "text": ["Heading 2"],
     "attributes": {
       "id": "",
-      "class": "",
-      "value": "",
-      "name": "",
-      "type": "text",
-      "placeholder": ""
-    }
+      "class": ""
+    },
+    "children_order": [],
+    "children": {}
   },
-  "Text": {
+  "Heading 3": {
     "_id": "",
-    "tagName": "p",
+    "tagName": "h3",
     "path": [],
-    "text": ["Text"],
+    "text": ["Heading 3"],
     "attributes": {
       "id": "",
       "class": ""
@@ -103,13 +114,38 @@
     "_id": "",
     "tagName": "li",
     "path": [],
-    "text": ["li"],
+    "text": ["List Item"],
     "attributes": {
       "id": "",
       "class": ""
     },
     "children_order": [],
     "children": {}
+  },
+  "Button": {
+    "_id": "",
+    "tagName": "button",
+    "path": [],
+    "text": ["Button"],
+    "attributes": {
+      "id": "",
+      "class": ""
+    },
+    "children_order": [],
+    "children": {}
+  },
+  "Input": {
+    "_id": "",
+    "tagName": "input",
+    "path": [],
+    "attributes": {
+      "id": "",
+      "class": "",
+      "value": "",
+      "name": "",
+      "type": "text",
+      "placeholder": "Change the placeholder"
+    }
   },
   "Video": {
     "_id": "",
@@ -120,41 +156,5 @@
       "class": "",
       "src": ""
     }
-  },
-  "Heading 1": {
-    "_id": "",
-    "tagName": "h1",
-    "path": [],
-    "text": [""],
-    "attributes": {
-      "id": "",
-      "class": ""
-    },
-    "children_order": [],
-    "children": {}
-  },
-  "Heading 2": {
-    "_id": "",
-    "tagName": "h2",
-    "path": [],
-    "text": [""],
-    "attributes": {
-      "id": "",
-      "class": ""
-    },
-    "children_order": [],
-    "children": {}
-  },
-  "Heading 3": {
-    "_id": "",
-    "tagName": "h3",
-    "path": [],
-    "text": [""],
-    "attributes": {
-      "id": "",
-      "class": ""
-    },
-    "children_order": [],
-    "children": {}
   }
 }
