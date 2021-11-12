@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { NavLink, withRouter } from "react-router-dom";
-import { HeaderContainer } from "../../components/common/Header";
+import { HeaderContainer, Logo } from "../../components/common/Header";
 import { UserContext } from "../../contexts/UserContext";
 
 export function Header(props) {
@@ -12,7 +12,10 @@ export function Header(props) {
 
   return !props.location.pathname.includes("/editor/") ? (
     <HeaderContainer>
-      <h3 style={{ margin: 0 }}>Website Builder</h3>
+      {/* <h3 style={{ margin: 0 }}>Website Builder</h3> */}
+      <Logo>
+        <img src="/assets/logo.png" alt="DevBuilder Title" />
+      </Logo>
       <nav>
         <NavLink activeClassName="is-active" to="/" exact={true}>
           Home

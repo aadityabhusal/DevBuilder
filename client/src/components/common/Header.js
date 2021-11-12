@@ -4,13 +4,15 @@ export const HeaderContainer = styled.div`
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
-  background-color: #34495e;
-  color: #ecf0f1;
+  align-items: center;
+  background-color: #ffffff;
+  color: #24265d;
+  box-shadow: 0 3px 4px 0 rgb(0 0 0 / 15%);
 
   & a {
     text-decoration: none;
     margin-left: 20px;
-    color: #ecf0f1;
+    color: #3498db;
   }
 
   & a:hover {
@@ -18,6 +20,14 @@ export const HeaderContainer = styled.div`
   }
 
   & .is-active {
-    color: #00a8ff;
+    color: #24265d;
+  }
+`;
+
+export const Logo = styled.div`
+  height: 50px;
+
+  img {
+    height: 100%;
   }
 `;
