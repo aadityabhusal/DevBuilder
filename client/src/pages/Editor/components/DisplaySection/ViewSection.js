@@ -10,13 +10,7 @@ import { getCSSText } from "../../../../utils/getCSSText";
 import { ContextMenu } from "../ContextMenu";
 import { IframeElement } from "./IFrameElement";
 
-const coreStyle = `
-* {
-  border: 1px solid #bdc3c7;
-  padding: 5px;
-  margin: 2px;
-}
-
+const baseStyle = `
 .frame-content,
 .frame-root,
 body,
@@ -24,6 +18,12 @@ html {
   border: none !important;
   padding: 0 !important;
   margin: 0 !important;
+}
+`;
+
+const toggleStyle = `
+* {
+  border: 1px solid #bdc3c7;
 }
 `;
 
@@ -42,7 +42,8 @@ export function ViewSection() {
         style={{ flex: 1, border: "none" }}
         head={
           <>
-            <style id="core-stylesheet">{coreStyle}</style>
+            <style>{baseStyle}</style>
+            <style id="toggleStylesheet">{toggleStyle}</style>
             {Object.values(pageTree.head.style).map((item) => (
               <style id={item.name + "-stylesheet"} key={item.name}>
                 {getCSSText(item.styles)}

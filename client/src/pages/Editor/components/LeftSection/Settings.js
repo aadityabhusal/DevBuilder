@@ -19,23 +19,6 @@ import {
   DialogText,
 } from "../../../../components/common/DialogBox";
 
-const coreStyle = `
-* {
-  border: 1px solid #bdc3c7;
-  padding: 5px;
-  margin: 2px;
-}
-
-.frame-content,
-.frame-root,
-body,
-html {
-  border: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-}
-`;
-
 export function SettingsPanel({ isActive }) {
   const [dialogBox, setDialogBox] = useState(false);
   const { pageTree, updateTitle, savePage } = useContext(PageTreeContext);
@@ -51,12 +34,12 @@ export function SettingsPanel({ isActive }) {
   const handleRemoveBorders = (e) => {
     let stylesheet = document
       .getElementById("iframe-view")
-      .contentDocument.getElementById("core-stylesheet");
+      .contentDocument.getElementById("toggleStylesheet");
 
     if (e.target.checked) {
-      stylesheet.innerHTML = "";
+      stylesheet.disabled = true;
     } else {
-      stylesheet.innerHTML = coreStyle;
+      stylesheet.disabled = false;
     }
   };
 
