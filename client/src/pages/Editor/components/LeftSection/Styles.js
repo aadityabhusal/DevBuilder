@@ -33,6 +33,7 @@ export function StylesPanel({ isActive }) {
   const addStyle = (e) => {
     if (e.keyCode === 13) {
       let name = e.target.value;
+      if (name.includes(".css")) name = name.replace(".css", "");
       e.target.value = "";
       updateStyles(name);
     }
