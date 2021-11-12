@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { performance } = require("perf_hooks");
+const { initialStyle } = require("../helpers/initialStyle");
 let elementId = performance.now().toString(36).replace(/\./g, "");
 
 const PageSchema = new mongoose.Schema(
@@ -18,10 +19,7 @@ const PageSchema = new mongoose.Schema(
         title: "",
         meta: {},
         style: {
-          main: {
-            name: "main",
-            styles: [],
-          },
+          main: initialStyle,
         },
         script: {},
         link: {},
