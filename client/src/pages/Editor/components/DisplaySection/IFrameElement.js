@@ -56,6 +56,11 @@ export function IframeElement({ data, parentElement }) {
       );
       let afterElement = localStorage.getItem("afterElement");
 
+      localStorage.setItem("afterElement", "");
+      localStorage.setItem("draggedElement", "");
+      localStorage.setItem("draggedParent", "");
+      document.getElementById("after-element-line").style.display = "none";
+
       if (!element.path.includes(data._id) && data._id !== element._id) {
         let targetPath = element.path.concat(element._id);
         let from = draggedParent._id
@@ -89,10 +94,6 @@ export function IframeElement({ data, parentElement }) {
         // data.path passed separately because of interchange between parent and target path while undoing and redoing
         moveElement(data, data.path, targetPath, from, to);
       }
-      localStorage.setItem("afterElement", "");
-      localStorage.setItem("draggedElement", "");
-      localStorage.setItem("draggedParent", "");
-      document.getElementById("after-element-line").style.display = "none";
     } catch (error) {}
   };
 

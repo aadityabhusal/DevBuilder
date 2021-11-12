@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext } from "react";
 import Frame, { FrameContextConsumer } from "react-frame-component";
 import { StyleSheetManager } from "styled-components";
 import {
