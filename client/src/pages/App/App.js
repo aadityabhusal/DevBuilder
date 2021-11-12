@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { EditorPage, ErrorPage, HomePage } from "../";
 import { UserPage } from "../User/UserPage";
 import { UserProvider } from "../../contexts/UserContext";
-import { Header } from "./Header";
+import Header from "./Header";
 import { EditUserPage } from "../User/EditUserPage";
 import { Footer } from "../../components/common/Footer";
 import { GlobalContainer } from "../../components/ui/GlobalContainer";

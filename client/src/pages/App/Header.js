@@ -1,16 +1,16 @@
 import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 import { HeaderContainer } from "../../components/common/Header";
 import { UserContext } from "../../contexts/UserContext";
 
-export function Header() {
+export function Header(props) {
   const { user, setNewToken } = useContext(UserContext);
 
   const logout = async (e) => {
     setNewToken("", "");
   };
 
-  return (
+  return !props.location.pathname.includes("/editor/") ? (
     <HeaderContainer>
       <h3 style={{ margin: 0 }}>Website Builder</h3>
       <nav>
@@ -38,5 +38,7 @@ export function Header() {
         )}
       </nav>
     </HeaderContainer>
-  );
+  ) : null;
 }
+
+export default withRouter(Header);
