@@ -14,12 +14,14 @@ import {
 } from "../../../../components/common/DropDownMenu";
 import { CloseIcon, DropDownIcon } from "../../../../components/ui/Icons";
 import { StyleEditor } from "./StyleEditor";
+import { CommandContext } from "../../../../contexts/CommandContext";
 
 export function StylesPanel({ isActive }) {
   const dropDownListRef = useRef();
   const inputBoxRef = useRef();
 
   const { pageTree, updateStyles } = useContext(PageTreeContext);
+  const { deleteStyleCommands } = useContext(CommandContext);
   const [currentStyle, setCurrentStyle] = useState();
   const [styleList, setStyleList] = useState();
   let stylesLength = Object.keys(pageTree.head.style).length;
@@ -41,6 +43,7 @@ export function StylesPanel({ isActive }) {
 
   const deleteStyle = (e, name) => {
     e.stopPropagation();
+    deleteStyleCommands(name);
     updateStyles(name, "delete");
     setStyleList((prev) => {
       let arr = prev.filter((item) => item.name !== name);

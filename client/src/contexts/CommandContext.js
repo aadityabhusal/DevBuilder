@@ -73,6 +73,18 @@ export const CommandProvider = (props) => {
     }
   }
 
+  function deleteStyleCommands(styleName) {
+    let update = { ...history };
+
+    let commands = update.commands.filter(
+      (item) => item.styleName !== styleName
+    );
+    let length = update.commands.length;
+    let current = update.current - (length - commands.length);
+
+    setHistory((prev) => ({ current, commands }));
+  }
+
   /*   useEffect(() => {
     function executeKeyEvents(e) {
       if (e.ctrlKey && e.key === "z") {
@@ -93,7 +105,9 @@ export const CommandProvider = (props) => {
   }, [history.current]); */
 
   return (
-    <CommandContext.Provider value={{ history, addCommand, undo, redo }}>
+    <CommandContext.Provider
+      value={{ history, addCommand, undo, redo, deleteStyleCommands }}
+    >
       {props.children}
     </CommandContext.Provider>
   );
