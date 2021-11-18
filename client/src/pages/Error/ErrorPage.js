@@ -1,7 +1,8 @@
 import React from "react";
+import { ErrorContainer } from "../../components/common/Error";
 
 export function ErrorPage() {
-  document.title = "Error | DevBuilder";
+  document.title = "Error 404 | DevBuilder";
 
-  return <div>Error Page</div>;
+  return <ErrorContainer>Error 404 - Page Not Found</ErrorContainer>;
 }
