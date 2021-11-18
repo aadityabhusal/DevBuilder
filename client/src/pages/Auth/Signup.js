@@ -13,6 +13,7 @@ export function Signup(props) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const { user, setNewToken } = useContext(UserContext);
+  document.title = "Signup | DevBuilder";
 
   const handleSubmit = async (e) => {
     e.preventDefault();

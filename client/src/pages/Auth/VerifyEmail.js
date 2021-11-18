@@ -10,6 +10,7 @@ export function VerifyEmail({ location }) {
   const emailVerificationKey = new URLSearchParams(search).get(
     "emailVerificationKey"
   );
+  document.title = "Verify Email | DevBuilder";
 
   useEffect(() => {
     async function verifyEmail() {

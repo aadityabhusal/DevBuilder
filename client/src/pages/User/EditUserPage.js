@@ -24,6 +24,7 @@ export function EditUserPage() {
   const { authFetch, setNewToken } = useContext(UserContext);
   const [dialogBox, setDialogBox] = useState(false);
   const { userId } = useParams();
+  document.title = "Edit Profile | DevBuilder";
 
   useEffect(() => {
     const getUser = async (userId) => {

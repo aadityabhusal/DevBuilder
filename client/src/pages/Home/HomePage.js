@@ -9,6 +9,7 @@ import {
 } from "../../components/home/Home";
 
 export function HomePage() {
+  document.title = "DevBuilder - Website Builder for Developers";
   return (
     <MainSection>
       <HeroSection>

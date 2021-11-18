@@ -9,6 +9,7 @@ export function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { user, setNewToken } = useContext(UserContext);
+  document.title = "Login | DevBuilder";
 
   const handleSubmit = async (e) => {
     e.preventDefault();

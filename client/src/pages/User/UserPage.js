@@ -33,6 +33,7 @@ export function UserPage({ user: authUser }) {
     const getUser = async (userId) => {
       try {
         let response = await authFetch(`/api/user/${userId}`, "GET");
+        document.title = `${response.firstName} ${response.lastName} | DevBuilder`;
         setUser(response);
         setSites(response.sites);
       } catch (error) {}

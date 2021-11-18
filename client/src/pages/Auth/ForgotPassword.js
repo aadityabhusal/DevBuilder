@@ -8,6 +8,7 @@ export function ForgotPassword() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const { user } = useContext(UserContext);
+  document.title = "Forgot Password | DevBuilder";
 
   const handleSubmit = async (e) => {
     e.preventDefault();

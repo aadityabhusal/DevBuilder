@@ -26,6 +26,7 @@ export function EditorPage({ history, user }) {
         if (siteResponse.userId !== user._id) {
           history.push("/");
         } else {
+          document.title = `${siteResponse.name} | DevBuilder Site Editor`;
           setSite(siteResponse);
           let page = siteResponse.pages.find(
             (item) => item.pageName === "index.html"

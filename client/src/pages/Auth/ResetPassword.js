@@ -12,6 +12,7 @@ export function ResetPassword({ location }) {
   const { user } = useContext(UserContext);
   const search = location.search;
   const passwordResetKey = new URLSearchParams(search).get("passwordResetKey");
+  document.title = "Reset Password | DevBuilder";
 
   useEffect(() => {
     const checkPasswordResetKey = async () => {
