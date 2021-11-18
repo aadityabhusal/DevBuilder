@@ -8,22 +8,32 @@ export const HeroSection = styled.div`
   align-items: center;
   background-color: #fbfbfb;
   color: #34495e;
-  height: 60vh;
+  min-height: 70vh;
 
   & h2 {
     margin-top: 30px;
     font-size: 24px;
     font-weight: bold;
+    text-align: center;
   }
+`;
+
+export const HomeLinks = styled.div`
+  display: flex;
+  margin: 50px 0;
 
   & a {
+    margin: 0 20px;
     border: 1px solid #ecf0f1;
     padding: 10px 20px;
-    margin-top: 50px;
     text-decoration: none;
     background-color: #27ae60;
     color: #ecf0f1;
     transition: 0.2s ease transform;
+  }
+
+  & a:last-of-type {
+    background-color: #3498db;
   }
 
   & a:hover {

@@ -5,6 +5,7 @@ import {
   FeatureItem,
   Features,
   HeroSection,
+  HomeLinks,
   MainSection,
 } from "../../components/home/Home";
 
@@ -17,7 +18,16 @@ export function HomePage() {
           <img src="/assets/homelogo.png" alt="DevBuilder Logo" />
         </div>
         <h2>Website Builder for Developers</h2>
-        <Link to="/login">Get Started</Link>
+        <HomeLinks>
+          <Link to="/login">Get Started</Link>
+          <a
+            href="https://www.youtube.com/watch?v=M2nBg4cFzWY"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Watch Tutorial
+          </a>
+        </HomeLinks>
       </HeroSection>
       <Features>
         <h2>Features</h2>
