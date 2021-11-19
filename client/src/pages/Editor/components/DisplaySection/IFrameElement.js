@@ -28,6 +28,7 @@ export function IframeElement({ data, parentElement }) {
   }, [data]);
 
   const handleClick = (e) => {
+    e.preventDefault(); // for avoiding link clicks
     e.stopPropagation();
     closeContextMenu();
     let from = parentElement._id
