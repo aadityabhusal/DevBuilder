@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {
+  Author,
   FeatureImage,
   FeatureItem,
   Features,
@@ -28,6 +29,17 @@ export function HomePage() {
             Watch Tutorial
           </a>
         </HomeLinks>
+        <Author>
+          Developed by{" "}
+          <a
+            href="https://aadityabhusal.com.np/"
+            alt="Author"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Aaditya Bhusal
+          </a>
+        </Author>
       </HeroSection>
       <Features>
         <h2>Features</h2>

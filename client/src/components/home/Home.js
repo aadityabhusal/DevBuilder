@@ -41,6 +41,14 @@ export const HomeLinks = styled.div`
   }
 `;
 
+export const Author = styled.div`
+  margin-bottom: 20px;
+
+  & a {
+    color: #3498db;
+  }
+`;
+
 export const Features = styled.div`
   background-color: #383f4c;
   & > h2 {
