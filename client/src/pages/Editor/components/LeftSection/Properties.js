@@ -32,13 +32,11 @@ export function PropertiesPanel({ isActive }) {
 
   const handleProperty = (e, property) => {
     let { children, ...element } = selectedElement.element;
-    console.log(selectedElement);
     if (
       e.keyCode === 13 &&
       (!element[property][0] ||
         element[property][0].trim() !== e.target.value.trim())
     ) {
-      console.log("OK");
       let prev = JSON.stringify(element);
       element[property][0] = e.target.value.trim();
       addCommand({

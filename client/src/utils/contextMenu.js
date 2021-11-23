@@ -13,6 +13,5 @@ export function showContextMenu(e) {
   let xDiff = e.clientX + leftPanelWidth + 100 - window.innerWidth;
   if (yDiff > 0) top = window.innerHeight - 140;
   if (xDiff > 0) left = window.innerWidth - leftPanelWidth - 100;
-  console.log(e.clientX + leftPanelWidth + 100, window.innerWidth);
   contextMenu.style.transform = `translate(${left}px,${top}px)`;
 }
