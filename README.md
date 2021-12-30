@@ -14,12 +14,13 @@
 - **Infinite** level of nesting to support drag and drop of elements and layouts.
 - **Undo and Redo** functionality for every user interaction.
 - **Export** a single page or a complete site.
+- **User Authentication** with email confirmation and password reset.
 
 
 ## Usage
 [Watch Tutorial ](https://www.youtube.com/watch?v=M2nBg4cFzWY) to learn how to use the application.
 
-[Demo Video](https://www.youtube.com/watch?v=s-ihiUq5fm8) to create an Instagram clone with DevBuilder. 
+[Demo Video](https://www.youtube.com/watch?v=s-ihiUq5fm8) of creating an Instagram clone with DevBuilder. 
 
 ## Screenshots
 
