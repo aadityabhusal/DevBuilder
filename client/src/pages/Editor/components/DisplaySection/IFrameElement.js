@@ -62,6 +62,9 @@ export function IframeElement({ data, parentElement }) {
       localStorage.setItem("draggedParent", "");
       document.getElementById("after-element-line").style.display = "none";
 
+      if (!nestingValidation(element.tagName, data.tagName, nonClosingTags))
+        return;
+
       if (!element.path.includes(data._id) && data._id !== element._id) {
         let targetPath = element.path.concat(element._id);
         let from = draggedParent._id
@@ -81,8 +84,8 @@ export function IframeElement({ data, parentElement }) {
             prevIndex === currentIndex ||
             draggedParent.children_order[prevIndex + 1] === afterElement
           )
-            return 0;
-        } else if (element.children_order.slice(-1)[0] === data._id) return 0;
+            return;
+        } else if (element.children_order.slice(-1)[0] === data._id) return;
 
         addCommand({
           action: "moveElement",
