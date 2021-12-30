@@ -45,18 +45,18 @@ Eg. src element inside video element, results element inside databox element
 
 _________________________________
 
-Element communication between Navigator, Properties and HTML Elements 
+(Done) Element communication between Navigator, Properties and HTML Elements 
 
-Since both HTML elements and element objects have id
+(Done) Since both HTML elements and element objects have id
 we can communicate between left and right section by taking the ID from HTML element and then updating the pageTree and then updating the HTML element.
 
-Webflow also stores the ID of each elements in HTML data-* properties 
+(Done) Webflow also stores the ID of each elements in HTML data-* properties 
 e.g. data-w-id="", data-wf-id=["",""], data-w-instance-of=""
 The elements in the navigator panel also store the elements' id and perform action accordingly
 
 _________________________________
 
-Adding Styling changes to history:
+(Done) Adding Styling changes to history:
 
 The styling of the elements can be added to the action history in three conditions:
 1. Valid style created
