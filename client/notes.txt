@@ -66,21 +66,3 @@ The styling of the elements can be added to the action history in three conditio
 _________________________________
 
 DONE:
-
-1. (Done) React Iframe Component doesn't get removed form its parent after being dragged into another element even though it gets removed from the DOM
-   Currently Searching: "unmount component in react hooks" and "remove a component from react virtual dom"
-2. (Done) Dragging an Iframe Component and dropping in the same parent div makes the Iframe Component disappear
-3. (Done) Create an add below and above add above option on either hover or right click
-4. While Adding/Updating elements in the iframe do the following things:
-   a. (Done) Update the DOM
-   b. (Done) Update the element in the site JSON tree
-5. (Done) Return dragged element to its original position if not dropped in another element 
-6. (Done) Error when dropping image element
-7. (Done) Give more unique ids to elements and layout childrens
-8. (Done) Implementing Undo and Redo functionalities (which will solve problem 5) 
-9. (Done) Slide/Shift and Reorder sibling item while dragover -- Or provide options on right click to move items or send to top/bottom
-10. (Done) Elements reappearing inside previous parent after being dragged and dropped into a new parent
-11. (Done) Dropping adds drop command twice
-12. (Done) Work on element position, and sorting when dragover
-13. (Done) When creating _ids for elements place them in the children_order property
-14. (Done) The whole procedure for inserting and removing elements should be change. Watch the video from WebDevSimlified Drag-Drop-Sorting
