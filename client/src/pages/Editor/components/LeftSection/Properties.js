@@ -8,6 +8,7 @@ import {
 } from "../../../../components/editor/Panel";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 import { CommandContext } from "../../../../contexts/CommandContext";
+import { NavigatorList } from "./NavigatorList";
 
 export function PropertiesPanel({ isActive }) {
   const { addCommand } = useContext(CommandContext);
@@ -48,6 +49,8 @@ export function PropertiesPanel({ isActive }) {
     }
   };
 
+  const handleData = (e, property) => {};
+
   return (
     <Panel className={isActive}>
       <PanelTitle>Properties</PanelTitle>
@@ -77,6 +80,25 @@ export function PropertiesPanel({ isActive }) {
               defaultValue={selectedElement.element.text}
               onKeyDown={(e) => handleProperty(e, "text")}
             ></PanelTextArea>
+          )}
+          {selectedElement.element.hasOwnProperty("data") && (
+            <>
+              <PanelLabel>Data</PanelLabel>
+              <PanelInputText
+                type="url"
+                placeholder="Enter the url"
+                onKeyDown={(e) => handleData(e, "url")}
+              />
+              <NavigatorList
+                data={
+                  selectedElement.element.children[
+                    selectedElement.element.children_order[0]
+                  ]
+                }
+                parentElement={{}}
+                offset={selectedElement.element.children_order.length + 1}
+              ></NavigatorList>
+            </>
           )}
         </>
       ) : (

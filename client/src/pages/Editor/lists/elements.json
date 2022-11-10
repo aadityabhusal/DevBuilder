@@ -156,5 +156,21 @@
       "class": "",
       "src": ""
     }
+  },
+  "Data": {
+    "_id": "",
+    "tagName": "data",
+    "path": [],
+    "text": [""],
+    "attributes": {
+      "id": "",
+      "class": ""
+    },
+    "data": {
+      "url": "",
+      "valueDivMapping": {}
+    },
+    "children_order": [],
+    "children": {}
   }
 }

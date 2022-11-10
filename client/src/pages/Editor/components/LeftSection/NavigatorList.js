@@ -11,9 +11,9 @@ import { DropDownIcon } from "../../../../components/ui/Icons";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 const nonClosingTags = ["img", "video", "input", "hr", "br"];
 
-export function NavigatorList({ data, parentElement, firstDrop }) {
+export function NavigatorList({ data, parentElement, offset = 0 }) {
   const [element, setElement] = useState();
-  const [isDropped, setIsDropped] = useState(firstDrop || false);
+  const [isDropped, setIsDropped] = useState(true);
   const { setSelectedElement } = useContext(PageTreeContext);
 
   useEffect(() => {
@@ -56,7 +56,7 @@ export function NavigatorList({ data, parentElement, firstDrop }) {
         onMouseOut={handleMouseOut}
         onClick={handleClick}
       >
-        {element.path.map((item, i) => (
+        {element.path.slice(offset).map((item, i) => (
           <VerticalLines key={i} />
         ))}
         {!nonClosingTags.includes(element.tagName) &&
@@ -74,6 +74,7 @@ export function NavigatorList({ data, parentElement, firstDrop }) {
                 key={element.children[elem]._id}
                 data={element.children[elem]}
                 parentElement={element}
+                offset={offset}
               ></NavigatorList>
             );
           })
