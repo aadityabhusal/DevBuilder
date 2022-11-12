@@ -96,6 +96,7 @@ export const NavigatorListItem = styled.div`
   border-bottom: 1px solid #bdc3c7;
   font-size: 14px;
   display: flex;
+  flex: 1;
   :hover {
     background-color: #ecf0f1;
   }

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   Panel,
   PanelTitle,
@@ -49,6 +49,14 @@ export function PropertiesPanel({ isActive }) {
     }
   };
 
+  const handlePropAssign = (value) => {
+    console.log(value);
+  };
+
+  const handlePropSelect = (value) => {
+    console.log(value);
+  };
+
   const handleData = (e, property) => {};
 
   return (
@@ -97,6 +105,16 @@ export function PropertiesPanel({ isActive }) {
                 }
                 parentElement={{}}
                 offset={selectedElement.element.children_order.length + 1}
+                handlePropSelect={handlePropSelect}
+                appendElement={
+                  <select onChange={(e) => handlePropAssign(e.target.value)}>
+                    {Object.keys({ id: 0, name: "", age: 0 }).map((item) => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                }
               ></NavigatorList>
             </>
           )}

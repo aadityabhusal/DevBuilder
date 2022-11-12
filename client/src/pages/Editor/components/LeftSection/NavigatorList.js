@@ -11,7 +11,13 @@ import { DropDownIcon } from "../../../../components/ui/Icons";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
 const nonClosingTags = ["img", "video", "input", "hr", "br"];
 
-export function NavigatorList({ data, parentElement, offset = 0 }) {
+export function NavigatorList({
+  data,
+  parentElement,
+  offset = 0,
+  appendElement,
+  handlePropSelect,
+}) {
   const [element, setElement] = useState();
   const [isDropped, setIsDropped] = useState(true);
   const { setSelectedElement } = useContext(PageTreeContext);
@@ -51,22 +57,35 @@ export function NavigatorList({ data, parentElement, offset = 0 }) {
 
   return element ? (
     <NavigatorListContainer>
-      <NavigatorListItem
-        onMouseOver={handleHover}
-        onMouseOut={handleMouseOut}
-        onClick={handleClick}
-      >
-        {element.path.slice(offset).map((item, i) => (
-          <VerticalLines key={i} />
-        ))}
-        {!nonClosingTags.includes(element.tagName) &&
-        element.children_order.length ? (
-          <DropDownArrow isDropped={isDropped} onClick={handleDrop}>
-            <DropDownIcon />
-          </DropDownArrow>
+      <div style={{ display: "flex" }}>
+        <NavigatorListItem
+          onMouseOver={handleHover}
+          onMouseOut={handleMouseOut}
+          onClick={handleClick}
+        >
+          {element.path.slice(offset).map((item, i) => (
+            <VerticalLines key={i} />
+          ))}
+          {!nonClosingTags.includes(element.tagName) &&
+          element.children_order.length ? (
+            <DropDownArrow isDropped={isDropped} onClick={handleDrop}>
+              <DropDownIcon />
+            </DropDownArrow>
+          ) : null}
+          <NavigatorItemName>{element.tagName}</NavigatorItemName>
+        </NavigatorListItem>
+        {handlePropSelect ? (
+          <select onChange={(e) => handlePropSelect(e.target.value)}>
+            {element.text ? <option value="text">text</option> : null}
+            {Object.keys(element.attributes).map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
         ) : null}
-        <NavigatorItemName>{element.tagName}</NavigatorItemName>
-      </NavigatorListItem>
+        {appendElement ? appendElement : null}
+      </div>
       {isDropped && !nonClosingTags.includes(element.tagName)
         ? element.children_order.map((elem) => {
             return (
@@ -75,6 +94,8 @@ export function NavigatorList({ data, parentElement, offset = 0 }) {
                 data={element.children[elem]}
                 parentElement={element}
                 offset={offset}
+                appendElement={appendElement}
+                handlePropSelect={handlePropSelect}
               ></NavigatorList>
             );
           })
