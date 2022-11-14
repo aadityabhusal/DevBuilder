@@ -15,8 +15,8 @@ export function NavigatorList({
   data,
   parentElement,
   offset = 0,
-  appendElement,
-  handlePropSelect,
+  mappedData,
+  handlePropMap,
 }) {
   const [element, setElement] = useState();
   const [isDropped, setIsDropped] = useState(true);
@@ -74,17 +74,32 @@ export function NavigatorList({
           ) : null}
           <NavigatorItemName>{element.tagName}</NavigatorItemName>
         </NavigatorListItem>
-        {handlePropSelect ? (
-          <select onChange={(e) => handlePropSelect(e.target.value)}>
-            {element.text ? <option value="text">text</option> : null}
-            {Object.keys(element.attributes).map((item) => (
-              <option key={item} value={item}>
-                {item}
-              </option>
-            ))}
-          </select>
+        {handlePropMap && mappedData ? (
+          <>
+            <select
+              defaultValue={mappedData[element._id]?.attribute}
+              onChange={(e) =>
+                handlePropMap(element._id, "attribute", e.target.value)
+              }
+            >
+              {element.text ? <option value="text">text</option> : null}
+              {Object.keys(element.attributes).map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+            <input
+              defaultValue={mappedData[element._id]?.property || ""}
+              style={{ width: "100px" }}
+              placeholder="Property name"
+              onKeyDown={(e) =>
+                e.keyCode === 13 &&
+                handlePropMap(element._id, "property", e.target.value)
+              }
+            />
+          </>
         ) : null}
-        {appendElement ? appendElement : null}
       </div>
       {isDropped && !nonClosingTags.includes(element.tagName)
         ? element.children_order.map((elem) => {
@@ -94,8 +109,8 @@ export function NavigatorList({
                 data={element.children[elem]}
                 parentElement={element}
                 offset={offset}
-                appendElement={appendElement}
-                handlePropSelect={handlePropSelect}
+                mappedData={mappedData}
+                handlePropMap={handlePropMap}
               ></NavigatorList>
             );
           })

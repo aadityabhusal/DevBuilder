@@ -49,15 +49,39 @@ export function PropertiesPanel({ isActive }) {
     }
   };
 
-  const handlePropAssign = (value) => {
-    console.log(value);
+  const handlePropMap = (_id, type, value) => {
+    let { children, ...element } = selectedElement.element;
+    if (element.data.propertyMap[_id]?.[type]?.trim() !== value.trim()) {
+      let prev = JSON.stringify(element);
+      element.data.propertyMap[_id] = {
+        ...element.data.propertyMap[_id],
+        [type]: value,
+      };
+      addCommand({
+        action: "changeProperty",
+        element: JSON.stringify(element),
+        prev,
+      });
+      changeProperty(JSON.stringify(element));
+    }
   };
 
-  const handlePropSelect = (value) => {
-    console.log(value);
+  const handleData = (e, property) => {
+    let { children, ...element } = selectedElement.element;
+    if (
+      e.keyCode === 13 &&
+      element.data[property].trim() !== e.target.value.trim()
+    ) {
+      let prev = JSON.stringify(element);
+      element.data[property] = e.target.value;
+      addCommand({
+        action: "changeProperty",
+        element: JSON.stringify(element),
+        prev,
+      });
+      changeProperty(JSON.stringify(element));
+    }
   };
-
-  const handleData = (e, property) => {};
 
   return (
     <Panel className={isActive}>
@@ -95,6 +119,7 @@ export function PropertiesPanel({ isActive }) {
               <PanelInputText
                 type="url"
                 placeholder="Enter the url"
+                defaultValue={selectedElement.element.data.url}
                 onKeyDown={(e) => handleData(e, "url")}
               />
               <NavigatorList
@@ -105,16 +130,8 @@ export function PropertiesPanel({ isActive }) {
                 }
                 parentElement={{}}
                 offset={selectedElement.element.children_order.length + 1}
-                handlePropSelect={handlePropSelect}
-                appendElement={
-                  <select onChange={(e) => handlePropAssign(e.target.value)}>
-                    {Object.keys({ id: 0, name: "", age: 0 }).map((item) => (
-                      <option key={item} value={item}>
-                        {item}
-                      </option>
-                    ))}
-                  </select>
-                }
+                handlePropMap={handlePropMap}
+                mappedData={selectedElement.element.data.propertyMap}
               ></NavigatorList>
             </>
           )}
