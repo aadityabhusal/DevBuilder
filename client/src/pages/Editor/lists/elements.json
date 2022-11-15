@@ -168,7 +168,8 @@
     },
     "data": {
       "url": "",
-      "propertyMap": {}
+      "propertyMap": {},
+      "dataMap": {}
     },
     "children_order": [],
     "children": {}

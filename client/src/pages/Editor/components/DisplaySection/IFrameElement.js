@@ -9,6 +9,7 @@ import {
 } from "../../../../utils";
 import { CommandContext } from "../../../../contexts/CommandContext";
 import { PageTreeContext } from "../../../../contexts/PageTreeContext";
+import { fetchData } from "../../../../utils/fetchData";
 const nonClosingTags = ["img", "video", "input", "hr", "br"];
 
 export function IframeElement({ data, parentElement }) {
@@ -23,9 +24,28 @@ export function IframeElement({ data, parentElement }) {
 
   useEffect(() => {
     if (data) {
-      setElement((prev) => data);
+      if (data.data && data.data.url) {
+        handelFetch(Object.assign({}, data));
+      } else setElement(() => data);
     }
   }, [data]);
+
+  async function handelFetch(result) {
+    let fetched = await fetchData(data.data.url, data.data.headers || {});
+    Object.entries(data.data.propertyMap).forEach(([id, item]) => {
+      result.data.dataMap = {
+        ...result.data.dataMap,
+        [id]: {
+          attribute: item.attribute,
+          value: fetched[item.property],
+        },
+      };
+      // if (result.attributes[item.attribute]) {
+      //   result.attributes[item.attribute] = fetched[item.property];
+      // }
+    });
+    setElement(() => result);
+  }
 
   const handleClick = (e) => {
     e.preventDefault(); // for avoiding link clicks
